@@ -528,10 +528,146 @@ body {
   background: rgba(16,185,129,0.05);
 }
 
+/* ─── LIVE CHAIN DATA BANNER ─── */
+.live-banner {
+  max-width: 860px;
+  margin: 0 auto 0;
+  padding: 0 24px;
+}
+.live-banner-inner {
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px;
+  padding: 20px 24px 18px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.live-chain-block { display: flex; flex-direction: column; gap: 4px; }
+.live-chain-block.eth { text-align: left; }
+.live-chain-block.sol { text-align: right; }
+.live-chain-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.live-chain-block.sol .live-chain-label { flex-direction: row-reverse; }
+.live-chain-fee-now {
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.live-chain-fee-now.eth-live { color: var(--eth-red); }
+.live-chain-fee-now.sol-live { color: var(--sol-green); }
+.live-chain-detail {
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.live-chain-block.sol .live-chain-detail { text-align: right; }
+.live-center {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.live-ratio-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+.live-ratio-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.live-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00c97a;
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+.live-status-text {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #00c97a;
+}
+.live-refresh-hint {
+  font-size: 10px;
+  color: #1f2937;
+  text-align: center;
+  padding-bottom: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.live-loading {
+  opacity: 0.4;
+  font-style: italic;
+}
+/* live rows inside chain cards */
+.chain-live-row {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.chain-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #00c97a;
+}
+.chain-live-badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #00c97a;
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+.chain-live-fee-val {
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.chain-live-fee-val.eth { color: var(--eth-red); }
+.chain-live-fee-val.sol { color: var(--sol-green); }
+.chain-live-gwei {
+  font-size: 10px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
 /* ─── SECTION SPACING ─── */
 .section-gap { height: 24px; }
-
-/* ─── FOOTNOTE ─── */
 .footnote {
   text-align: center;
   font-size: 11px;
@@ -855,6 +991,37 @@ body {
 
 <div class="section-gap"></div>
 
+<!-- LIVE CHAIN DATA BANNER -->
+<div class="live-banner">
+  <div class="live-banner-inner">
+    <div class="live-chain-block eth">
+      <div class="live-chain-label">
+        <span>⬡ ETH · Live Now</span>
+      </div>
+      <div class="live-chain-fee-now eth-live" id="live-eth-fee">loading…</div>
+      <div class="live-chain-detail" id="live-eth-gwei">— Gwei · 150K gas</div>
+      <div class="live-chain-detail" id="live-eth-price">ETH —</div>
+    </div>
+    <div class="live-center">
+      <div class="live-ratio-value" id="live-ratio">—</div>
+      <div class="live-ratio-label">× more expensive</div>
+      <div class="live-status-row">
+        <div class="live-dot"></div>
+        <span class="live-status-text">Live</span>
+      </div>
+    </div>
+    <div class="live-chain-block sol">
+      <div class="live-chain-label">
+        <span>◎ SOL · Live Now</span>
+      </div>
+      <div class="live-chain-fee-now sol-live" id="live-sol-fee">loading…</div>
+      <div class="live-chain-detail" id="live-sol-lamports">5,000 lamports · fixed</div>
+      <div class="live-chain-detail" id="live-sol-price">SOL —</div>
+    </div>
+  </div>
+  <div class="live-refresh-hint" id="live-refresh-hint">Fetching live chain data…</div>
+</div>
+
 <!-- VS COMPARISON -->
 <div class="comparison">
   <div class="vs-grid">
@@ -868,6 +1035,13 @@ body {
         <div class="stat-row"><span class="stat-key">Finality</span><span class="stat-val-eth">~12–15 min</span></div>
         <div class="stat-row"><span class="stat-key">Fee predictability</span><span class="stat-val-eth">Low</span></div>
         <div class="stat-row"><span class="stat-key">P99 fee</span><span class="stat-val-eth">$15–$40</span></div>
+      </div>
+      <div class="chain-live-row">
+        <div class="chain-live-badge"><div class="chain-live-badge-dot"></div>Live gas</div>
+        <div>
+          <span class="chain-live-fee-val eth" id="card-eth-fee">—</span>
+          <span class="chain-live-gwei" id="card-eth-gwei"> · — Gwei</span>
+        </div>
       </div>
     </div>
 
@@ -885,6 +1059,13 @@ body {
         <div class="stat-row"><span class="stat-key">Finality</span><span class="stat-val-sol">~5–15 sec</span></div>
         <div class="stat-row"><span class="stat-key">Fee predictability</span><span class="stat-val-sol">High</span></div>
         <div class="stat-row"><span class="stat-key">P99 fee</span><span class="stat-val-sol">&lt; $0.01</span></div>
+      </div>
+      <div class="chain-live-row">
+        <div class="chain-live-badge"><div class="chain-live-badge-dot"></div>Live fee</div>
+        <div>
+          <span class="chain-live-fee-val sol" id="card-sol-fee">—</span>
+          <span class="chain-live-gwei"> · 5,000 lamports</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1203,6 +1384,91 @@ function startTicker(annualFeeSavings) {
     document.getElementById('ticker-time').textContent = timeStr;
   }, 100);
 }
+
+// ─── LIVE CHAIN DATA ───
+const INST_GAS_UNITS = 150000; // institutional USDC multi-sig (Gnosis Safe)
+const SOL_LAMPORTS   = 5000;   // standard Solana base fee
+let liveEthPrice = null;
+let liveSolPrice = null;
+let liveGasGwei  = null;
+let liveDataOk   = false;
+
+async function fetchLiveData() {
+  try {
+    // 1. CoinGecko prices (free, no key)
+    const priceRes = await fetch(
+      'https://api.coingecko.com/api/v3/simple/price?ids=ethereum%2Csolana&vs_currencies=usd',
+      { cache: 'no-store' }
+    );
+    if (priceRes.ok) {
+      const p = await priceRes.json();
+      if (p.ethereum?.usd) liveEthPrice = p.ethereum.usd;
+      if (p.solana?.usd)   liveSolPrice = p.solana.usd;
+    }
+  } catch(e) { console.warn('Price fetch failed:', e); }
+
+  try {
+    // 2. ETH base fee via public RPC (eth_feeHistory → baseFeePerGas)
+    const rpcRes = await fetch('https://ethereum.publicnode.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jsonrpc: '2.0', id: 1,
+        method: 'eth_feeHistory',
+        params: ['0x1', 'latest', [50]]
+      }),
+      cache: 'no-store'
+    });
+    if (rpcRes.ok) {
+      const rpc = await rpcRes.json();
+      const baseFeeHex = rpc?.result?.baseFeePerGas?.[0];
+      if (baseFeeHex) {
+        const baseFeiWei = parseInt(baseFeeHex, 16);
+        const priorityWei = (rpc?.result?.reward?.[0]?.[0])
+          ? parseInt(rpc.result.reward[0][0], 16) : 1e9; // +1 Gwei tip
+        liveGasGwei = (baseFeiWei + priorityWei) / 1e9;
+      }
+    }
+  } catch(e) { console.warn('Gas RPC failed:', e); }
+
+  if (liveEthPrice && liveSolPrice && liveGasGwei !== null) {
+    updateLiveBanner();
+    liveDataOk = true;
+  }
+}
+
+function updateLiveBanner() {
+  const ethFeeNow = liveGasGwei * INST_GAS_UNITS * liveEthPrice / 1e9;
+  const solFeeNow = (SOL_LAMPORTS / 1e9) * liveSolPrice;
+  const ratio     = ethFeeNow > 0 ? Math.round(ethFeeNow / solFeeNow) : 0;
+
+  // Banner
+  document.getElementById('live-eth-fee').textContent  = '$' + ethFeeNow.toFixed(4);
+  document.getElementById('live-eth-gwei').textContent = liveGasGwei.toFixed(4) + ' Gwei · 150K gas';
+  document.getElementById('live-eth-price').textContent = 'ETH $' + liveEthPrice.toLocaleString('en-US', {maximumFractionDigits: 2});
+  document.getElementById('live-sol-fee').textContent  = '$' + solFeeNow.toFixed(6);
+  document.getElementById('live-sol-price').textContent = 'SOL $' + liveSolPrice.toFixed(2);
+  document.getElementById('live-ratio').textContent    = ratio >= 1000
+    ? (ratio / 1000).toFixed(1) + 'K×' : ratio.toLocaleString() + '×';
+
+  // Chain cards
+  document.getElementById('card-eth-fee').textContent  = '$' + ethFeeNow.toFixed(4);
+  document.getElementById('card-eth-gwei').textContent = ' · ' + liveGasGwei.toFixed(3) + ' Gwei';
+  document.getElementById('card-sol-fee').textContent  = '$' + solFeeNow.toFixed(6);
+
+  // Refresh hint
+  const now = new Date();
+  const hkt = new Intl.DateTimeFormat('en-HK', {
+    timeZone: 'Asia/Hong_Kong',
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+  }).format(now);
+  document.getElementById('live-refresh-hint').textContent =
+    'Updated HKT ' + hkt + ' · auto-refreshes every 30s · source: CoinGecko + publicnode.com';
+}
+
+// Start live data
+fetchLiveData();
+setInterval(fetchLiveData, 30000);
 
 // Init
 calculate();
