@@ -1247,20 +1247,35 @@ body {
 <!-- 3-YEAR PROJECTION -->
 <div class="projection">
   <div class="proj-card">
-    <div class="proj-title">3-Year Cost Projection</div>
+    <div class="proj-title">3-Year Transaction Fee Cost Comparison</div>
+    <div style="font-size:11px;color:#374151;margin-bottom:18px;line-height:1.5;">
+      Cumulative settlement fees paid over 3 years · Base Case scenario (~$2.50/txn ETH) · transaction fees only, excludes capital velocity gain
+    </div>
     <div class="proj-bar-group">
       <div class="proj-bar-label">
-        <span>Ethereum — Total Cost</span>
-        <span id="proj-eth-3yr" style="color:#fca5a5;font-weight:700;">$247,500</span>
+        <span>Ethereum — 3yr fee cost</span>
+        <span id="proj-eth-3yr" style="color:#fca5a5;font-weight:700;">$180,000</span>
       </div>
       <div class="proj-track"><div class="proj-fill eth" id="bar-eth-3yr" style="width:100%"></div></div>
     </div>
     <div class="proj-bar-group">
       <div class="proj-bar-label">
-        <span>Solana — Total Cost</span>
-        <span id="proj-sol-3yr" style="color:#6ee7b7;font-weight:700;">$21.60</span>
+        <span>Solana — 3yr fee cost</span>
+        <span id="proj-sol-3yr" style="color:#6ee7b7;font-weight:700;">$59</span>
       </div>
       <div class="proj-track"><div class="proj-fill sol" id="bar-sol-3yr" style="width:0.1%"></div></div>
+    </div>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:11px;color:#64748b;">3-year fee savings (ETH→SOL)</span>
+      <span id="proj-fee-diff" style="font-size:16px;font-weight:800;color:#00c97a;">$179,941</span>
+    </div>
+    <div style="margin-top:6px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:11px;color:#64748b;">+ capital velocity over 3 years</span>
+      <span id="proj-vel-3yr" style="font-size:13px;font-weight:600;color:#6ee7b7;">$9,144</span>
+    </div>
+    <div style="margin-top:6px;padding:10px 0 2px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.04);">
+      <span style="font-size:11px;color:#94a3b8;font-weight:600;">Total 3-year gain (matches table above)</span>
+      <span id="proj-total-3yr" style="font-size:17px;font-weight:800;color:#ffd700;">$189,085</span>
     </div>
   </div>
 
@@ -1502,14 +1517,20 @@ function calculate() {
   document.getElementById('t-stress-annual').textContent = fmtUSD(stressTot) + '/yr';
   document.getElementById('t-hours').textContent         = Math.round(timeFreedHrs).toLocaleString() + ' hrs';
 
-  // 3yr projection
+  // 3yr projection — fee costs only in bars; reconciliation summary below
   const eth3yr = ethAnnual * 3;
   const sol3yr = solAnnual * 3;
-  document.getElementById('proj-eth-3yr').textContent = fmtUSD(eth3yr);
-  document.getElementById('proj-sol-3yr').textContent = fmtUSD(sol3yr);
+  const feeDiff3yr = eth3yr - sol3yr;
+  const vel3yr     = velocityGain * 3;
+  const total3yr   = feeDiff3yr + vel3yr;      // matches scenario table sc-3yr
+  document.getElementById('proj-eth-3yr').textContent   = fmtUSD(eth3yr);
+  document.getElementById('proj-sol-3yr').textContent   = fmtUSD(sol3yr);
+  document.getElementById('proj-fee-diff').textContent  = fmtUSD(feeDiff3yr);
+  document.getElementById('proj-vel-3yr').textContent   = fmtUSD(vel3yr);
+  document.getElementById('proj-total-3yr').textContent = fmtUSD(total3yr);
   const maxVal = Math.max(eth3yr, 1);
   document.getElementById('bar-eth-3yr').style.width = '100%';
-  document.getElementById('bar-sol-3yr').style.width = Math.max(0.2, sol3yr / maxVal * 100) + '%';
+  document.getElementById('bar-sol-3yr').style.width = Math.max(0.05, sol3yr / maxVal * 100) + '%';
 
   // Delay cost
   const monthlySavings = total / 12;
