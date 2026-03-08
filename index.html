@@ -964,11 +964,11 @@ body {
   <div style="text-align:center;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">SELECT YOUR DESK PROFILE</div>
 </div>
 <div class="presets-bar">
-  <button class="preset-btn" onclick="setPreset(100,5,20)">Small Desk ($5M / 100 txns)</button>
-  <button class="preset-btn" onclick="setPreset(300,20,20)">Mid Desk ($20M / 300 txns)</button>
-  <button class="preset-btn" onclick="setPreset(500,50,20)">Active Desk ($50M / 500 txns)</button>
-  <button class="preset-btn" onclick="setPreset(1200,100,50)">Large Desk ($100M / 1,200 txns)</button>
-  <button class="preset-btn" onclick="setPreset(3000,500,100)">Prime ($500M / 3,000 txns)</button>
+  <button class="preset-btn" onclick="setPreset(200,20,200)">Boutique ($20M vol · 200 txns)</button>
+  <button class="preset-btn" onclick="setPreset(500,50,500)">Mid Desk ($50M vol · 500 txns)</button>
+  <button class="preset-btn" onclick="setPreset(2000,200,2000)">Active Desk ($200M vol · 2K txns)</button>
+  <button class="preset-btn" onclick="setPreset(5000,500,5000)">Large Desk ($500M vol · 5K txns)</button>
+  <button class="preset-btn" onclick="setPreset(10000,2000,20000)">Prime ($2B vol · 10K txns)</button>
 </div>
 
 <!-- INPUTS -->
@@ -977,17 +977,17 @@ body {
   <div class="inputs-grid">
     <div class="input-card">
       <label>Monthly Transactions</label>
-      <input type="number" id="txns" value="500" min="1" oninput="calculate()">
+      <input type="number" id="txns" value="2000" min="1" oninput="calculate()">
       <div class="unit">settlements / month</div>
     </div>
     <div class="input-card">
       <label>Monthly Volume</label>
-      <input type="number" id="volume" value="50" min="0.1" step="1" oninput="calculate()">
+      <input type="number" id="volume" value="200" min="0.1" step="1" oninput="calculate()">
       <div class="unit">USD millions</div>
     </div>
     <div class="input-card">
-      <label>Working Capital</label>
-      <input type="number" id="capital" value="20" min="1" step="1" oninput="calculate()">
+      <label>Capital Base (AUM)</label>
+      <input type="number" id="capital" value="2000" min="1" step="1" oninput="calculate()">
       <div class="unit">USD millions</div>
     </div>
     <div class="input-card">
@@ -1249,7 +1249,7 @@ body {
       <div class="osl-disclaimer-block">
         <div class="osl-disclaimer-label">Methodology &amp; Data Sources</div>
         <div class="osl-disclaimer-text">
-          Fee model derived from 2024–2025 post-L2 era on-chain data. Base case: 80% normal-market days (~$1.50/txn, ~5 Gwei) + 20% elevated-activity days (~$7.00/txn, ~25 Gwei). Institutional USDC multi-sig settlement assumed at ~150,000 gas units. ETH/USD live-fetched from market APIs.
+          Fee model: 2024–2025 post-L2 era on-chain data. Base case: 80% normal (~$1.50/txn, ~5 Gwei) + 20% elevated (~$7.00/txn, ~25 Gwei). Institutional USDC multi-sig: ~150K gas. Capital velocity = avg settlement value × Δfinality time (14.83 min/txn) × opp cost rate. SOL fee: 5,000 lamports × live SOL price.
           Verify independently: <a href="https://etherscan.io/gastracker" target="_blank">Etherscan Gas Tracker</a> · <a href="https://solanabeach.io" target="_blank">Solana Beach</a> · <a href="https://status.solana.com" target="_blank">Solana Status</a>
         </div>
       </div>
@@ -1332,29 +1332,34 @@ function setScenario(s) {
 }
 
 function calculate() {
-  const txns = parseFloat(document.getElementById('txns').value) || 0;
-  const capital = (parseFloat(document.getElementById('capital').value) || 0) * 1e6;
-  const opp = (parseFloat(document.getElementById('opp').value) || 0) / 100;
+  const txns    = parseFloat(document.getElementById('txns').value)    || 0;
+  const volume  = (parseFloat(document.getElementById('volume').value)  || 0) * 1e6; // total monthly vol
+  const capital = (parseFloat(document.getElementById('capital').value) || 0) * 1e6; // AUM for bps only
+  const opp     = (parseFloat(document.getElementById('opp').value)     || 0) / 100;
 
-  const annualTxns = txns * 12;
-  const ethAnnual = ethFee * annualTxns;
-  const solAnnual = solFee * annualTxns;
-  const feeSavings = ethAnnual - solAnnual;
+  const annualTxns    = txns * 12;
+  const ethAnnual     = ethFee * annualTxns;
+  const solAnnual     = solFee * annualTxns;
+  const feeSavings    = ethAnnual - solAnnual;
 
-  // Capital velocity
-  const ethMinutes = 15;
-  const solSeconds = 10;
-  const timeFreedPerTxnMin = ethMinutes - (solSeconds / 60);
-  const timeFreedHrs = timeFreedPerTxnMin * annualTxns / 60;
-  const hourlyCapital = capital * opp / 8760;
-  const velocityGain = hourlyCapital * timeFreedHrs;
+  // Capital velocity — uses per-transaction settlement value (volume / txns)
+  // Logic: each USDC settlement locks (avg txn value) for the finality window.
+  // ETH: ~15 min economic finality. SOL: ~10 sec confirmed. Delta = 14.83 min/txn.
+  const avgTxnValue      = txns > 0 ? volume / txns : 0;  // e.g. $200M/2000 = $100K
+  const ethMinutes       = 15;
+  const solSeconds       = 10;
+  const timeFreedPerTxnMin  = ethMinutes - (solSeconds / 60);        // 14.83 min
+  const timeFreedHrs        = timeFreedPerTxnMin * annualTxns / 60;  // total hrs freed/yr
+  // Opportunity cost = avgTxnValue locked for (timeFreedHrs / 8760) of year × opp rate
+  const velocityGain = avgTxnValue * (timeFreedHrs / 8760) * opp;
 
   const total = feeSavings + velocityGain;
-  const bps = capital > 0 ? (total / capital * 10000) : 0;
+  const bps   = capital > 0 ? (total / capital * 10000) : 0;
   const ratio = solFee > 0 ? (ethFee / solFee) : 0;
 
   // Update chain cards
-  document.getElementById('eth-txn-fee').textContent = '$' + ethFee.toFixed(2);
+  const ethFeeDisplay = ethFee < 0.01 ? ethFee.toFixed(5) : ethFee < 1 ? ethFee.toFixed(3) : ethFee.toFixed(2);
+  document.getElementById('eth-txn-fee').textContent = '$' + ethFeeDisplay;
   document.getElementById('sol-txn-fee').textContent = '$' + solFee.toFixed(4);
   document.getElementById('eth-monthly').textContent = fmtUSD(ethFee * txns);
   document.getElementById('eth-annual').textContent = fmtUSD(ethAnnual);
@@ -1371,7 +1376,7 @@ function calculate() {
     : Math.round(ratio) + '×';
 
   // Translations
-  const analysts = total / 80000;
+  const analysts = total / 120000;  // mid-level financial analyst ~$120K all-in
   document.getElementById('t-analysts').textContent = analysts.toFixed(1) + ' analysts';
   document.getElementById('t-daily').textContent = fmtUSD(feeSavings / 250) + '/day';
   document.getElementById('t-bps-alt').textContent = bps.toFixed(0) + ' bps';
