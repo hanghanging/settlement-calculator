@@ -762,6 +762,226 @@ body {
 }
 .footnote a { color: #374151; }
 
+/* ─── GUIDE DRAWER ─── */
+.guide-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 200;
+  backdrop-filter: blur(2px);
+}
+.guide-backdrop.open { display: block; }
+.guide-drawer {
+  position: fixed;
+  top: 0;
+  right: -480px;
+  width: 460px;
+  max-width: 92vw;
+  height: 100vh;
+  background: #0d1520;
+  border-left: 1px solid rgba(255,255,255,0.1);
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.32s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: -8px 0 48px rgba(0,0,0,0.6);
+}
+.guide-drawer.open { right: 0; }
+.guide-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+  background: #0a1018;
+}
+.guide-drawer-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: 0.01em;
+}
+.guide-drawer-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lang-toggle {
+  display: flex;
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.lang-btn {
+  padding: 4px 11px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: all 0.15s;
+  letter-spacing: 0.04em;
+}
+.lang-btn.active {
+  background: #00c97a;
+  color: #0a1018;
+  border-radius: 5px;
+}
+.guide-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.06);
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.guide-close:hover { background: rgba(255,255,255,0.12); color: #f1f5f9; }
+.guide-toc {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 12px 22px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.02);
+}
+.toc-chip {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: all 0.15s;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.toc-chip:hover { color: #00c97a; border-color: rgba(0,201,122,0.3); background: rgba(0,201,122,0.07); }
+.guide-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 22px 40px;
+  scroll-behavior: smooth;
+}
+.guide-body::-webkit-scrollbar { width: 4px; }
+.guide-body::-webkit-scrollbar-track { background: transparent; }
+.guide-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+.g-section { margin-bottom: 32px; }
+.g-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #00c97a;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0,201,122,0.15);
+}
+.g-item { margin-bottom: 16px; }
+.g-item-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.g-item-label .tag {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tag-input { background: rgba(99,179,237,0.15); color: #63b3ed; }
+.tag-output { background: rgba(0,201,122,0.12); color: #00c97a; }
+.tag-note { background: rgba(251,191,36,0.12); color: #fbbf24; }
+.g-item-body {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.7;
+}
+.g-item-body strong { color: #cbd5e1; }
+.g-example {
+  margin-top: 7px;
+  padding: 8px 11px;
+  background: rgba(255,255,255,0.04);
+  border-left: 2px solid rgba(0,201,122,0.4);
+  border-radius: 0 5px 5px 0;
+  font-size: 11px;
+  color: #6ee7b7;
+  font-style: italic;
+}
+.g-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  margin-top: 8px;
+}
+.g-table th {
+  text-align: left;
+  padding: 5px 8px;
+  color: #64748b;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.g-table td {
+  padding: 6px 8px;
+  color: #94a3b8;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: top;
+}
+.g-table td:first-child { color: #cbd5e1; font-weight: 600; }
+.g-faq-q {
+  font-size: 12px;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 4px;
+  padding-left: 14px;
+  position: relative;
+}
+.g-faq-q::before { content: 'Q'; position: absolute; left: 0; color: #00c97a; font-weight: 800; }
+.g-faq-a {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.6;
+  padding-left: 14px;
+  margin-bottom: 12px;
+}
+.guide-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: rgba(0,201,122,0.1);
+  border: 1px solid rgba(0,201,122,0.25);
+  color: #00c97a;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+.guide-nav-btn:hover { background: rgba(0,201,122,0.18); }
+
 /* ─── OSL NAVBAR ─── */
 .osl-nav {
   position: sticky;
@@ -1008,8 +1228,28 @@ body {
       Live Data
     </div>
     <span class="osl-ts" id="nav-clock"></span>
+    <button class="guide-nav-btn" onclick="openGuide()" style="margin-left:8px;">📖 <span class="guide-btn-label">Guide</span></button>
   </div>
 </nav>
+
+<!-- GUIDE BACKDROP -->
+<div class="guide-backdrop" id="guide-backdrop" onclick="closeGuide()"></div>
+
+<!-- GUIDE DRAWER -->
+<div class="guide-drawer" id="guide-drawer">
+  <div class="guide-drawer-header">
+    <span class="guide-drawer-title" id="guide-title">📖 User Guide</span>
+    <div class="guide-drawer-actions">
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="lang-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="lang-zh" onclick="setLang('zh')">中文</button>
+      </div>
+      <button class="guide-close" onclick="closeGuide()">✕</button>
+    </div>
+  </div>
+  <div class="guide-toc" id="guide-toc"></div>
+  <div class="guide-body" id="guide-body"></div>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -1726,6 +1966,284 @@ function updateClock() {
 }
 updateClock();
 setInterval(updateClock, 1000);
+
+// ─── GUIDE DRAWER ────────────────────────────────────────────
+let currentLang = 'en';
+
+const GUIDE = {
+  en: {
+    title: '📖 User Guide',
+    toc: ['What is this?','Parameters','Scenarios','Results','FAQ'],
+    sections: [
+      {
+        id: 'what', title: 'What Is This Tool?',
+        html: `<div class="g-item">
+          <div class="g-item-body">This tool shows exactly <strong>how much your institution pays in settlement fees</strong> on Ethereum vs Solana — and how much you could save by migrating.
+          <br><br>Every on-chain transfer (e.g. USDC settlement) costs a <strong>Gas fee</strong>. Ethereum fees fluctuate with network congestion. Solana fees are fixed and near-zero. Multiply that difference by your annual volume, and you get a real, auditable dollar number.</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">Two savings components <span class="tag tag-output">Always shown</span></div>
+          <div class="g-item-body">
+            <strong>① Fee savings</strong> — direct reduction in Gas paid (~95% of total)<br>
+            <strong>② Capital velocity gain</strong> — ETH settles in 12–15 min; SOL in 5–15 sec. Faster settlement frees capital sooner, generating additional yield (~5% of total)
+          </div>
+        </div>`
+      },
+      {
+        id: 'params', title: 'Setting Your Parameters',
+        html: `<div class="g-item">
+          <div class="g-item-label">Monthly Transactions <span class="tag tag-input">Input</span></div>
+          <div class="g-item-body">How many on-chain transfers/settlements your desk executes per month.</div>
+          <div class="g-example">~10/day → 300 · ~50/day → 1,500 · ~100/day → 3,000 · Default: 2,000</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">Monthly Volume ($M) <span class="tag tag-input">Input</span></div>
+          <div class="g-item-body">Total USD value of all settlements per month, in millions. Used to calculate <em>average transaction size</em>, which feeds into the capital velocity gain formula.</div>
+          <div class="g-example">$50M/month → enter 50 · Default: 200 (= $200M/month)</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">Capital Base / AUM ($M) <span class="tag tag-input">Input</span></div>
+          <div class="g-item-body">Total AUM under management, in millions. Used only to convert savings into <strong>bps</strong> for cross-comparison with other cost lines.</div>
+          <div class="g-example">$1B AUM → enter 1,000 · Default: 2,000 (= $2B)</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">Opportunity Cost (%) <span class="tag tag-input">Input</span></div>
+          <div class="g-item-body">Annual yield rate on idle capital (e.g. T-bills, money market). Used to value the time capital is locked during settlement.</div>
+          <div class="g-example">US T-bill rate ~4.5% · Default: 4.5%</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">Quick Presets <span class="tag tag-note">Shortcut</span></div>
+          <div class="g-item-body">
+            <table class="g-table"><thead><tr><th>Button</th><th>Fits</th><th>Txns/mo</th><th>AUM</th></tr></thead><tbody>
+            <tr><td>Boutique</td><td>Family office</td><td>200</td><td>$200M</td></tr>
+            <tr><td>Mid Desk</td><td>Mid-size desk</td><td>500</td><td>$500M</td></tr>
+            <tr><td>Active Desk</td><td>Default</td><td>2,000</td><td>$2B</td></tr>
+            <tr><td>Large Desk</td><td>Large institution</td><td>5,000</td><td>$5B</td></tr>
+            <tr><td>Prime</td><td>Top-tier</td><td>10,000</td><td>$20B</td></tr>
+            </tbody></table>
+          </div>
+        </div>`
+      },
+      {
+        id: 'scenarios', title: 'Gas Scenarios',
+        html: `<div class="g-item">
+          <div class="g-item-label">⬡ Live Now <span class="tag tag-note">Real-time</span></div>
+          <div class="g-item-body">Uses the actual current ETH Gas price from the Ethereum node (updates every 30s). Useful to see today's actual cost. Note: during quiet periods Gas can be extremely low and is <strong>not representative of long-term planning.</strong></div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">🔵 Conservative — $0.50/txn</div>
+          <div class="g-item-body">Assumes low Gas (~1–3 Gwei). Best-case scenario for ETH, or post-upgrade environment.</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">🟡 Base Case — $2.50/txn <span class="tag tag-note">Recommended</span></div>
+          <div class="g-item-body">Based on the <strong>2024–2025 actual blended average</strong> (~8 Gwei). This is the <strong>most honest planning anchor</strong>. Use this for board presentations and formal analysis.</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">🔴 Stress — $10.00/txn</div>
+          <div class="g-item-body">Peak congestion scenario (~35 Gwei). Occurred on ~10–20% of trading days in 2024. Use for downside risk and hedging analysis.</div>
+        </div>`
+      },
+      {
+        id: 'results', title: 'Reading the Results',
+        html: `<div class="g-item">
+          <div class="g-item-label">Annual Savings ($ amount) <span class="tag tag-output">Output</span></div>
+          <div class="g-item-body">= Fee savings + Capital velocity gain. The total yearly benefit of migrating settlement to Solana.</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">bps on AUM <span class="tag tag-output">Output</span></div>
+          <div class="g-item-body">Annual savings ÷ AUM × 10,000. <strong>1 bps = 0.01%</strong>. At $2B AUM, Base Case savings = 0.315 bps = $63K/year.</div>
+          <div class="g-example">0.315 bps may sound small — but it's a permanent, recurring reduction with zero operational trade-off</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">3-Year Chart — All Scenarios <span class="tag tag-output">Output</span></div>
+          <div class="g-item-body">Shows cumulative 3-year <strong>fee cost</strong> for ETH (3 scenarios) vs SOL (single bar, always ~$59 at default params). The bottom panel reconciles: fee savings + velocity gain = total 3-year benefit, which matches the scenario table above.</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">Delay Cost Banner <span class="tag tag-note">Decision tool</span></div>
+          <div class="g-item-body">Every month of inaction = one month of permanently lost savings. The 6-month delay cost = 6 × monthly savings.</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">Translation Cards <span class="tag tag-output">Output</span></div>
+          <div class="g-item-body">Six cards re-express the <strong>Base Case</strong> savings in human-readable units: per transaction, per day, bps, 3-year, stress scenario, and hours of settlement time freed. These are always anchored to Base Case for stability.</div>
+        </div>`
+      },
+      {
+        id: 'faq', title: 'FAQ',
+        html: `<div class="g-faq-q">Why does SOL cost only ~$59 over 3 years?</div>
+        <div class="g-faq-a">Solana charges 10,000 lamports per transaction = 0.00001 SOL ≈ $0.00082 at $82/SOL. At 2,000 txns/month, that's $19.68/year — or $59 over 3 years. This is Solana's genuine fee structure, not an estimate.</div>
+        <div class="g-faq-q">What is bps?</div>
+        <div class="g-faq-a">Basis Points. 1 bps = 0.01%. Used universally in institutional finance to express cost/return relative to AUM. 0.315 bps on $2B AUM = $63,000/year.</div>
+        <div class="g-faq-q">Where does the ETH $2.50 Base Case come from?</div>
+        <div class="g-faq-a">150,000 Gas units (standard for institutional USDC multi-sig, e.g. Gnosis Safe 2-of-3) × ~8 Gwei × ETH price. 8 Gwei represents the 2024–2025 blended average, weighted 75% low periods + 25% high periods.</div>
+        <div class="g-faq-q">What is capital velocity gain?</div>
+        <div class="g-faq-a">ETH settlement takes 12–15 minutes; Solana takes 5–15 seconds. Capital locked during that window could otherwise be deployed. Velocity gain = average txn size × (hours freed ÷ 8,760) × opportunity cost rate.</div>
+        <div class="g-faq-q">Where does the live data come from?</div>
+        <div class="g-faq-a">ETH Gas: Ethereum public node (publicnode.com) via JSON-RPC eth_feeHistory. ETH/SOL prices: CoinGecko public API. Refreshed every 30 seconds.</div>
+        <div class="g-faq-q">Is this tool specific to USDC?</div>
+        <div class="g-faq-a">Optimised for institutional USDC settlement (the most common institutional on-chain operation). Other assets may differ slightly in Gas consumption but the order-of-magnitude comparison holds.</div>`
+      }
+    ]
+  },
+  zh: {
+    title: '📖 使用说明书',
+    toc: ['工具简介','参数设置','场景选择','读懂数字','常见问题'],
+    sections: [
+      {
+        id: 'what', title: '这个工具是干什么的？',
+        html: `<div class="g-item">
+          <div class="g-item-body">本工具直观显示：您的机构在<strong>以太坊（ETH）与 Solana（SOL）</strong>上进行链上结算，实际分别花多少钱——以及迁移后每年能省多少。
+          <br><br>每笔链上转账（如 USDC 结算）都需支付 <strong>Gas 费</strong>。ETH 费用随网络拥堵波动，SOL 费用固定且极低。两者差距乘以年结算量，就是真实可审计的节省金额。</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">节省总额由两部分构成 <span class="tag tag-output">始终显示</span></div>
+          <div class="g-item-body">
+            <strong>① 手续费节省</strong> — 直接少付的 Gas 费（约占节省总额的 95%）<br>
+            <strong>② 资金速度收益</strong> — ETH 结算需 12–15 分钟，SOL 仅需 5–15 秒。结算更快，资金更早被释放，可产生额外收益（约占 5%）
+          </div>
+        </div>`
+      },
+      {
+        id: 'params', title: '参数设置',
+        html: `<div class="g-item">
+          <div class="g-item-label">月结算笔数 <span class="tag tag-input">输入项</span></div>
+          <div class="g-item-body">您的机构每月在链上发起的转账/结算总笔数。</div>
+          <div class="g-example">约10笔/天 → 填300 · 约50笔/天 → 填1,500 · 默认值：2,000</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">月结算量（$M） <span class="tag tag-input">输入项</span></div>
+          <div class="g-item-body">每月所有结算的美元总金额，以百万为单位。用于计算平均每笔金额，进而计算资金速度收益。</div>
+          <div class="g-example">每月结算 $5,000万 → 填 50 · 默认：200（= $2亿/月）</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">资产规模 AUM（$M） <span class="tag tag-input">输入项</span></div>
+          <div class="g-item-body">机构管理的加密资产总规模，以百万为单位。仅用于将节省金额换算为 <strong>bps（基点）</strong>，方便与其他成本项横向对比。</div>
+          <div class="g-example">管理 $10亿资产 → 填 1,000 · 默认：2,000（= $20亿）</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">资金机会成本（%） <span class="tag tag-input">输入项</span></div>
+          <div class="g-item-body">若资金不被结算占用，您能获得的年化收益率（如国债、货币基金）。用于量化结算等待时间的机会成本。</div>
+          <div class="g-example">美国短债约 4.5% · 默认：4.5%</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">快速预设按钮 <span class="tag tag-note">快捷方式</span></div>
+          <div class="g-item-body">
+            <table class="g-table"><thead><tr><th>按钮</th><th>适合谁</th><th>月笔数</th><th>AUM</th></tr></thead><tbody>
+            <tr><td>Boutique</td><td>精品机构/家办</td><td>200</td><td>$2亿</td></tr>
+            <tr><td>Mid Desk</td><td>中型交易台</td><td>500</td><td>$5亿</td></tr>
+            <tr><td>Active Desk</td><td>默认（活跃机构）</td><td>2,000</td><td>$20亿</td></tr>
+            <tr><td>Large Desk</td><td>大型机构</td><td>5,000</td><td>$50亿</td></tr>
+            <tr><td>Prime</td><td>顶级机构</td><td>10,000</td><td>$200亿</td></tr>
+            </tbody></table>
+          </div>
+        </div>`
+      },
+      {
+        id: 'scenarios', title: 'Gas 场景选择',
+        html: `<div class="g-item">
+          <div class="g-item-label">⬡ Live Now — 实时 <span class="tag tag-note">实时数据</span></div>
+          <div class="g-item-body">使用当前真实链上 Gas 价格，每 30 秒自动更新。适合了解今日实际成本。注意：网络空闲时 Gas 极低，<strong>不代表长期水平</strong>，不建议用于正式规划。</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">🔵 Conservative — $0.50/笔</div>
+          <div class="g-item-body">低 Gas 假设（约 1–3 Gwei），ETH 网络较空闲或升级后的乐观情景。</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">🟡 Base Case — $2.50/笔 <span class="tag tag-note">推荐使用</span></div>
+          <div class="g-item-body">基于 <strong>2024–2025 年以太坊实际平均交易费</strong>的混合估算（约 8 Gwei）。这是<strong>最合理的规划基准</strong>，适合正式汇报和决策使用。</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">🔴 Stress — $10.00/笔</div>
+          <div class="g-item-body">极端拥堵场景（约 35 Gwei），2024 年约 10–20% 的交易日出现过此水平。适合风险压力测试和对冲规划。</div>
+        </div>`
+      },
+      {
+        id: 'results', title: '读懂结果数字',
+        html: `<div class="g-item">
+          <div class="g-item-label">年节省总额（$ 金额） <span class="tag tag-output">计算结果</span></div>
+          <div class="g-item-body">= 手续费节省 + 资金速度收益。即将结算迁至 Solana 每年获得的总收益。</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">bps（基点） <span class="tag tag-output">计算结果</span></div>
+          <div class="g-item-body">年节省 ÷ AUM × 10,000。<strong>1 bps = 0.01%</strong>。Base Case 下，$20亿 AUM 对应 0.315 bps = $63,000/年。</div>
+          <div class="g-example">0.315 bps 看似微小，但它是每年持续产生的确定性收益，无任何运营代价</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">三年费用图表 <span class="tag tag-output">计算结果</span></div>
+          <div class="g-item-body">3根 ETH 条形（三场景）+ 1根 SOL 条形，直观对比 3 年累计手续费。图表下方汇总：手续费节省 + 速度收益 = 3年总收益（与上方对比表完全一致）。</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">延迟代价提示 <span class="tag tag-note">决策参考</span></div>
+          <div class="g-item-body">每延迟一个月 = 永久损失一个月的节省金额。6个月延迟成本 = 6 × 月均节省。</div>
+        </div>
+        <div class="g-item">
+          <div class="g-item-label">Translation 卡片 <span class="tag tag-output">计算结果</span></div>
+          <div class="g-item-body">将 Base Case 节省换算为 6 种直观形式：每笔节省、每日节省、bps、3年累计、压力情景、释放结算时间（小时）。<strong>始终锚定 Base Case</strong>，数字稳定，切换场景时不变。</div>
+        </div>`
+      },
+      {
+        id: 'faq', title: '常见问题',
+        html: `<div class="g-faq-q">为什么 SOL 3年只花 $59？</div>
+        <div class="g-faq-a">Solana 每笔收取 10,000 lamports = 0.00001 SOL ≈ $0.00082（按 $82/SOL）。2,000笔/月 × 12 × 3年 = 约 $59。这是 Solana 真实的费用结构，不是折扣。</div>
+        <div class="g-faq-q">bps 是什么单位？</div>
+        <div class="g-faq-a">基点（Basis Points）。1 bps = 0.01%。机构金融中用于表示相对 AUM 的成本/收益。0.315 bps × $20亿 AUM = $63,000/年。</div>
+        <div class="g-faq-q">ETH Base Case $2.50 怎么算出来的？</div>
+        <div class="g-faq-a">150,000 Gas 单位（机构 USDC 多签标准用量，如 Gnosis Safe 2/3）× 约 8 Gwei × ETH 价格。8 Gwei 为 2024–2025 年链上实际均值（75% 低峰 + 25% 高峰加权）。</div>
+        <div class="g-faq-q">资金速度收益怎么算？</div>
+        <div class="g-faq-a">平均每笔金额 × （每年释放小时数 ÷ 8,760）× 机会成本利率。默认参数下约 $3,048/年，与 Gas 场景无关。</div>
+        <div class="g-faq-q">实时数据来源是哪里？</div>
+        <div class="g-faq-a">ETH Gas：以太坊公共节点（publicnode.com）JSON-RPC eth_feeHistory；ETH/SOL 价格：CoinGecko 公共 API；每 30 秒自动刷新。</div>
+        <div class="g-faq-q">这个工具只适用于 USDC 吗？</div>
+        <div class="g-faq-a">针对机构 USDC 结算场景优化（机构链上操作最常见类型）。其他资产 Gas 用量略有差异，但数量级对比结论完全成立。</div>`
+      }
+    ]
+  }
+};
+
+function renderGuide(lang) {
+  const data = GUIDE[lang];
+  document.getElementById('guide-title').textContent = data.title;
+  // TOC
+  const toc = document.getElementById('guide-toc');
+  toc.innerHTML = data.toc.map((t, i) =>
+    `<a class="toc-chip" href="#g-${data.sections[i].id}" onclick="scrollToSection('${data.sections[i].id}')">${t}</a>`
+  ).join('');
+  // Body
+  const body = document.getElementById('guide-body');
+  body.innerHTML = data.sections.map(s =>
+    `<div class="g-section" id="g-${s.id}">
+      <div class="g-section-title">${s.title}</div>
+      ${s.html}
+    </div>`
+  ).join('');
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+  document.getElementById('lang-zh').classList.toggle('active', lang === 'zh');
+  renderGuide(lang);
+}
+
+function scrollToSection(id) {
+  const el = document.getElementById('g-' + id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function openGuide() {
+  renderGuide(currentLang);
+  document.getElementById('guide-drawer').classList.add('open');
+  document.getElementById('guide-backdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGuide() {
+  document.getElementById('guide-drawer').classList.remove('open');
+  document.getElementById('guide-backdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ESC key closes drawer
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGuide(); });
 </script>
 </body>
 </html>
