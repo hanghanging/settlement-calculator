@@ -663,9 +663,12 @@ async function fetchOI(){
 }
 async function fetchDVOL(){
   try{
-    const d=await(await fetch('https://www.deribit.com/api/v2/public/get_index_price?index_name=dvol_btc')).json();
-    const v=d.result?.index_price;
-    if(v){
+    const now=Date.now();
+    const r=await fetch(`https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&start_timestamp=${now-7200000}&end_timestamp=${now}&resolution=3600`);
+    const d=await r.json();
+    const data=d.result?.data;
+    if(data&&data.length>0){
+      const v=data[data.length-1][4]; // close of latest hourly candle
       const el=document.getElementById('dvolVal');
       el.textContent=v.toFixed(1);
       el.className=`sv ${v>70?'r':v>50?'a':'g'}`;
@@ -705,8 +708,10 @@ async function fetchPolymarket(){
     document.getElementById('pmSection').style.display='block';
     document.getElementById('pmSrc').textContent='Polymarket · Live';
     document.getElementById('pmCards').innerHTML=mkts.map(m=>{
-      const pr=m.outcomePrices||['0.5','0.5'];
-      const yes=Math.round(+pr[0]*100),no=100-yes;
+      // outcomePrices is a JSON string from Polymarket API — must parse
+      let rawPr = m.outcomePrices || '["0.5","0.5"]';
+      const pr = typeof rawPr === 'string' ? JSON.parse(rawPr) : rawPr;
+      const yes=Math.round(parseFloat(pr[0]||0.5)*100),no=100-yes;
       const vol=m.volume?`$${(+m.volume/1e6).toFixed(2)}M`:'—';
       return `<div class="pmcard"><div class="pmq">${m.question||m.title}</div>
       <div class="pmrow"><span class="pmy">${yes}%</span>
