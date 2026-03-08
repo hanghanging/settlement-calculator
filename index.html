@@ -1145,8 +1145,13 @@ body {
 }
 @media (max-width: 640px) {
   .osl-disclaimer-grid { grid-template-columns: 1fr; }
-  .osl-nav { padding: 0 16px; }
+  .osl-nav { padding: 0 12px; }
   .osl-tool-label { display: none; }
+  .osl-divider { display: none; }
+  .osl-ts { display: none; }
+  .osl-badge { display: none; }
+  .guide-btn-label { display: none; }
+  .guide-nav-btn { padding: 6px 10px; font-size: 14px; }
 }
 .osl-disclaimer-block {}
 .osl-disclaimer-label {
@@ -1348,6 +1353,19 @@ body {
 </div>
 
 <!-- VS COMPARISON -->
+<!-- GUIDE ENTRY BANNER -->
+<div style="background:linear-gradient(135deg,rgba(0,201,122,0.07) 0%,rgba(0,168,107,0.04) 100%);border:1px solid rgba(0,201,122,0.15);border-radius:12px;margin:0 auto 28px;max-width:860px;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span style="font-size:20px;">📖</span>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#e2e8f0;" id="guide-banner-title">Not sure what to fill in?</div>
+      <div style="font-size:11px;color:#64748b;margin-top:2px;" id="guide-banner-sub">Open the User Guide — explains every field, scenario, and output in EN / 中文</div>
+    </div>
+  </div>
+  <button onclick="openGuide()" style="flex-shrink:0;padding:9px 20px;border-radius:8px;background:rgba(0,201,122,0.12);border:1px solid rgba(0,201,122,0.3);color:#00c97a;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.04em;transition:all 0.15s;" onmouseover="this.style.background='rgba(0,201,122,0.2)'" onmouseout="this.style.background='rgba(0,201,122,0.12)'">
+    📖 Open Guide
+  </button>
+</div>
 <div class="comparison">
   <div class="vs-grid">
     <div class="chain-card eth">
