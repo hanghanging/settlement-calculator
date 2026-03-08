@@ -1368,7 +1368,8 @@ function calculate() {
 
   // Savings hero
   document.getElementById('total-savings').textContent = fmtUSD(total);
-  document.getElementById('total-bps').textContent = bps.toFixed(0) + ' bps on your $' + (capital/1e6).toFixed(0) + 'M capital base';
+  const bpsStr = bps >= 10 ? bps.toFixed(1) : bps >= 1 ? bps.toFixed(2) : bps.toFixed(3);
+  document.getElementById('total-bps').textContent = bpsStr + ' bps on your $' + (capital/1e6 >= 1000 ? (capital/1e9).toFixed(1) + 'B' : (capital/1e6).toFixed(0) + 'M') + ' AUM';
   document.getElementById('fee-savings-val').textContent = fmtUSD(feeSavings);
   document.getElementById('velocity-val').textContent = fmtUSD(velocityGain);
   document.getElementById('ratio-val').textContent = ratio >= 1000
@@ -1379,7 +1380,7 @@ function calculate() {
   const analysts = total / 120000;  // mid-level financial analyst ~$120K all-in
   document.getElementById('t-analysts').textContent = analysts.toFixed(1) + ' analysts';
   document.getElementById('t-daily').textContent = fmtUSD(feeSavings / 250) + '/day';
-  document.getElementById('t-bps-alt').textContent = bps.toFixed(0) + ' bps';
+  document.getElementById('t-bps-alt').textContent = bpsStr + ' bps';
   document.getElementById('t-3yr').textContent = fmtUSD(total * 3);
   document.getElementById('t-hours').textContent = Math.round(timeFreedHrs).toLocaleString() + ' hrs';
   document.getElementById('t-delay').textContent = fmtUSD(total / 12) + '/mo';
