@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>OSL Research AI v2</title>
+  <script>
+    // GitHub Pages SPA 404 redirect — redirect sub-paths to index.html
+    var l = window.location;
+    var segments = 2; // keep /settlement-calculator/v2
+    l.replace(
+      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      l.pathname.split('/').slice(0, 1 + segments).join('/') + '/?p=/' +
+      l.pathname.slice(1).split('/').slice(segments).join('/').replace(/&/g, '~and~') +
+      (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+      l.hash
+    );
+  </script>
+</head>
+</html>
