@@ -1033,7 +1033,7 @@ body {
         <span>◎ SOL · Live Now</span>
       </div>
       <div class="live-chain-fee-now sol-live" id="live-sol-fee">loading…</div>
-      <div class="live-chain-detail" id="live-sol-lamports">5,000 lamports · fixed</div>
+      <div class="live-chain-detail" id="live-sol-lamports">10,000 lamports (incl. priority)</div>
       <div class="live-chain-detail" id="live-sol-price">SOL —</div>
     </div>
   </div>
@@ -1052,7 +1052,7 @@ body {
         <div class="stat-row"><span class="stat-key">Annual cost</span><span class="stat-val-eth" id="eth-annual">—</span></div>
         <div class="stat-row"><span class="stat-key">Finality</span><span class="stat-val-eth">~12–15 min</span></div>
         <div class="stat-row"><span class="stat-key">Fee predictability</span><span class="stat-val-eth">Low</span></div>
-        <div class="stat-row"><span class="stat-key">Peak congestion fee</span><span class="stat-val-eth">$15–$40</span></div>
+        <div class="stat-row"><span class="stat-key">Peak congestion fee</span><span class="stat-val-eth">$12–$40</span></div>
       </div>
       <div class="chain-live-row">
         <div class="chain-live-badge"><div class="chain-live-badge-dot"></div>Live gas</div>
@@ -1082,7 +1082,7 @@ body {
         <div class="chain-live-badge"><div class="chain-live-badge-dot"></div>Live fee</div>
         <div>
           <span class="chain-live-fee-val sol" id="card-sol-fee">—</span>
-          <span class="chain-live-gwei"> · 5,000 lamports</span>
+          <span class="chain-live-gwei"> · 10K lamports (w/ priority)</span>
         </div>
       </div>
     </div>
@@ -1249,7 +1249,7 @@ body {
       <div class="osl-disclaimer-block">
         <div class="osl-disclaimer-label">Methodology &amp; Data Sources</div>
         <div class="osl-disclaimer-text">
-          Fee model: 2024–2025 post-L2 era on-chain data. Base case: 80% normal (~$1.50/txn, ~5 Gwei) + 20% elevated (~$7.00/txn, ~25 Gwei). Institutional USDC multi-sig: ~150K gas. Capital velocity = avg settlement value × Δfinality time (14.83 min/txn) × opp cost rate. SOL fee: 5,000 lamports × live SOL price.
+          Fee model: 2024–2025 post-L2 on-chain data. Base case: 75% normal (~$1.50/txn, ~5 Gwei) + 25% elevated (~$5.50/txn, ~20 Gwei) = $2.50 blended. ETH: 150K gas (institutional USDC multi-sig, Gnosis Safe 2-of-3). SOL: 10,000 lamports (base + priority fee). Capital velocity = avg settlement value × Δfinality (14.83 min/txn) × opp cost rate. All figures are estimates; actual costs vary by network conditions and transaction complexity.
           Verify independently: <a href="https://etherscan.io/gastracker" target="_blank">Etherscan Gas Tracker</a> · <a href="https://solanabeach.io" target="_blank">Solana Beach</a> · <a href="https://status.solana.com" target="_blank">Solana Status</a>
         </div>
       </div>
@@ -1281,9 +1281,9 @@ let pageOpenTime = Date.now();
 let tickerInterval;
 
 const scenarios = {
-  conservative: { fee: 0.50, note: 'Conservative — ultra-low gas environment (~1–3 Gwei). Reflects 2025 L1 after heavy L2 offloading. Institutional USDC multi-sig (~150K gas).' },
-  base:         { fee: 2.50, note: 'Base case — realistic 2024–2025 average (~8 Gwei). Blended: 80% normal days (~$1.50) + 20% elevated activity (~$7.00). Best for annual planning.' },
-  stress:       { fee: 10.00, note: 'Stress scenario — network congestion events (~35 Gwei). Major market moves, token launches, protocol upgrades. ~10–15% of 2024 trading days.' },
+  conservative: { fee: 0.50, note: 'Conservative — ultra-low gas environment (~1–3 Gwei). Current 2025 L1 conditions after heavy L2 offloading. Institutional USDC multi-sig (~150K gas).' },
+  base:         { fee: 2.50, note: 'Base case — 2024–2025 blended average (~8 Gwei). 75% normal-market days (~$1.50/txn) + 25% elevated days (~$5.50/txn). Appropriate for annual cost planning.' },
+  stress:       { fee: 10.00, note: 'Stress — network congestion events (~35 Gwei). Triggered by major market events, token launches, DeFi surges. Occurred on ~10–20% of 2024 trading days.' },
   live:         { fee: null,  note: 'Live — using real-time ETH gas price fetched from chain. Auto-updates every 30 seconds. 150K gas units (institutional USDC multi-sig).' }
 };
 
@@ -1421,8 +1421,8 @@ function startTicker(annualFeeSavings) {
 }
 
 // ─── LIVE CHAIN DATA ───
-const INST_GAS_UNITS = 150000; // institutional USDC multi-sig (Gnosis Safe)
-const SOL_LAMPORTS   = 5000;   // standard Solana base fee
+const INST_GAS_UNITS = 150000; // institutional USDC multi-sig (e.g. Gnosis Safe 2-of-3: ~120–180K gas)
+const SOL_LAMPORTS   = 5000;   // Solana base fee; total with priority fee = 10,000 lamports
 let liveEthPrice = null;
 let liveSolPrice = null;
 let liveGasGwei  = null;
@@ -1476,6 +1476,10 @@ function updateLiveBanner() {
   const ethFeeNow = liveGasGwei * INST_GAS_UNITS * liveEthPrice / 1e9;
   const solFeeNow = (SOL_LAMPORTS / 1e9) * liveSolPrice;
   const ratio     = ethFeeNow > 0 ? Math.round(ethFeeNow / solFeeNow) : 0;
+
+  // Always update global solFee with live SOL price (even in non-live scenarios)
+  // Base fee (5,000 lam) + typical priority (5,000 lam) = 10,000 lamports
+  solFee = (SOL_LAMPORTS * 2) / 1e9 * liveSolPrice;  // ~$0.00082 at $82/SOL
 
   // Banner
   document.getElementById('live-eth-fee').textContent  = '$' + ethFeeNow.toFixed(4);
