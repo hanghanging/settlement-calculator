@@ -1247,35 +1247,72 @@ body {
 <!-- 3-YEAR PROJECTION -->
 <div class="projection">
   <div class="proj-card">
-    <div class="proj-title">3-Year Transaction Fee Cost Comparison</div>
-    <div style="font-size:11px;color:#374151;margin-bottom:18px;line-height:1.5;">
-      Cumulative settlement fees paid over 3 years · Base Case scenario (~$2.50/txn ETH) · transaction fees only, excludes capital velocity gain
+    <div class="proj-title">3-Year Transaction Fee Cost — All Scenarios</div>
+    <div style="font-size:11px;color:#64748b;margin-bottom:20px;line-height:1.5;">
+      Cumulative fees paid over 3 years across all planning scenarios · SOL fee: <span id="proj-sol-fee-label">$0.000820</span>/txn (10,000 lamports · updates with live SOL price)
     </div>
+
+    <!-- ETH Conservative -->
     <div class="proj-bar-group">
       <div class="proj-bar-label">
-        <span>Ethereum — 3yr fee cost</span>
-        <span id="proj-eth-3yr" style="color:#fca5a5;font-weight:700;">$180,000</span>
+        <span style="color:#94a3b8;">ETH — Conservative <span style="font-size:10px;opacity:0.7;">($0.50/txn · low gas)</span></span>
+        <span id="proj-eth-cons" style="color:#fca5a5;font-weight:700;">$36,000</span>
       </div>
-      <div class="proj-track"><div class="proj-fill eth" id="bar-eth-3yr" style="width:100%"></div></div>
+      <div class="proj-track"><div class="proj-fill eth" id="bar-eth-cons" style="width:5%"></div></div>
     </div>
+    <!-- ETH Base Case -->
     <div class="proj-bar-group">
       <div class="proj-bar-label">
-        <span>Solana — 3yr fee cost</span>
+        <span style="color:#fca5a5;font-weight:600;">ETH — Base Case <span style="font-size:10px;opacity:0.7;">($2.50/txn · 2024–25 avg)</span></span>
+        <span id="proj-eth-base" style="color:#fca5a5;font-weight:700;">$180,000</span>
+      </div>
+      <div class="proj-track"><div class="proj-fill eth" id="bar-eth-base" style="width:25%"></div></div>
+    </div>
+    <!-- ETH Stress -->
+    <div class="proj-bar-group">
+      <div class="proj-bar-label">
+        <span style="color:#f87171;font-weight:600;">ETH — Stress <span style="font-size:10px;opacity:0.7;">($10.00/txn · peak congestion)</span></span>
+        <span id="proj-eth-stress" style="color:#f87171;font-weight:700;">$720,000</span>
+      </div>
+      <div class="proj-track"><div class="proj-fill eth" id="bar-eth-stress" style="width:100%"></div></div>
+    </div>
+
+    <!-- divider -->
+    <div style="border-top:1px solid rgba(255,255,255,0.06);margin:14px 0 10px;"></div>
+
+    <!-- SOL (all scenarios) -->
+    <div class="proj-bar-group">
+      <div class="proj-bar-label">
+        <span style="color:#6ee7b7;font-weight:600;">Solana — All Scenarios <span style="font-size:10px;opacity:0.7;">(fee is fixed; only changes with SOL price)</span></span>
         <span id="proj-sol-3yr" style="color:#6ee7b7;font-weight:700;">$59</span>
       </div>
-      <div class="proj-track"><div class="proj-fill sol" id="bar-sol-3yr" style="width:0.1%"></div></div>
+      <div class="proj-track"><div class="proj-fill sol" id="bar-sol-3yr" style="width:0.05%"></div></div>
     </div>
-    <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;">
-      <span style="font-size:11px;color:#64748b;">3-year fee savings (ETH→SOL)</span>
-      <span id="proj-fee-diff" style="font-size:16px;font-weight:800;color:#00c97a;">$179,941</span>
-    </div>
-    <div style="margin-top:6px;display:flex;justify-content:space-between;align-items:center;">
-      <span style="font-size:11px;color:#64748b;">+ capital velocity over 3 years</span>
-      <span id="proj-vel-3yr" style="font-size:13px;font-weight:600;color:#6ee7b7;">$9,144</span>
-    </div>
-    <div style="margin-top:6px;padding:10px 0 2px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.04);">
-      <span style="font-size:11px;color:#94a3b8;font-weight:600;">Total 3-year gain (matches table above)</span>
-      <span id="proj-total-3yr" style="font-size:17px;font-weight:800;color:#ffd700;">$189,085</span>
+
+    <!-- Summary rows -->
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05);">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;">
+        <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:10px 8px;">
+          <div style="font-size:10px;color:#64748b;margin-bottom:4px;">Conservative savings</div>
+          <div id="proj-diff-cons" style="font-size:15px;font-weight:800;color:#00c97a;">$35,941</div>
+        </div>
+        <div style="background:rgba(0,201,122,0.06);border:1px solid rgba(0,201,122,0.15);border-radius:8px;padding:10px 8px;">
+          <div style="font-size:10px;color:#64748b;margin-bottom:4px;">Base Case savings</div>
+          <div id="proj-diff-base" style="font-size:15px;font-weight:800;color:#00c97a;">$179,941</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:10px 8px;">
+          <div style="font-size:10px;color:#64748b;margin-bottom:4px;">Stress savings</div>
+          <div id="proj-diff-stress" style="font-size:15px;font-weight:800;color:#ffd700;">$719,941</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:#64748b;">+ capital velocity (3yr, all scenarios)</span>
+        <span id="proj-vel-3yr" style="font-size:13px;font-weight:600;color:#6ee7b7;">$9,144</span>
+      </div>
+      <div style="margin-top:6px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:#94a3b8;font-weight:600;">Base Case total gain (matches table ↑)</span>
+        <span id="proj-total-3yr" style="font-size:17px;font-weight:800;color:#ffd700;">$189,085</span>
+      </div>
     </div>
   </div>
 
@@ -1517,20 +1554,30 @@ function calculate() {
   document.getElementById('t-stress-annual').textContent = fmtUSD(stressTot) + '/yr';
   document.getElementById('t-hours').textContent         = Math.round(timeFreedHrs).toLocaleString() + ' hrs';
 
-  // 3yr projection — fee costs only in bars; reconciliation summary below
-  const eth3yr = ethAnnual * 3;
-  const sol3yr = solAnnual * 3;
-  const feeDiff3yr = eth3yr - sol3yr;
-  const vel3yr     = velocityGain * 3;
-  const total3yr   = feeDiff3yr + vel3yr;      // matches scenario table sc-3yr
-  document.getElementById('proj-eth-3yr').textContent   = fmtUSD(eth3yr);
-  document.getElementById('proj-sol-3yr').textContent   = fmtUSD(sol3yr);
-  document.getElementById('proj-fee-diff').textContent  = fmtUSD(feeDiff3yr);
-  document.getElementById('proj-vel-3yr').textContent   = fmtUSD(vel3yr);
-  document.getElementById('proj-total-3yr').textContent = fmtUSD(total3yr);
-  const maxVal = Math.max(eth3yr, 1);
-  document.getElementById('bar-eth-3yr').style.width = '100%';
-  document.getElementById('bar-sol-3yr').style.width = Math.max(0.05, sol3yr / maxVal * 100) + '%';
+  // 3yr projection — 3 ETH scenarios + 1 SOL bar
+  const sol3yr      = solAnnual * 3;
+  const eth3yr_cons = 0.50  * annualTxns * 3;
+  const eth3yr_base = 2.50  * annualTxns * 3;
+  const eth3yr_stress = 10.00 * annualTxns * 3;
+  const vel3yr      = velocityGain * 3;
+  const maxBar      = eth3yr_stress;  // Stress is always longest bar
+
+  document.getElementById('proj-sol-fee-label').textContent = '$' + solFee.toFixed(6);
+  document.getElementById('proj-eth-cons').textContent      = fmtUSD(eth3yr_cons);
+  document.getElementById('proj-eth-base').textContent      = fmtUSD(eth3yr_base);
+  document.getElementById('proj-eth-stress').textContent    = fmtUSD(eth3yr_stress);
+  document.getElementById('proj-sol-3yr').textContent       = fmtUSD(sol3yr);
+
+  document.getElementById('bar-eth-cons').style.width   = Math.max(0.5, eth3yr_cons   / maxBar * 100) + '%';
+  document.getElementById('bar-eth-base').style.width   = Math.max(0.5, eth3yr_base   / maxBar * 100) + '%';
+  document.getElementById('bar-eth-stress').style.width = '100%';
+  document.getElementById('bar-sol-3yr').style.width    = Math.max(0.05, sol3yr / maxBar * 100) + '%';
+
+  document.getElementById('proj-diff-cons').textContent   = fmtUSD(eth3yr_cons   - sol3yr);
+  document.getElementById('proj-diff-base').textContent   = fmtUSD(eth3yr_base   - sol3yr);
+  document.getElementById('proj-diff-stress').textContent = fmtUSD(eth3yr_stress - sol3yr);
+  document.getElementById('proj-vel-3yr').textContent     = fmtUSD(vel3yr);
+  document.getElementById('proj-total-3yr').textContent   = fmtUSD((eth3yr_base - sol3yr) + vel3yr);
 
   // Delay cost
   const monthlySavings = total / 12;
