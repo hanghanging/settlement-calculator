@@ -2,308 +2,351 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>BTC Event Navigator | OSL Research</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<!-- CDN 1: jsdelivr (globally reliable) -->
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"
   onerror="loadLWFallback()"></script>
 <script>
 function loadLWFallback(){
-  console.warn('jsdelivr failed, trying cdnjs...');
   var s=document.createElement('script');
   s.src='https://cdnjs.cloudflare.com/ajax/libs/lightweight-charts/4.1.3/lightweight-charts.standalone.production.js';
-  s.onerror=function(){
-    console.warn('cdnjs failed, trying unpkg...');
-    var s2=document.createElement('script');
-    s2.src='https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js';
-    document.head.appendChild(s2);
-  };
+  s.onerror=function(){var s2=document.createElement('script');s2.src='https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js';document.head.appendChild(s2);};
   document.head.appendChild(s);
 }
 </script>
 <style>
-:root {
-  --bg-0:#05090f; --bg-1:#080d15; --bg-2:#0c1422; --bg-3:#101c2e; --bg-4:#152235;
-  --bd-1:#172030; --bd-2:#1d2b3d; --bd-3:#243348;
-  --tx-1:#e2e8f0; --tx-2:#8b9db3; --tx-3:#4a6278; --tx-4:#2d3e52;
+/* ════════════════════════════════════════
+   DESIGN TOKENS
+════════════════════════════════════════ */
+:root{
+  --bg0:#05090f; --bg1:#080d15; --bg2:#0c1422; --bg3:#101c2e; --bg4:#152235;
+  --b1:#172030; --b2:#1d2b3d; --b3:#243348;
+  --t1:#e2e8f0; --t2:#8b9db3; --t3:#4a6278; --t4:#2d3e52;
   --green:#00e87a; --gd:rgba(0,232,122,.12);
-  --blue:#3b82f6;  --bld:rgba(59,130,246,.12);
+  --blue:#3b82f6; --bld:rgba(59,130,246,.12);
   --amber:#f59e0b; --ad:rgba(245,158,11,.12);
-  --red:#ef4444;   --rd:rgba(239,68,68,.12);
-  --gold:#d4a843;  --gld:rgba(212,168,67,.12);
+  --red:#ef4444; --rd:rgba(239,68,68,.12);
+  --gold:#d4a843; --gld:rgba(212,168,67,.12);
   --mono:'IBM Plex Mono','SF Mono',monospace;
   --sans:'Inter',-apple-system,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--bg-1);color:var(--tx-1);font-family:var(--sans);overflow:hidden;-webkit-font-smoothing:antialiased}
+html,body{height:100%;background:var(--bg1);color:var(--t1);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+
+/* ════════════════════════════════════════
+   MOBILE BASE (default — 390px)
+════════════════════════════════════════ */
+body{display:flex;flex-direction:column;overflow:hidden;height:100vh}
+
+/* Brand line */
 .brand-stripe{height:2px;background:linear-gradient(90deg,var(--green),var(--blue) 50%,transparent);flex-shrink:0}
-/* HEADER */
-.header{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:var(--bg-2);border-bottom:1px solid var(--bd-1);flex-shrink:0}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-mark{width:28px;height:28px;background:linear-gradient(135deg,var(--green),#00b85e);clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);display:flex;align-items:center;justify-content:center}
-.logo-mark span{font-size:10px;font-weight:800;color:#05090f}
-.logo-name{font-size:13px;font-weight:600}
-.logo-div{width:1px;height:18px;background:var(--bd-2)}
-.logo-prod{font-size:11px;color:var(--tx-3);letter-spacing:.08em;text-transform:uppercase}
-.hdr-mid{display:flex;align-items:center;gap:20px}
-.price-block{display:flex;align-items:baseline;gap:8px}
-.pticker{font-size:11px;color:var(--tx-3);font-weight:600;letter-spacing:.1em;font-family:var(--mono)}
-.pvalue{font-size:20px;font-weight:600;font-family:var(--mono);letter-spacing:-.02em;color:var(--tx-1)}
-.pchg{font-size:12px;font-weight:500;padding:2px 8px;border-radius:3px;font-family:var(--mono)}
+
+/* Header — single row, 48px */
+.header{
+  height:48px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 14px;background:var(--bg2);border-bottom:1px solid var(--b1);
+  flex-shrink:0;overflow:hidden;
+}
+.logo{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.logo-mark{width:24px;height:24px;background:linear-gradient(135deg,var(--green),#00b85e);clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark span{font-size:9px;font-weight:800;color:#05090f}
+.logo-name{font-size:12px;font-weight:600;white-space:nowrap}
+
+/* Price in header */
+.hprice{display:flex;align-items:center;gap:8px;flex:1;justify-content:center}
+.pticker{font-size:10px;color:var(--t3);font-weight:600;letter-spacing:.08em;font-family:var(--mono);display:none}
+.pvalue{font-size:18px;font-weight:700;font-family:var(--mono);letter-spacing:-.02em}
+.pchg{font-size:11px;font-weight:500;padding:2px 7px;border-radius:3px;font-family:var(--mono);white-space:nowrap}
 .up{color:var(--green);background:var(--gd);border:1px solid rgba(0,232,122,.2)}
 .dn{color:var(--red);background:var(--rd);border:1px solid rgba(239,68,68,.2)}
-.live-ind{display:flex;align-items:center;gap:5px}
+
+/* Live dot */
+.live-ind{display:flex;align-items:center;gap:4px;flex-shrink:0}
 .ldot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2.5s infinite}
 @keyframes blink{0%,100%{opacity:1;box-shadow:0 0 4px var(--green)}50%{opacity:.3;box-shadow:none}}
-.ltxt{font-size:10px;color:var(--tx-3);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono)}
-.hdr-right{display:flex;align-items:center;gap:12px}
-.dpill{display:flex;align-items:center;gap:6px;padding:3px 9px;border-radius:3px;border:1px solid var(--bd-1);background:var(--bg-3)}
-.dplbl{font-size:10px;color:var(--tx-4);font-weight:600;letter-spacing:.08em;text-transform:uppercase}
-.dpval{font-size:12px;font-family:var(--mono);font-weight:500}
-.api-s{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--tx-3);font-family:var(--mono)}
-.adot{width:5px;height:5px;border-radius:50%;background:var(--tx-4)}
-.adot.ok{background:var(--green)}.adot.err{background:var(--red)}.adot.loading{background:var(--amber);animation:blink 1s infinite}
-/* DATA STRIP */
-.strip{height:32px;display:flex;align-items:center;background:var(--bg-0);border-bottom:1px solid var(--bd-1);padding:0 20px;overflow:hidden;flex-shrink:0}
-.si{display:flex;align-items:center;gap:7px;padding:0 14px;border-right:1px solid var(--bd-1);font-size:11px;white-space:nowrap}
-.si:first-child{padding-left:0}
-.sl{color:var(--tx-4);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:10px}
-.sv{color:var(--tx-2);font-family:var(--mono);font-size:11px}
-.sv.g{color:var(--green)}.sv.r{color:var(--red)}.sv.a{color:var(--amber)}.sv.b{color:var(--blue)}
-/* CONTROLS */
-.controls{height:38px;display:flex;align-items:center;background:var(--bg-2);border-bottom:1px solid var(--bd-1);padding:0 20px;flex-shrink:0;gap:0}
-.csep{width:1px;height:16px;background:var(--bd-2);margin:0 10px}
-.csec{display:flex;align-items:center;gap:2px}
-.ch{font-size:10px;color:var(--tx-4);font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-right:7px;font-family:var(--mono)}
-.rbtn{padding:3px 9px;font-size:11px;font-family:var(--mono);font-weight:500;border:1px solid transparent;border-radius:3px;cursor:pointer;color:var(--tx-3);background:transparent;transition:all .15s}
-.rbtn:hover{color:var(--tx-2);background:var(--bg-3);border-color:var(--bd-2)}
+
+/* Range bar (mobile controls) */
+.range-bar{
+  height:36px;display:flex;align-items:center;gap:2px;
+  padding:0 12px;background:var(--bg2);border-bottom:1px solid var(--b1);
+  flex-shrink:0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
+}
+.range-bar::-webkit-scrollbar{height:0}
+.rbtn{padding:4px 12px;font-size:11px;font-family:var(--mono);font-weight:500;border:1px solid transparent;border-radius:3px;cursor:pointer;color:var(--t3);background:transparent;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.rbtn:hover,.rbtn:active{color:var(--t2);background:var(--bg3);border-color:var(--b2)}
 .rbtn.active{color:var(--green);background:var(--gd);border-color:rgba(0,232,122,.3)}
-.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:2px;font-size:11px;font-weight:500;border:1px solid var(--bd-1);cursor:pointer;transition:all .15s;color:var(--tx-3);background:transparent}
-.tag:hover{border-color:var(--bd-3);color:var(--tx-2)}
-.tag .dot{width:5px;height:5px;border-radius:50%}
-.tag.active[data-t=all]{color:var(--tx-1);background:rgba(255,255,255,.05);border-color:var(--bd-3)}
-.tag.active[data-t=macro]{color:var(--blue);background:var(--bld);border-color:rgba(59,130,246,.3)}
-.tag.active[data-t=onchain]{color:var(--amber);background:var(--ad);border-color:rgba(245,158,11,.3)}
-.tag.active[data-t=regulatory]{color:var(--red);background:var(--rd);border-color:rgba(239,68,68,.3)}
-.tag.active[data-t=etf]{color:var(--green);background:var(--gd);border-color:rgba(0,232,122,.3)}
-.tag.active[data-t=market]{color:var(--gold);background:var(--gld);border-color:rgba(212,168,67,.3)}
-.ctrl-end{margin-left:auto;display:flex;align-items:center;gap:8px}
-.ev-cnt{font-size:11px;color:var(--tx-3);font-family:var(--mono)}
-.ev-cnt strong{color:var(--tx-1)}
-.mbtn{padding:3px 9px;font-size:11px;font-family:var(--mono);border:1px solid var(--bd-1);border-radius:3px;cursor:pointer;color:var(--tx-3);background:transparent;transition:all .15s}
-.mbtn.active{color:var(--blue);background:var(--bld);border-color:rgba(59,130,246,.3)}
-/* LAYOUT — flex sizing with explicit height:0 trick */
-body{display:flex;flex-direction:column}
-.body{display:flex;flex:1;height:0;min-height:0;overflow:hidden}
-.chart-area{flex:1;position:relative;height:100%;min-width:0;overflow:hidden;background:var(--bg-1)}
-/* #chart sized by autoSize:true — just needs a non-zero container */
-#chart{width:100%;height:100%}
-/* FLOAT CARD */
-.fcard{position:absolute;top:14px;left:14px;z-index:20;background:rgba(8,13,21,.95);border:1px solid var(--bd-2);border-radius:4px;padding:10px 14px;min-width:190px;backdrop-filter:blur(10px);pointer-events:none;display:none;box-shadow:0 4px 20px rgba(0,0,0,.5)}
-.fdate{font-size:11px;color:var(--tx-3);font-family:var(--mono);margin-bottom:2px}
-.fprice{font-size:17px;font-weight:600;font-family:var(--mono)}
-.fvol{font-size:10px;color:var(--tx-3);font-family:var(--mono);margin-top:2px}
-.fevt{font-size:11px;color:var(--amber);margin-top:5px;display:none;align-items:center;gap:4px}
-.fevt::before{content:'●';font-size:8px}
-/* CLICK HINT overlay — shows before first click */
-.click-hint{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);z-index:15;display:flex;align-items:center;gap:8px;background:rgba(8,13,21,.85);border:1px solid var(--bd-3);border-radius:20px;padding:7px 16px;backdrop-filter:blur(8px);white-space:nowrap;animation:floatUp 1s ease-out,fadePulse 3s infinite}
-@keyframes floatUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-@keyframes fadePulse{0%,100%{opacity:.9}50%{opacity:.5}}
-.ch-icon{font-size:14px}
-.ch-text{font-size:12px;color:var(--tx-2);font-weight:500}
-.ch-text em{color:var(--green);font-style:normal}
-/* LOADER */
-.loader{position:absolute;inset:0;background:rgba(5,9,15,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:50}
-.lring{width:36px;height:36px;border-radius:50%;border:2px solid var(--bd-2);border-top-color:var(--green);animation:spin .7s linear infinite}
+
+/* Chart area */
+.chart-area{flex-shrink:0;position:relative;width:100%;height:46vh;background:var(--bg1)}
+#chart{position:absolute;inset:0;width:100%;height:100%}
+
+/* Loader */
+.loader{position:absolute;inset:0;background:rgba(5,9,15,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:50}
+.lring{width:32px;height:32px;border-radius:50%;border:2px solid var(--b2);border-top-color:var(--green);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.ltxt{font-size:12px;color:var(--tx-3);font-family:var(--mono)}
-.lsub{font-size:11px;color:var(--tx-4);font-family:var(--mono)}
-/* SIDE PANEL */
-.side{width:390px;flex-shrink:0;display:flex;flex-direction:column;border-left:1px solid var(--bd-1);background:var(--bg-2);min-height:0}
-.ph{padding:12px 16px 10px;border-bottom:1px solid var(--bd-1);flex-shrink:0;background:var(--bg-3)}
-.ph-row{display:flex;align-items:flex-start;justify-content:space-between}
-.phl{font-size:10px;color:var(--tx-4);font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;font-family:var(--mono)}
-.phv{font-size:14px;font-weight:600}
-.phvg{color:var(--green);font-family:var(--mono)}
-.pbody{flex:1;overflow-y:auto;padding:10px;min-height:0}
-.pbody::-webkit-scrollbar{width:3px}
-.pbody::-webkit-scrollbar-thumb{background:var(--bd-3);border-radius:2px}
-/* Click CTA — initial state */
-.click-cta{display:flex;flex-direction:column;align-items:center;padding:32px 20px;gap:16px;text-align:center}
-.cta-arrow{font-size:32px;animation:arrowBounce 1.5s infinite}
-@keyframes arrowBounce{0%,100%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
-.cta-title{font-size:14px;font-weight:600;color:var(--tx-2)}
-.cta-sub{font-size:12px;color:var(--tx-4);line-height:1.7}
+.ltxt{font-size:12px;color:var(--t3);font-family:var(--mono)}
+.lsub{font-size:10px;color:var(--t4);font-family:var(--mono)}
+
+/* Info bar (between chart and events — shows scrub state) */
+.info-bar{
+  height:38px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 14px;background:var(--bg3);
+  border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);
+  flex-shrink:0;
+}
+.ib-left{display:flex;align-items:center;gap:8px}
+.ib-date{font-size:11px;color:var(--t3);font-family:var(--mono)}
+.ib-evt{font-size:11px;color:var(--amber);display:none;align-items:center;gap:4px}
+.ib-evt.show{display:flex}
+.ib-evt::before{content:'●';font-size:8px}
+.ib-price{font-size:14px;font-weight:600;color:var(--green);font-family:var(--mono)}
+
+/* Events panel */
+.events-panel{flex:1;min-height:0;overflow-y:auto;background:var(--bg2);padding:8px}
+.events-panel::-webkit-scrollbar{width:3px}
+.events-panel::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px}
+
+/* CTA */
+.cta{display:flex;flex-direction:column;align-items:center;padding:24px 16px;gap:12px;text-align:center}
+.cta-icon{font-size:28px;animation:ctaBounce 1.8s ease-in-out infinite}
+@keyframes ctaBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.cta-title{font-size:14px;font-weight:600;color:var(--t2)}
+.cta-sub{font-size:12px;color:var(--t4);line-height:1.7}
 .cta-sub em{color:var(--green);font-style:normal}
-/* SECTION RULE */
+
+/* Section rule */
 .srule{display:flex;align-items:center;gap:8px;margin:10px 0 7px}
-.srule span{font-size:10px;color:var(--tx-4);font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-family:var(--mono);white-space:nowrap}
-.srule::after{content:'';flex:1;height:1px;background:var(--bd-1)}
-/* EVENT CARD */
-.ecard{border-radius:4px;margin-bottom:7px;border:1px solid var(--bd-1);background:var(--bg-3)}
-.ehead{padding:9px 11px 7px;border-bottom:1px solid var(--bd-1);display:flex;align-items:flex-start;gap:7px}
+.srule span{font-size:10px;color:var(--t4);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono);white-space:nowrap}
+.srule::after{content:'';flex:1;height:1px;background:var(--b1)}
+
+/* Event card */
+.ecard{border-radius:4px;margin-bottom:7px;border:1px solid var(--b1);background:var(--bg3)}
+.ehead{padding:9px 10px 8px;border-bottom:1px solid var(--b1);display:flex;align-items:flex-start;gap:7px}
 .ebar{width:3px;flex-shrink:0;border-radius:1px;align-self:stretch}
 .ehc{flex:1;min-width:0}
 .ehrow{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:3px}
-.etitle{font-size:12px;font-weight:600;color:var(--tx-1);line-height:1.4}
-.echip{font-size:9px;font-weight:700;padding:2px 5px;border-radius:2px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;font-family:var(--mono)}
+.etitle{font-size:12px;font-weight:600;color:var(--t1);line-height:1.4}
+.echip{font-size:9px;font-weight:700;padding:2px 5px;border-radius:2px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;font-family:var(--mono)}
 .c-macro{background:var(--bld);color:var(--blue);border:1px solid rgba(59,130,246,.2)}
 .c-onchain{background:var(--ad);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
 .c-regulatory{background:var(--rd);color:var(--red);border:1px solid rgba(239,68,68,.2)}
 .c-etf{background:var(--gd);color:var(--green);border:1px solid rgba(0,232,122,.2)}
 .c-market{background:var(--gld);color:var(--gold);border:1px solid rgba(212,168,67,.2)}
 .emeta{display:flex;align-items:center;gap:6px}
-.edate{font-size:10px;color:var(--tx-4);font-family:var(--mono)}
-.esrc{font-size:10px;color:var(--tx-4)}
+.edate{font-size:10px;color:var(--t4);font-family:var(--mono)}
+.esrc{font-size:10px;color:var(--t4)}
 .esrc::before{content:'·';margin-right:6px}
-.ebody{padding:7px 11px 7px;padding-left:calc(11px + 3px + 7px)}
-.edesc{font-size:11.5px;color:var(--tx-2);line-height:1.7}
-/* PREDICTION MARKET */
-.epm{margin-top:8px;padding:8px;background:rgba(5,9,15,.5);border-radius:3px;border:1px solid var(--bd-1)}
-.epmlbl{font-size:9px;color:var(--tx-4);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono);margin-bottom:4px}
-.epmq{font-size:11px;color:var(--tx-2);margin-bottom:6px;line-height:1.4}
+.ebody{padding:7px 10px 7px;padding-left:calc(10px + 3px + 7px)}
+.edesc{font-size:11.5px;color:var(--t2);line-height:1.7}
+
+/* Prediction market in card */
+.epm{margin-top:8px;padding:8px;background:rgba(5,9,15,.5);border-radius:3px;border:1px solid var(--b1)}
+.epmlbl{font-size:9px;color:var(--t4);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-family:var(--mono);margin-bottom:4px}
+.epmq{font-size:11px;color:var(--t2);margin-bottom:6px;line-height:1.4}
 .obb-wrap{display:flex;align-items:center;gap:7px}
-.obb-track{flex:1;height:4px;background:var(--bd-2);border-radius:2px;overflow:hidden}
+.obb-track{flex:1;height:4px;background:var(--b2);border-radius:2px;overflow:hidden}
 .obb-fill{height:100%;border-radius:2px}
 .oyes{font-size:11px;font-family:var(--mono);font-weight:600;color:var(--green);min-width:30px}
 .ono{font-size:11px;font-family:var(--mono);font-weight:600;color:var(--red);min-width:30px;text-align:right}
 .ores{font-size:10px;font-family:var(--mono);padding:1px 5px;border-radius:2px}
-.or-y{color:var(--green);background:var(--gd)}
-.or-n{color:var(--red);background:var(--rd)}
-.epmvol{font-size:10px;color:var(--tx-4);font-family:var(--mono);margin-top:4px}
-.efoot{padding:5px 11px 7px;padding-left:calc(11px+3px+7px);display:flex;align-items:center;gap:7px}
+.or-y{color:var(--green);background:var(--gd)}.or-n{color:var(--red);background:var(--rd)}
+.epmvol{font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:4px}
+.efoot{padding:5px 10px 7px;padding-left:calc(10px+3px+7px);display:flex;align-items:center;gap:7px}
 .eimp{font-size:10px;font-weight:600;font-family:var(--mono);padding:2px 7px;border-radius:2px}
-.ib{color:var(--green);background:var(--gd);border:1px solid rgba(0,232,122,.2)}
-.ir{color:var(--red);background:var(--rd);border:1px solid rgba(239,68,68,.2)}
-.in{color:var(--tx-3);background:rgba(255,255,255,.03);border:1px solid var(--bd-1)}
-/* LIVE PREDICTION MARKETS */
-.pmsec{padding:10px;border-top:1px solid var(--bd-1);background:var(--bg-0);flex-shrink:0;display:none}
-.pmhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
-.pmtitle{font-size:10px;color:var(--tx-3);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono)}
-.pmsrc{font-size:10px;color:var(--tx-4);font-family:var(--mono)}
-.pmcard{background:var(--bg-3);border:1px solid var(--bd-1);border-radius:4px;padding:9px;margin-bottom:5px}
-.pmcard:last-child{margin-bottom:0}
-.pmq{font-size:12px;color:var(--tx-1);margin-bottom:7px;line-height:1.4;font-weight:500}
-.pmrow{display:flex;align-items:center;gap:7px}
-.pmy,.pmn{font-size:13px;font-weight:600;font-family:var(--mono);min-width:36px}
-.pmy{color:var(--green)}.pmn{color:var(--red);text-align:right}
-.pmtrack{flex:1;height:5px;background:var(--bd-2);border-radius:3px;overflow:hidden}
-.pmfill{height:100%;background:var(--green);border-radius:3px;transition:width .5s}
-.pmvol{font-size:10px;color:var(--tx-4);font-family:var(--mono);margin-top:4px}
-/* EMPTY */
-.empty{display:flex;flex-direction:column;align-items:center;padding:24px;gap:7px;text-align:center}
-.eico{font-size:22px;opacity:.3}
-.etxt{font-size:12px;color:var(--tx-4);line-height:1.6}
-/* LEGEND */
-.pfoot{padding:8px 16px;border-top:1px solid var(--bd-1);flex-shrink:0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--bg-3)}
+.ib2{color:var(--green);background:var(--gd);border:1px solid rgba(0,232,122,.2)}
+.ir2{color:var(--red);background:var(--rd);border:1px solid rgba(239,68,68,.2)}
+.in2{color:var(--t3);background:rgba(255,255,255,.03);border:1px solid var(--b1)}
 
-/* ═══════════════════════════════════════════
-   RESPONSIVE — Mobile-First
-═══════════════════════════════════════════ */
+/* Empty state */
+.empty{display:flex;flex-direction:column;align-items:center;padding:24px;gap:8px;text-align:center}
+.eico{font-size:24px;opacity:.3}
+.etxt{font-size:12px;color:var(--t4);line-height:1.6}
 
-/* Tablet */
-@media(max-width:1024px){.side{width:310px}}
+/* Desktop-only elements — hidden on mobile by default */
+.desktop-only{display:none}
 
-/* ── MOBILE ─────────────────────────────── */
-@media(max-width:768px){
-  /* Header: single tight row, no extras */
-  .header{height:44px;padding:0 12px}
-  .logo-div,.logo-prod,.strip,.click-hint,.fcard,.pfoot,.pmsec,.ctrl-end,.csep,.ch,.tag,.mbtn{display:none!important}
-  .logo-name{font-size:12px}
-  .pvalue{font-size:17px}
-  .ltxt{display:none}
-  .hdr-right{gap:6px}
-  .dpill{padding:2px 7px}
-  .dpill:nth-child(2){display:none}
+/* ════════════════════════════════════════
+   DESKTOP (>= 768px)
+════════════════════════════════════════ */
+@media(min-width:768px){
 
-  /* Controls: range only, compact */
-  .controls{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding:0 10px;height:34px}
-  .controls::-webkit-scrollbar{height:0}
-  .rbtn{padding:2px 8px;font-size:11px}
+  body{overflow:hidden}
 
-  /* Layout: vertical */
-  .body{flex-direction:column;height:0;flex:1}
+  /* Show desktop-only elements */
+  .desktop-only{display:flex}
 
-  /* Chart fills most of screen */
-  .chart-area{flex:none;width:100%;height:50vw;min-height:190px;max-height:52vh}
+  /* Header */
+  .header{height:54px;padding:0 20px}
+  .logo-mark{width:28px;height:28px}
+  .logo-mark span{font-size:10px}
+  .logo-name{font-size:13px}
+  .pticker{display:block}
+  .pvalue{font-size:20px}
+  .hprice{justify-content:center;gap:10px}
 
-  /* Mobile info bar between chart and events */
-  .mobile-bar{display:flex!important}
+  /* Add logo divider + product name on desktop */
+  .logo-divider{width:1px;height:18px;background:var(--b2)}
+  .logo-prod{font-size:11px;color:var(--t3);letter-spacing:.08em;text-transform:uppercase}
 
-  /* Panel fills rest */
-  .side{width:100%;flex:1;min-height:0;border-left:none;border-top:none}
-  .ph{display:none}
+  /* Data strip */
+  .data-strip{
+    height:32px;display:flex;align-items:center;background:var(--bg0);
+    border-bottom:1px solid var(--b1);padding:0 20px;overflow:hidden;flex-shrink:0;
+  }
+  .si{display:flex;align-items:center;gap:7px;padding:0 14px;border-right:1px solid var(--b1);white-space:nowrap}
+  .si:first-child{padding-left:0}
+  .sl{color:var(--t4);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:10px}
+  .sv{color:var(--t2);font-family:var(--mono);font-size:11px}
+  .sv.g{color:var(--green)}.sv.r{color:var(--red)}.sv.a{color:var(--amber)}
 
-  /* Tighter cards */
-  .ehead{padding:8px 10px 7px}
-  .ebar{width:2px}
-  .etitle{font-size:12px}
-  .ebody{padding:6px 10px 6px;padding-left:calc(10px + 2px + 7px)}
-  .edesc{font-size:11px;line-height:1.65}
-  .epm{padding:6px}
-  .epmq{font-size:10.5px}
-  .efoot{padding:4px 10px 6px;padding-left:calc(10px+2px+7px)}
-  .pbody{padding:8px}
-  .srule{margin:8px 0 5px}
+  /* Full controls bar */
+  .range-bar{display:none} /* replaced by full controls */
+  .controls-bar{
+    height:38px;display:flex;align-items:center;background:var(--bg2);
+    border-bottom:1px solid var(--b1);padding:0 20px;flex-shrink:0;gap:0;
+  }
+  .csep{width:1px;height:16px;background:var(--b2);margin:0 10px}
+  .ch{font-size:10px;color:var(--t4);font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-right:7px;font-family:var(--mono)}
+  .csec{display:flex;align-items:center;gap:2px}
+  .tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:2px;font-size:11px;border:1px solid var(--b1);cursor:pointer;transition:all .15s;color:var(--t3);background:transparent}
+  .tag:hover{border-color:var(--b3);color:var(--t2)}
+  .tag .dot{width:5px;height:5px;border-radius:50%}
+  .tag.active[data-t=all]{color:var(--t1);background:rgba(255,255,255,.05);border-color:var(--b3)}
+  .tag.active[data-t=macro]{color:var(--blue);background:var(--bld);border-color:rgba(59,130,246,.3)}
+  .tag.active[data-t=onchain]{color:var(--amber);background:var(--ad);border-color:rgba(245,158,11,.3)}
+  .tag.active[data-t=regulatory]{color:var(--red);background:var(--rd);border-color:rgba(239,68,68,.3)}
+  .tag.active[data-t=etf]{color:var(--green);background:var(--gd);border-color:rgba(0,232,122,.3)}
+  .tag.active[data-t=market]{color:var(--gold);background:var(--gld);border-color:rgba(212,168,67,.3)}
+  .ctrl-end{margin-left:auto;display:flex;align-items:center;gap:8px}
+  .ev-cnt{font-size:11px;color:var(--t3);font-family:var(--mono)}
+  .ev-cnt strong{color:var(--t1)}
+  .mbtn{padding:3px 9px;font-size:11px;font-family:var(--mono);border:1px solid var(--b1);border-radius:3px;cursor:pointer;color:var(--t3);background:transparent;transition:all .15s}
+  .mbtn.active{color:var(--blue);background:var(--bld);border-color:rgba(59,130,246,.3)}
 
-  /* CTA */
-  .click-cta{padding:20px 14px;gap:10px}
-  .cta-arrow{font-size:28px;animation:arrowUp 1.5s infinite}
-  @keyframes arrowUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-  .cta-title{font-size:13px}
-  .cta-sub{font-size:11px}
+  /* Body: side by side */
+  .body{display:flex;flex-direction:row;flex:1;min-height:0;overflow:hidden}
+
+  /* Chart: left side */
+  .chart-area{flex:1;position:relative;height:auto;min-height:0}
+  #chart{position:absolute;inset:0;width:100%;height:100%}
+
+  /* Info bar: hidden on desktop (replaced by float card) */
+  .info-bar{display:none}
+
+  /* Events panel: becomes the side panel */
+  .events-panel{
+    width:380px;flex-shrink:0;height:100%;border-left:1px solid var(--b1);
+    display:flex;flex-direction:column;padding:0;background:var(--bg2);
+    overflow:hidden;
+  }
+
+  /* Desktop panel header */
+  .panel-head{
+    padding:12px 16px 10px;border-bottom:1px solid var(--b1);flex-shrink:0;
+    background:var(--bg3);display:flex;align-items:flex-start;justify-content:space-between;
+  }
+  .ph-label{font-size:10px;color:var(--t4);font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;font-family:var(--mono)}
+  .ph-val{font-size:14px;font-weight:600}
+  .ph-val-g{color:var(--green);font-family:var(--mono)}
+
+  /* Panel scroll area */
+  .panel-scroll{flex:1;min-height:0;overflow-y:auto;padding:8px}
+  .panel-scroll::-webkit-scrollbar{width:3px}
+  .panel-scroll::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px}
+
+  /* Hide mobile-only events panel, show desktop structure */
+  .mobile-only{display:none}
+
+  /* Float card */
+  .fcard{display:block;position:absolute;top:14px;left:14px;z-index:20;background:rgba(8,13,21,.94);border:1px solid var(--b2);border-radius:4px;padding:10px 14px;min-width:180px;backdrop-filter:blur(8px);pointer-events:none;display:none;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+  .fdate{font-size:11px;color:var(--t3);font-family:var(--mono);margin-bottom:2px}
+  .fprice{font-size:17px;font-weight:600;font-family:var(--mono)}
+  .fvol{font-size:10px;color:var(--t3);font-family:var(--mono);margin-top:2px}
+  .fevt{font-size:11px;color:var(--amber);margin-top:4px;display:none;align-items:center;gap:4px}
+  .fevt::before{content:'●';font-size:8px}
+
+  /* Click hint */
+  .click-hint{position:absolute;bottom:56px;left:50%;transform:translateX(-50%);z-index:15;display:flex;align-items:center;gap:8px;background:rgba(8,13,21,.88);border:1px solid var(--b3);border-radius:20px;padding:6px 14px;backdrop-filter:blur(8px);white-space:nowrap;animation:floatUp 1s ease-out,pulse 3s infinite}
+  @keyframes floatUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+  @keyframes pulse{0%,100%{opacity:.9}50%{opacity:.5}}
+  .ch-icon{font-size:13px}
+  .ch-text{font-size:11px;color:var(--t2)}
+  .ch-text em{color:var(--green);font-style:normal}
+
+  /* CTA in desktop panel */
+  .cta{padding:32px 20px}
+  .cta-icon{font-size:32px}
+  .cta-icon::after{content:'←'}
+  .cta-icon{font-size:0}
+  .cta-icon::after{font-size:30px;animation:arrowLeft 1.5s infinite}
+  @keyframes arrowLeft{0%,100%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
+
+  /* Live PM section */
+  .pm-section{padding:10px;border-top:1px solid var(--b1);background:var(--bg0);flex-shrink:0;display:none}
+  .pm-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+  .pm-title{font-size:10px;color:var(--t3);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono)}
+  .pm-src{font-size:10px;color:var(--t4);font-family:var(--mono)}
+  .pmcard{background:var(--bg3);border:1px solid var(--b1);border-radius:4px;padding:9px;margin-bottom:5px}
+  .pmcard:last-child{margin-bottom:0}
+  .pmq{font-size:12px;color:var(--t1);margin-bottom:7px;line-height:1.4;font-weight:500}
+  .pmrow{display:flex;align-items:center;gap:7px}
+  .pmy,.pmn{font-size:13px;font-weight:600;font-family:var(--mono);min-width:36px}
+  .pmy{color:var(--green)}.pmn{color:var(--red);text-align:right}
+  .pmtrack{flex:1;height:5px;background:var(--b2);border-radius:3px;overflow:hidden}
+  .pmfill{height:100%;background:var(--green);border-radius:3px}
+  .pmvol{font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:4px}
+
+  /* Legend */
+  .legend{padding:8px 16px;border-top:1px solid var(--b1);flex-shrink:0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--bg3)}
+  .leg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t4);font-family:var(--mono)}
+  .l-dot{width:6px;height:6px;border-radius:50%}
+
+  /* Header API status */
+  .api-s{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t3);font-family:var(--mono)}
+  .adot{width:5px;height:5px;border-radius:50%;background:var(--t4)}
+  .adot.ok{background:var(--green)}.adot.err{background:var(--red)}.adot.loading{background:var(--amber);animation:blink 1s infinite}
+  .hdr-pills{display:flex;align-items:center;gap:12px}
+  .dpill{display:flex;align-items:center;gap:6px;padding:3px 9px;border-radius:3px;border:1px solid var(--b1);background:var(--bg3)}
+  .dplbl{font-size:10px;color:var(--t4);font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+  .dpval{font-size:12px;font-family:var(--mono);font-weight:500}
 }
-
-@media(max-width:480px){
-  .chart-area{height:46vw}
-  .pvalue{font-size:15px}
-  .api-s{display:none!important}
-}
-
-/* Mobile info bar — hidden on desktop */
-.mobile-bar{
-  display:none;align-items:center;justify-content:space-between;
-  height:34px;flex-shrink:0;padding:0 14px;
-  background:var(--bg-3);border-top:1px solid var(--bd-1);border-bottom:1px solid var(--bd-1);
-}
-.mb-date{font-size:11px;color:var(--tx-3);font-family:var(--mono)}
-.mb-right{display:flex;align-items:center;gap:10px}
-.mb-price{font-size:14px;font-weight:600;color:var(--green);font-family:var(--mono)}
-.mb-evt{font-size:11px;color:var(--amber);display:none;align-items:center;gap:4px}
-.mb-evt.show{display:flex}
-.mb-evt::before{content:'●';font-size:8px}
-.leg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--tx-4);font-family:var(--mono)}
-.ldot2{width:6px;height:6px;border-radius:50%}
 </style>
 </head>
 <body>
+
 <div class="brand-stripe"></div>
 
+<!-- HEADER -->
 <header class="header">
   <div class="logo">
     <div class="logo-mark"><span>⬡</span></div>
     <span class="logo-name">OSL Research</span>
-    <div class="logo-div"></div>
-    <span class="logo-prod">BTC Event Navigator</span>
+    <!-- Desktop only: divider + product name -->
+    <div class="logo-divider desktop-only"></div>
+    <span class="logo-prod desktop-only">BTC Event Navigator</span>
   </div>
-  <div class="hdr-mid">
-    <div class="price-block">
-      <span class="pticker">BTC / USD</span>
-      <span class="pvalue" id="livePrice">—</span>
-      <span class="pchg" id="priceChg">—</span>
+
+  <div class="hprice">
+    <span class="pticker">BTC / USD</span>
+    <span class="pvalue" id="livePrice">—</span>
+    <span class="pchg" id="priceChg">—</span>
+  </div>
+
+  <div class="live-ind">
+    <div class="ldot"></div>
+    <!-- Desktop: show F&G pill + API status -->
+    <div class="hdr-pills desktop-only">
+      <div class="dpill"><span class="dplbl">F&amp;G</span><span class="dpval" id="fgVal">—</span></div>
+      <div class="dpill"><span class="dplbl">Funding</span><span class="dpval" id="fundingVal">—</span></div>
+      <div class="dpill"><span class="dplbl">HKT</span><span class="dpval" id="hkClock" style="font-family:var(--mono)">—</span></div>
     </div>
-    <div class="live-ind"><div class="ldot"></div><span class="ltxt">Binance · Live</span></div>
-  </div>
-  <div class="hdr-right">
-    <div class="dpill"><span class="dplbl">F&amp;G</span><span class="dpval" id="fgVal">—</span></div>
-    <div class="dpill"><span class="dplbl">Funding</span><span class="dpval" id="fundingVal">—</span></div>
-    <div class="dpill"><span class="dplbl">HKT</span><span class="dpval" id="hkClock" style="font-family:var(--mono)">—</span></div>
-    <div class="api-s"><div class="adot loading" id="apiDot"></div><span id="apiLabel">loading</span></div>
+    <div class="api-s desktop-only"><div class="adot loading" id="apiDot"></div><span id="apiLabel">loading</span></div>
   </div>
 </header>
 
-<div class="strip">
+<!-- DESKTOP: data strip -->
+<div class="data-strip desktop-only">
   <div class="si"><span class="sl">DVOL</span><span class="sv a" id="dvolVal">—</span></div>
   <div class="si"><span class="sl">OI</span><span class="sv" id="oiVal">—</span></div>
   <div class="si"><span class="sl">MVRV</span><span class="sv g" id="mvrvVal">—</span></div>
@@ -315,9 +358,19 @@ body{display:flex;flex-direction:column}
   <div class="si"><span class="sl">DXY</span><span class="sv">98.86</span></div>
 </div>
 
-<div class="controls">
+<!-- MOBILE: range selector only -->
+<div class="range-bar" id="rangeGroup">
+  <button class="rbtn" data-days="30">30D</button>
+  <button class="rbtn" data-days="90">90D</button>
+  <button class="rbtn active" data-days="180">6M</button>
+  <button class="rbtn" data-days="365">1Y</button>
+  <button class="rbtn" data-days="730">2Y</button>
+</div>
+
+<!-- DESKTOP: full controls bar -->
+<div class="controls-bar desktop-only">
   <span class="ch">Period</span>
-  <div class="csec" id="rangeGroup">
+  <div class="csec" id="rangeGroupDesktop">
     <button class="rbtn" data-days="30">30D</button>
     <button class="rbtn" data-days="90">90D</button>
     <button class="rbtn active" data-days="180">6M</button>
@@ -342,104 +395,118 @@ body{display:flex;flex-direction:column}
   </div>
 </div>
 
-<div class="body">
-  <div class="chart-area">
-    <div id="chart"></div>
-    <!-- Hover float card -->
-    <div class="fcard" id="floatCard">
-      <div class="fdate" id="floatDate"></div>
-      <div class="fprice" id="floatPrice"></div>
-      <div class="fvol" id="floatVol"></div>
-      <div class="fevt" id="floatEvt"></div>
-    </div>
-    <!-- Click hint -->
-    <div class="click-hint" id="clickHint">
-      <span class="ch-icon">👆</span>
-      <span class="ch-text">Click / tap the chart to see <em>macro · on-chain · news</em></span>
-    </div>
-    <!-- Loader -->
-    <div class="loader" id="loader">
-      <div class="lring"></div>
-      <div class="ltxt" id="loaderTxt">CONNECTING TO BINANCE</div>
-      <div class="lsub" id="loaderSub">fetching historical price data</div>
-    </div>
+<!-- CHART -->
+<div class="chart-area">
+  <div id="chart"></div>
+  <!-- Desktop float card -->
+  <div class="fcard" id="floatCard">
+    <div class="fdate" id="floatDate"></div>
+    <div class="fprice" id="floatPrice"></div>
+    <div class="fvol" id="floatVol"></div>
+    <div class="fevt" id="floatEvt"></div>
   </div>
-
-  <!-- Mobile info bar (between chart and events) -->
-  <div class="mobile-bar" id="mobileBar">
-    <span class="mb-date" id="mbDate">Drag on chart to explore</span>
-    <div class="mb-right">
-      <span class="mb-evt" id="mbEvt">events nearby</span>
-      <span class="mb-price" id="mbPrice">—</span>
-    </div>
+  <!-- Desktop click hint -->
+  <div class="click-hint" id="clickHint">
+    <span class="ch-icon">👆</span>
+    <span class="ch-text">Click the chart to see <em>macro · on-chain · news</em></span>
   </div>
+  <div class="loader" id="loader">
+    <div class="lring"></div>
+    <div class="ltxt" id="loaderTxt">CONNECTING TO BINANCE</div>
+    <div class="lsub" id="loaderSub">fetching price data…</div>
+  </div>
+</div>
 
-  <div class="side">
-    <div class="ph">
-      <div class="ph-row">
-        <div><div class="phl">Selected Date</div><div class="phv" id="panelDate">—</div></div>
-        <div style="text-align:right"><div class="phl">BTC / USD</div><div class="phv phvg" id="panelPrice">—</div></div>
+<!-- MOBILE: info bar (between chart and events) -->
+<div class="info-bar" id="mobileInfoBar">
+  <div class="ib-left">
+    <span class="ib-date" id="ibDate">Drag on chart to explore</span>
+    <span class="ib-evt" id="ibEvt"></span>
+  </div>
+  <span class="ib-price" id="ibPrice">—</span>
+</div>
+
+<!-- BODY (desktop: chart + side panel; mobile: this becomes the events panel) -->
+<div class="body" id="mainBody">
+
+  <!-- DESKTOP ONLY: side panel structure -->
+  <div class="desktop-panel desktop-only" id="desktopPanel" style="width:380px;flex-shrink:0;display:flex;flex-direction:column;border-left:1px solid var(--b1);background:var(--bg2);overflow:hidden">
+    <div class="panel-head">
+      <div>
+        <div class="ph-label">Selected Date</div>
+        <div class="ph-val" id="panelDate">—</div>
+      </div>
+      <div style="text-align:right">
+        <div class="ph-label">BTC / USD</div>
+        <div class="ph-val ph-val-g" id="panelPrice">—</div>
       </div>
     </div>
-
-    <div class="pbody" id="panelBody">
-      <div class="click-cta">
-        <div class="cta-arrow">←</div>
-        <div class="cta-title">Click a point on the chart</div>
-        <div class="cta-sub">View macro events, on-chain signals,<br>regulatory updates and<br><em>Polymarket prediction odds</em><br>at any date on the BTC timeline</div>
+    <div class="panel-scroll" id="panelBody">
+      <div class="cta">
+        <div class="cta-icon"></div>
+        <div class="cta-title">Click any point on the chart</div>
+        <div class="cta-sub">View macro events, on-chain signals, regulatory updates and <em>Polymarket prediction odds</em> at each BTC price level</div>
       </div>
     </div>
-
-    <div class="pmsec" id="pmSection">
-      <div class="pmhdr">
-        <span class="pmtitle">⚡ Live Prediction Markets</span>
-        <span class="pmsrc" id="pmSrc">Polymarket</span>
+    <div class="pm-section" id="pmSection">
+      <div class="pm-hdr">
+        <span class="pm-title">⚡ Live Prediction Markets</span>
+        <span class="pm-src" id="pmSrc">Polymarket</span>
       </div>
       <div id="pmCards"></div>
     </div>
-
-    <div class="pfoot">
-      <div class="leg"><div class="ldot2" style="background:#3b82f6"></div>Macro</div>
-      <div class="leg"><div class="ldot2" style="background:#f59e0b"></div>On-Chain</div>
-      <div class="leg"><div class="ldot2" style="background:#ef4444"></div>Regulatory</div>
-      <div class="leg"><div class="ldot2" style="background:#00e87a"></div>ETF</div>
-      <div class="leg"><div class="ldot2" style="background:#d4a843"></div>Market</div>
+    <div class="legend">
+      <div class="leg"><div class="l-dot" style="background:#3b82f6"></div>Macro</div>
+      <div class="leg"><div class="l-dot" style="background:#f59e0b"></div>On-Chain</div>
+      <div class="leg"><div class="l-dot" style="background:#ef4444"></div>Regulatory</div>
+      <div class="leg"><div class="l-dot" style="background:#00e87a"></div>ETF</div>
+      <div class="leg"><div class="l-dot" style="background:#d4a843"></div>Market</div>
     </div>
+  </div>
+
+</div><!-- end .body (desktop) -->
+
+<!-- MOBILE: events panel (outside .body, full width below chart) -->
+<div class="events-panel mobile-only" id="mobileEvents">
+  <div class="cta">
+    <div class="cta-icon">☝️</div>
+    <div class="cta-title">Drag on the chart above</div>
+    <div class="cta-sub">As you slide along the BTC price curve,<br>macro events, on-chain signals<br>and <em>Polymarket odds</em> appear here</div>
   </div>
 </div>
 
 <script>
 // ════════════════════════════════════════
-//  EVENT DATABASE
+//  EVENTS DATABASE
 // ════════════════════════════════════════
 const EVENTS = [
   {date:'2024-01-10',type:'regulatory',impact:'bullish',
-   title:'SEC Approves 11 Spot Bitcoin ETFs Simultaneously',
+   title:'SEC Approves 11 Spot Bitcoin ETFs',
    source:'SEC',
-   desc:'SEC approves spot Bitcoin ETF from BlackRock (IBIT), Fidelity (FBTC), ARK/21Shares and 8 others. Day-1 volume $4.6B. Ends 10-year regulatory battle. Structural demand shift confirmed.',
+   desc:'SEC approves spot BTC ETF from BlackRock (IBIT), Fidelity, ARK/21Shares and 8 others. Day-1 volume $4.6B. Ends 10-year regulatory battle. Structural demand shift.',
    pm:{q:'Will SEC approve a spot Bitcoin ETF by Jan 2024?',yes:72,no:28,resolved:true,outcome:true,vol:'$24.3M'}},
   {date:'2024-03-14',type:'market',impact:'bullish',
    title:'BTC Pre-Halving ATH: $73,835',
    source:'Binance / CME',
-   desc:'BTC ATH driven by sustained ETF demand ($1B+/day) and halving supply narrative. CME futures premium 15%. Institutional flow confirmed as structural.',
+   desc:'BTC ATH driven by ETF demand ($1B+/day) and halving supply narrative. CME futures premium 15%. Institutional flow confirmed structural.',
    pm:{q:'Will BTC reach $70K before the halving?',yes:58,no:42,resolved:true,outcome:true,vol:'$8.1M'}},
   {date:'2024-04-19',type:'market',impact:'neutral',
-   title:'Bitcoin Halving #4 — Reward: 6.25 → 3.125 BTC',
+   title:'Bitcoin Halving #4 — Reward 6.25 → 3.125 BTC',
    source:'Bitcoin Protocol',
-   desc:'4th halving at block 840,000. Annual supply drops 50% to ~82K BTC. Historical: BTC peaks 12–18 months post-halving. Miner revenue compression near-term.',
-   pm:{q:'Will BTC set new ATH within 6 months of halving?',yes:61,no:39,resolved:true,outcome:true,vol:'$6.4M'}},
+   desc:'4th halving at block 840,000. Annual supply drops 50%. Historical: BTC peaks 12–18 months post-halving.',
+   pm:{q:'Will BTC set ATH within 6 months of halving?',yes:61,no:39,resolved:true,outcome:true,vol:'$6.4M'}},
   {date:'2024-07-05',type:'onchain',impact:'bearish',
    title:'German Government Begins 50,000 BTC Liquidation',
    source:'German BKA / CryptoQuant',
-   desc:'German BKA begins systematic liquidation of 50K seized BTC (~$3B). Sells over 3 weeks via Coinbase, Kraken and OTC. Visible near-term supply overhang.'},
+   desc:'German BKA liquidates 50K seized BTC (~$3B) over 3 weeks via Coinbase, Kraken and OTC. Visible near-term supply overhang.'},
   {date:'2024-07-24',type:'onchain',impact:'bearish',
    title:'Mt. Gox Trustee Begins 142,000 BTC Repayment',
    source:'Mt. Gox Trustee',
-   desc:'Trustee distributes 142K BTC to creditors after 10 years. Market fears mass liquidation, but majority of creditors hold — actual sell pressure moderate.'},
+   desc:'Trustee distributes 142K BTC to creditors after 10 years. Majority of creditors hold — actual sell pressure moderate vs. narrative.'},
   {date:'2024-08-05',type:'macro',impact:'bearish',
-   title:'BOJ Rate Hike Triggers Global Carry Trade Unwind',
+   title:'BOJ Rate Hike — Global Carry Trade Unwind',
    source:'Bank of Japan',
-   desc:'BOJ raises rates to 0.25%, unwinding ¥/$ carry trades (~$4T notional). VIX spikes to 65. BTC -18% in 24h. Forced liquidations cascade.',
+   desc:'BOJ raises rates to 0.25%, unwinding ¥/$ carry (~$4T). VIX spikes to 65. BTC -18% in 24h. Liquidations cascade.',
    pm:{q:'Will BOJ raise rates to 0.25% in 2024?',yes:34,no:66,resolved:true,outcome:true,vol:'$2.2M'}},
   {date:'2024-09-18',type:'macro',impact:'bullish',
    title:'Fed Cuts 50bps — Easing Cycle Begins',
@@ -449,95 +516,87 @@ const EVENTS = [
   {date:'2024-11-05',type:'macro',impact:'bullish',
    title:'Trump Wins 2024 US Presidential Election',
    source:'AP / Polymarket',
-   desc:'Trump wins with pro-crypto platform: BTC strategic reserve, fire Gensler, make US "crypto superpower". BTC +9% election night. Regulatory risk premium collapses.',
-   pm:{q:'Will Trump win the 2024 US Presidential Election?',yes:64,no:36,resolved:true,outcome:true,vol:'$389M',src:'Largest election market in history'}},
+   desc:'Trump wins with pro-crypto platform: BTC strategic reserve, fire Gensler, make US crypto superpower. BTC +9% election night.',
+   pm:{q:'Will Trump win the 2024 US Presidential Election?',yes:64,no:36,resolved:true,outcome:true,vol:'$389M',src:'Largest prediction market in history'}},
   {date:'2024-11-13',type:'market',impact:'bullish',
    title:'BTC Reaches $93,000 Post-Election',
    source:'Binance',
-   desc:'BTC $93K on Trump euphoria + ETF record daily inflows ($1.1B). CME basis 18%. Strategic reserve speculation at peak.',
+   desc:'BTC $93K on Trump euphoria + ETF record daily inflows ($1.1B). CME basis 18%. Strategic reserve speculation peak.',
    pm:{q:'Will BTC reach $100K in 2024?',yes:71,no:29,resolved:true,outcome:false,vol:'$31.2M'}},
   {date:'2024-12-18',type:'macro',impact:'bearish',
    title:'Fed Hawkish Pivot — Only 2 Cuts in 2025',
    source:'FOMC Dot Plot',
-   desc:'December FOMC dot plot: only 2 cuts in 2025 vs prior 4-cut expectation. DXY +1.2%. BTC -8% from $106K on liquidity tightening fears.'},
+   desc:'December FOMC: only 2 cuts in 2025 vs prior 4-cut expectation. DXY +1.2%. BTC -8% from $106K.'},
   {date:'2024-12-19',type:'market',impact:'bullish',
    title:'BTC All-Time High $108,135',
    source:'Binance / CoinMetrics',
-   desc:'ATH driven by Strategic Reserve Act expectations + MicroStrategy $21B raise + sustained ETF inflows. Total crypto market cap $3.9T.',
+   desc:'ATH on Strategic Reserve Act expectations + MicroStrategy $21B raise + ETF inflows. Crypto market cap $3.9T.',
    pm:{q:'Will BTC reach $100K in December 2024?',yes:65,no:35,resolved:true,outcome:true,vol:'$18.4M'}},
   {date:'2025-01-20',type:'regulatory',impact:'bullish',
    title:'Trump Day-1 Crypto EO — Gensler Resigns',
    source:'White House',
-   desc:'Day-1 EO establishes pro-crypto regulatory framework. Gensler resigns as SEC Chair. Multi-year regulatory uncertainty ends.',
+   desc:'Day-1 EO establishes pro-crypto framework. Gensler resigns as SEC Chair. Multi-year regulatory uncertainty ends.',
    pm:{q:'Will Gensler leave SEC by Q1 2025?',yes:79,no:21,resolved:true,outcome:true,vol:'$4.1M'}},
   {date:'2025-01-23',type:'regulatory',impact:'bullish',
    title:'Strategic Bitcoin Reserve EO Signed',
    source:'White House / Treasury',
-   desc:'EO directs Treasury to evaluate BTC Strategic Reserve. Agencies inventory ~198K seized BTC. International peers evaluate similar proposals.',
-   pm:{q:'Will US create a Bitcoin Strategic Reserve in 2025?',yes:44,no:56,resolved:false,outcome:null,vol:'$22.8M'}},
+   desc:'EO directs Treasury to evaluate BTC Strategic Reserve. Agencies inventory ~198K seized BTC. Sovereign demand framework begins.',
+   pm:{q:'Will US create Strategic Bitcoin Reserve in 2025?',yes:44,no:56,resolved:false,outcome:null,vol:'$22.8M'}},
   {date:'2025-02-07',type:'etf',impact:'bullish',
-   title:'IBIT AUM Surpasses $50B — Fastest ETF in History',
+   title:'IBIT AUM Surpasses $50B — Fastest ETF Ever',
    source:'BlackRock / Bloomberg',
-   desc:"IBIT reaches $50B AUM faster than any ETF in history, surpassing GLD. BlackRock CEO rebrands BTC as 'digital gold'."},
+   desc:"IBIT reaches $50B AUM faster than any ETF in history. BlackRock CEO rebrands BTC as 'digital gold'. Institutional demand expanding."},
   {date:'2026-01-15',type:'macro',impact:'bearish',
-   title:'US Tariffs Expanded — 145% on China',
+   title:'US Tariffs 145% on China — Trade War Escalation',
    source:'USTR',
-   desc:'Trump expands tariffs: 145% on China, 25% Canada/Mexico. SPX -4% over 2 weeks. BTC initially correlates down then decouples (BTC-NQ 30D correlation turns negative).',
+   desc:'Trump expands tariffs: 145% on China, 25% Canada/Mexico. SPX -4% over 2 weeks. BTC decouples (BTC-NQ correlation turns negative).',
    pm:{q:'Will US impose tariffs >100% on China in 2026?',yes:52,no:48,resolved:true,outcome:true,vol:'$6.3M'}},
   {date:'2026-03-09',type:'onchain',impact:'neutral',
-   title:'F&G = 12 Extreme Fear — Historical Accumulation Zone',
+   title:'F&G = 12 Extreme Fear — Accumulation Zone',
    source:'Alternative.me / CoinMetrics',
    desc:'F&G drops to 12. Historically readings ≤15 precede recoveries within 30–90 days. MVRV 1.24× below mid-cycle overheat. LTH not distributing.',
    pm:{q:'Will BTC be above $70K on April 1, 2026?',yes:null,no:null,live:true}},
   {date:'2026-03-09',type:'etf',impact:'bullish',
    title:'US ETF 4-Day Consecutive Inflow — $1.39B Weekly',
    source:'SoSoValue',
-   desc:'4th consecutive day net inflows. IBIT +$245M. State of Wisconsin pension confirmed IBIT position ($163M) in Q1-25 13F — first US state pension BTC holder.',
-   pm:{q:'Will BTC ETF weekly net inflow exceed $2B by April 2026?',yes:null,no:null,live:true}},
+   desc:'4th consecutive net inflow day. IBIT +$245M today. State of Wisconsin pension confirmed $163M IBIT position — first US state pension BTC holder.',
+   pm:{q:'Will ETF weekly inflow exceed $2B by April 2026?',yes:null,no:null,live:true}},
 ];
 
-const TCFG = {
-  macro:      {color:'#3b82f6',chip:'c-macro',     label:'MACRO'},
-  onchain:    {color:'#f59e0b',chip:'c-onchain',   label:'ON-CHAIN'},
-  regulatory: {color:'#ef4444',chip:'c-regulatory',label:'REGULATORY'},
-  etf:        {color:'#00e87a',chip:'c-etf',       label:'ETF'},
-  market:     {color:'#d4a843',chip:'c-market',    label:'MARKET'},
+const TCFG={
+  macro:{color:'#3b82f6',chip:'c-macro',label:'MACRO'},
+  onchain:{color:'#f59e0b',chip:'c-onchain',label:'ON-CHAIN'},
+  regulatory:{color:'#ef4444',chip:'c-regulatory',label:'REGULATORY'},
+  etf:{color:'#00e87a',chip:'c-etf',label:'ETF'},
+  market:{color:'#d4a843',chip:'c-market',label:'MARKET'},
 };
 
 // ════════════════════════════════════════
-//  FALLBACK PRICE DATA (always renders)
+//  FALLBACK DATA
 // ════════════════════════════════════════
-function buildFallback() {
-  const pts = [
+function buildFallback(){
+  const pts=[
     ['2024-01-01',42800],['2024-01-10',46800],['2024-02-01',42600],
     ['2024-02-15',52000],['2024-03-01',61800],['2024-03-14',73835],
-    ['2024-03-20',63500],['2024-04-05',68000],['2024-04-19',63800],
-    ['2024-05-01',57400],['2024-05-23',68800],['2024-06-05',71700],
-    ['2024-06-20',64100],['2024-07-05',57300],['2024-07-24',63900],
-    ['2024-08-05',49800],['2024-08-20',59000],['2024-09-01',57900],
-    ['2024-09-18',63200],['2024-10-01',61100],['2024-10-20',67400],
-    ['2024-11-05',74000],['2024-11-07',78000],['2024-11-13',93200],
-    ['2024-11-20',98500],['2024-12-01',96200],['2024-12-17',106600],
-    ['2024-12-19',108135],['2024-12-25',96300],['2025-01-01',97800],
-    ['2025-01-20',105000],['2025-01-23',106800],['2025-02-07',97000],
-    ['2025-03-01',88000],['2025-05-01',94000],['2025-07-01',103000],
-    ['2025-09-01',96000],['2025-11-01',99000],['2025-12-01',97000],
+    ['2024-03-20',63500],['2024-04-19',63800],['2024-05-01',57400],
+    ['2024-05-23',68800],['2024-06-05',71700],['2024-07-05',57300],
+    ['2024-08-05',49800],['2024-08-20',59000],['2024-09-18',63200],
+    ['2024-10-20',67400],['2024-11-05',74000],['2024-11-13',93200],
+    ['2024-12-01',96200],['2024-12-19',108135],['2024-12-25',96300],
+    ['2025-01-20',105000],['2025-02-07',97000],['2025-05-01',94000],
+    ['2025-09-01',96000],['2025-12-01',97000],
     ['2026-01-01',101000],['2026-01-15',88000],['2026-02-01',79000],
-    ['2026-02-15',73000],['2026-03-01',70000],['2026-03-09',66894],
+    ['2026-03-01',70000],['2026-03-09',66894],
   ];
-  const result = [];
-  for (let i = 0; i < pts.length-1; i++) {
-    const [s,sp] = pts[i], [e,ep] = pts[i+1];
-    const sT = new Date(s).getTime(), eT = new Date(e).getTime();
-    const days = Math.round((eT-sT)/86400000);
-    for (let d = 0; d < days; d++) {
-      const t = d/days;
-      const ease = t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
-      const noise = (Math.random()-.49)*(Math.abs(ep-sp)*0.04+500);
-      result.push({
-        time: Math.floor((sT+d*86400000)/1000),
-        value: Math.max(20000, Math.round(sp+(ep-sp)*ease+noise)),
-      });
+  const result=[];
+  for(let i=0;i<pts.length-1;i++){
+    const[s,sp]=pts[i],[e,ep]=pts[i+1];
+    const sT=new Date(s).getTime(),eT=new Date(e).getTime();
+    const days=Math.round((eT-sT)/86400000);
+    for(let d=0;d<days;d++){
+      const t=d/days,ease=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+      const noise=(Math.random()-.49)*(Math.abs(ep-sp)*0.04+400);
+      result.push({time:Math.floor((sT+d*86400000)/1000),value:Math.max(20000,Math.round(sp+(ep-sp)*ease+noise))});
     }
   }
   return result;
@@ -546,24 +605,45 @@ function buildFallback() {
 // ════════════════════════════════════════
 //  STATE
 // ════════════════════════════════════════
-let chart, areaSeries, candleSeries, activeSeries;
-let mode = 'area', activeFilter = 'all', activeDays = 180;
-let locked = false;
-let clickHintShown = true;
-let priceMap = {}; // timestamp → price for panel display
+let chart,areaSeries,candleSeries,activeSeries;
+let mode='area',activeFilter='all',activeDays=180;
+let locked=false,lockedTime=null,clickHintShown=true;
+
+const isMobile=()=>window.innerWidth<768;
+
+// ════════════════════════════════════════
+//  LAYOUT SETUP (called on init + resize)
+// ════════════════════════════════════════
+function setupLayout(){
+  const mobile=isMobile();
+  // On mobile: hide desktop panel, show mobile events
+  document.getElementById('desktopPanel').style.display=mobile?'none':'flex';
+  document.getElementById('mobileEvents').style.display=mobile?'block':'none';
+  document.getElementById('mobileInfoBar').style.display=mobile?'flex':'none';
+  document.getElementById('mainBody').style.display=mobile?'none':'flex';
+  // On desktop: chart-area needs to fill .body
+  if(!mobile){
+    document.querySelector('.chart-area').style.height='auto';
+    document.querySelector('.chart-area').style.flex='1';
+    // Make .body fill remaining space
+    const body=document.getElementById('mainBody');
+    body.style.flex='1';
+    body.style.minHeight='0';
+    body.style.overflow='hidden';
+  }
+}
 
 // ════════════════════════════════════════
 //  CHART INIT
 // ════════════════════════════════════════
-function initChart() {
-  if (typeof LightweightCharts === 'undefined') {
-    document.getElementById('loaderTxt').textContent = 'CHART LIBRARY FAILED TO LOAD';
-    document.getElementById('loaderSub').textContent = 'Please check network / refresh';
+function initChart(){
+  if(typeof LightweightCharts==='undefined'){
+    document.getElementById('loaderTxt').textContent='CHART LIBRARY FAILED';
     return;
   }
-  const el = document.getElementById('chart');
-  chart = LightweightCharts.createChart(el, {
-    autoSize: true,   // ← auto-tracks container, no manual resize needed
+  const el=document.getElementById('chart');
+  chart=LightweightCharts.createChart(el,{
+    autoSize:true,
     layout:{background:{color:'#080d15'},textColor:'#4a6278'},
     grid:{vertLines:{color:'#0c1422'},horzLines:{color:'#0c1422'}},
     crosshair:{mode:LightweightCharts.CrosshairMode.Normal,
@@ -574,324 +654,121 @@ function initChart() {
     handleScroll:{mouseWheel:true,pressedMouseMove:true},
     handleScale:{mouseWheel:true,pinch:true},
   });
-
-  areaSeries = chart.addAreaSeries({
+  areaSeries=chart.addAreaSeries({
     lineColor:'#00e87a',topColor:'rgba(0,232,122,.14)',bottomColor:'rgba(0,232,122,0)',
     lineWidth:2,priceFormat:{type:'price',precision:0,minMove:1},visible:true,
     crosshairMarkerVisible:true,crosshairMarkerRadius:5,
     crosshairMarkerBorderColor:'#00e87a',crosshairMarkerBackgroundColor:'#080d15',
   });
-  candleSeries = chart.addCandlestickSeries({
+  candleSeries=chart.addCandlestickSeries({
     upColor:'#00e87a',downColor:'#ef4444',
     borderUpColor:'#00e87a',borderDownColor:'#ef4444',
     wickUpColor:'rgba(0,232,122,.7)',wickDownColor:'rgba(239,68,68,.7)',
     visible:false,priceFormat:{type:'price',precision:0,minMove:1},
   });
-  activeSeries = areaSeries;
+  activeSeries=areaSeries;
 
-  // HOVER — update float card on desktop; update panel on mobile (scrub = real-time)
-  chart.subscribeCrosshairMove(p => {
-    if (isMobile()) {
-      // Mobile: scrubbing = real-time panel update, no lock needed
-      if (p && p.time) { updateMobileBar(p); updatePanel(p); }
-      else { resetMobileBar(); resetPanel(); }
+  chart.subscribeCrosshairMove(p=>{
+    if(isMobile()){
+      if(p&&p.time){mobileUpdate(p);}
+      else{mobileReset();}
     } else {
-      if (!locked && p && p.time) updateFloat(p);
-      else if (!locked) floatHide();
+      if(!locked&&p&&p.time)floatUpdate(p);
+      else if(!locked)floatHide();
     }
   });
 
-  // CLICK — desktop: lock panel; mobile: no-op (scrub already handles it)
-  chart.subscribeClick(p => {
-    if (isMobile()) return;
-    if (!p || !p.time) { unlock(); return; }
-    if (locked && lockedTime===p.time) { unlock(); return; }
-    lock(p);
+  chart.subscribeClick(p=>{
+    if(isMobile())return;
+    if(!p||!p.time){deskUnlock();return;}
+    if(locked&&lockedTime===p.time){deskUnlock();return;}
+    deskLock(p);
   });
 }
 
-let lockedTime = null;
-function lock(p) {
-  locked = true; lockedTime = p.time;
-  updateFloat(p);
-  updatePanel(p);
-  if (clickHintShown) {
-    document.getElementById('clickHint').style.display='none';
-    clickHintShown = false;
-  }
+// ════════════════════════════════════════
+//  DESKTOP INTERACTIONS
+// ════════════════════════════════════════
+function deskLock(p){
+  locked=true;lockedTime=p.time;
+  floatUpdate(p);deskPanelUpdate(p);
+  if(clickHintShown){document.getElementById('clickHint').style.display='none';clickHintShown=false;}
 }
-function unlock() {
-  locked = false; lockedTime = null;
-  floatHide();
-  resetPanel();
+function deskUnlock(){
+  locked=false;lockedTime=null;floatHide();deskPanelReset();
 }
-
-function setMode(m) {
-  mode = m;
+function setMode(m){
+  mode=m;
   document.getElementById('modeArea').classList.toggle('active',m==='area');
   document.getElementById('modeCandle').classList.toggle('active',m==='candle');
   areaSeries.applyOptions({visible:m==='area'});
   candleSeries.applyOptions({visible:m==='candle'});
-  activeSeries = m==='area'?areaSeries:candleSeries;
+  activeSeries=m==='area'?areaSeries:candleSeries;
   renderMarkers();
 }
-
-// ════════════════════════════════════════
-//  DATA LOADING
-// ════════════════════════════════════════
-async function loadData(days) {
-  document.getElementById('loader').style.display='flex';
-  setApiStatus('loading');
-
-  let loaded = false;
-
-  // 1. Try Binance
-  try {
-    document.getElementById('loaderTxt').textContent='CONNECTING TO BINANCE';
-    document.getElementById('loaderSub').textContent='api.binance.com/api/v3/klines';
-    const limit = Math.min(days+2, 1000);
-    const url = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=${limit}`;
-    const ctrl = new AbortController();
-    const tid = setTimeout(()=>ctrl.abort(), 8000);
-    const r = await fetch(url, {signal:ctrl.signal});
-    clearTimeout(tid);
-    if (!r.ok) throw new Error('HTTP '+r.status);
-    const raw = await r.json();
-    if (!Array.isArray(raw)||raw.length<5) throw new Error('empty');
-    const area=[],ohlc=[];
-    raw.forEach(k=>{
-      const t=Math.floor(k[0]/1000),o=+k[1],h=+k[2],l=+k[3],c=+k[4],v=+k[5];
-      area.push({time:t,value:c});
-      ohlc.push({time:t,open:o,high:h,low:l,close:c});
-      priceMap[t]=c;
-    });
-    areaSeries.setData(area);
-    candleSeries.setData(ohlc);
-    loaded=true;
-    setApiStatus('ok');
-    console.log('✅ Binance loaded',raw.length,'candles');
-  } catch(e1) {
-    console.warn('Binance failed:',e1.message,'. Trying CoinGecko...');
-  }
-
-  // 2. Try CoinGecko
-  if (!loaded) {
-    try {
-      document.getElementById('loaderTxt').textContent='TRYING COINGECKO';
-      document.getElementById('loaderSub').textContent='api.coingecko.com/api/v3';
-      const r = await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${days}&interval=daily`);
-      if (!r.ok) throw new Error('HTTP '+r.status);
-      const d = await r.json();
-      if (!d.prices||d.prices.length<5) throw new Error('empty');
-      const area = d.prices.map(([ts,v])=>({time:Math.floor(ts/1000),value:v}));
-      areaSeries.setData(area);
-      candleSeries.setData(area.map(d=>({time:d.time,open:d.value*.997,high:d.value*1.003,low:d.value*.994,close:d.value})));
-      area.forEach(p=>priceMap[p.time]=p.value);
-      loaded=true;
-      setApiStatus('ok');
-      console.log('✅ CoinGecko loaded');
-    } catch(e2) {
-      console.warn('CoinGecko failed:',e2.message,'. Using offline fallback...');
-    }
-  }
-
-  // 3. Always-works fallback
-  if (!loaded) {
-    document.getElementById('loaderTxt').textContent='API UNAVAILABLE';
-    document.getElementById('loaderSub').textContent='using offline historical data';
-    const fb = buildFallback();
-    // Filter to requested days
-    const cutoff = Date.now()/1000 - days*86400;
-    const filtered = fb.filter(p=>p.time>=cutoff);
-    areaSeries.setData(filtered.length>10?filtered:fb);
-    candleSeries.setData((filtered.length>10?filtered:fb).map(d=>({time:d.time,open:d.value*.997,high:d.value*1.003,low:d.value*.994,close:d.value})));
-    filtered.forEach(p=>priceMap[p.time]=p.value);
-    setApiStatus('err');
-    console.log('⚠️ Using offline fallback data');
-  }
-
-  chart.timeScale().fitContent();
-  renderMarkers();
-  document.getElementById('loader').style.display='none';
-}
-
-// ════════════════════════════════════════
-//  LIVE METRICS
-// ════════════════════════════════════════
-async function fetchLivePrice() {
-  try {
-    const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
-    const d=await r.json();
-    document.getElementById('livePrice').textContent=`$${Math.round(+d.lastPrice).toLocaleString()}`;
-    const chg=+d.priceChangePercent;
-    const el=document.getElementById('priceChg');
-    el.textContent=`${chg>=0?'+':''}${chg.toFixed(2)}%`;
-    el.className=`pchg ${chg>=0?'up':'dn'}`;
-    document.getElementById('volVal').textContent=`$${(+d.quoteVolume/1e9).toFixed(2)}B`;
-  } catch{}
-}
-async function fetchFG(){
-  try{
-    const d=(await (await fetch('https://api.alternative.me/fng/?limit=1')).json()).data[0];
-    const el=document.getElementById('fgVal');
-    el.textContent=`${d.value}`;
-    el.style.color=d.value<=25?'#ef4444':d.value<=50?'#f59e0b':'#00e87a';
-  }catch{}
-}
-async function fetchFunding(){
-  try{
-    const d=await(await fetch('https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT')).json();
-    const rate=+d.lastFundingRate*100;
-    const el=document.getElementById('fundingVal');
-    el.textContent=`${rate>=0?'+':''}${rate.toFixed(4)}%`;
-    el.style.color=rate<-0.01?'#00e87a':rate>0.05?'#ef4444':'#8b9db3';
-  }catch{}
-}
-async function fetchOI(){
-  try{
-    const d=await(await fetch('https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT')).json();
-    document.getElementById('oiVal').textContent=`${(+d.openInterest/1000).toFixed(1)}K BTC`;
-  }catch{}
-}
-async function fetchDVOL(){
-  try{
-    const now=Date.now();
-    const r=await fetch(`https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&start_timestamp=${now-7200000}&end_timestamp=${now}&resolution=3600`);
-    const d=await r.json();
-    const data=d.result?.data;
-    if(data&&data.length>0){
-      const v=data[data.length-1][4]; // close of latest hourly candle
-      const el=document.getElementById('dvolVal');
-      el.textContent=v.toFixed(1);
-      el.className=`sv ${v>70?'r':v>50?'a':'g'}`;
-    }
-  }catch{}
-}
-async function fetchMVRV(){
-  try{
-    const d=await(await fetch('https://community-api.coinmetrics.io/v4/timeseries/asset-metrics?assets=btc&metrics=CapMVRVCur&frequency=1d&page_size=1')).json();
-    const v=parseFloat(d.data?.[0]?.CapMVRVCur);
-    if(v)document.getElementById('mvrvVal').textContent=`${v.toFixed(2)}×`;
-  }catch{}
-}
-async function fetchCBPrem(){
-  try{
-    const[cb,bn]=await Promise.all([
-      fetch('https://api.coinbase.com/v2/prices/BTC-USD/spot').then(r=>r.json()).then(d=>+d.data.amount),
-      fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT').then(r=>r.json()).then(d=>+d.price),
-    ]);
-    const p=((cb-bn)/bn*100);
-    const el=document.getElementById('cbPrem');
-    el.textContent=`${p>=0?'+':''}${p.toFixed(3)}%`;
-    el.className=`sv ${p>=0?'g':'r'}`;
-  }catch{}
-}
-
-// ════════════════════════════════════════
-//  POLYMARKET
-// ════════════════════════════════════════
-async function fetchPolymarket(){
-  try{
-    const r=await fetch('https://gamma-api.polymarket.com/markets?q=bitcoin&active=true&limit=5&closed=false');
-    if(!r.ok)throw new Error();
-    const data=await r.json();
-    const mkts=(Array.isArray(data)?data:data.markets||[]).slice(0,4);
-    if(!mkts.length)throw new Error('empty');
-    document.getElementById('pmSection').style.display='block';
-    document.getElementById('pmSrc').textContent='Polymarket · Live';
-    document.getElementById('pmCards').innerHTML=mkts.map(m=>{
-      // outcomePrices is a JSON string from Polymarket API — must parse
-      let rawPr = m.outcomePrices || '["0.5","0.5"]';
-      const pr = typeof rawPr === 'string' ? JSON.parse(rawPr) : rawPr;
-      const yes=Math.round(parseFloat(pr[0]||0.5)*100),no=100-yes;
-      const vol=m.volume?`$${(+m.volume/1e6).toFixed(2)}M`:'—';
-      return `<div class="pmcard"><div class="pmq">${m.question||m.title}</div>
-      <div class="pmrow"><span class="pmy">${yes}%</span>
-      <div class="pmtrack"><div class="pmfill" style="width:${yes}%"></div></div>
-      <span class="pmn">${no}%</span></div>
-      <div class="pmvol">Vol: ${vol} · Polymarket</div></div>`;
-    }).join('');
-  }catch{staticPM();}
-}
-
-function staticPM(){
-  const MRKTS=[
-    {q:'Will BTC close above $70K on Mar 31, 2026?',yes:41,vol:'$8.2M'},
-    {q:'Will Fed cut rates at March 2026 FOMC?',yes:18,vol:'$14.5M'},
-    {q:'Will US establish Strategic Bitcoin Reserve in 2026?',yes:52,vol:'$22.8M'},
-    {q:'Will BTC reach new ATH ($110K+) in 2026?',yes:57,vol:'$31.1M'},
-  ];
-  document.getElementById('pmSection').style.display='block';
-  document.getElementById('pmSrc').textContent='Polymarket (cached)';
-  document.getElementById('pmCards').innerHTML=MRKTS.map(m=>{
-    const no=100-m.yes;
-    return `<div class="pmcard"><div class="pmq">${m.q}</div>
-    <div class="pmrow"><span class="pmy">${m.yes}%</span>
-    <div class="pmtrack"><div class="pmfill" style="width:${m.yes}%"></div></div>
-    <span class="pmn">${no}%</span></div>
-    <div class="pmvol">Vol: ${m.vol} · Polymarket</div></div>`;
-  }).join('');
-}
-
-// ════════════════════════════════════════
-//  MARKERS
-// ════════════════════════════════════════
-function getFiltered(){
-  const cut=new Date(); cut.setDate(cut.getDate()-activeDays);
-  return EVENTS.filter(e=>(activeFilter==='all'||e.type===activeFilter)&&new Date(e.date)>=cut);
-}
-function renderMarkers(){
-  const evs=getFiltered();
-  const m=evs.map(e=>({
-    time:e.date,
-    position:e.impact==='bearish'?'aboveBar':'belowBar',
-    color:TCFG[e.type]?.color||'#fff',
-    shape:'circle',text:'',size:1.5,
-  })).sort((a,b)=>a.time>b.time?1:-1);
-  areaSeries.setMarkers(m);
-  candleSeries.setMarkers(m);
-  document.getElementById('evCount').textContent=evs.length;
-}
-
-// ════════════════════════════════════════
-//  FLOAT CARD (hover)
-// ════════════════════════════════════════
-function updateFloat(p){
-  const time=p.time;
-  const ds=typeof time==='string'?time:new Date(time*1000).toISOString().slice(0,10);
+function floatUpdate(p){
+  const ds=toDateStr(p.time);
   const data=p.seriesData?.get(activeSeries);
   const pv=data?(data.close||data.value||0):0;
-  const vol=data?.volume;
-  const nearby=EVENTS.filter(e=>Math.abs(new Date(e.date)-new Date(ds))/86400000<=2);
+  const nearby=EVENTS.filter(e=>dayDiff(e.date,ds)<=2);
   document.getElementById('floatDate').textContent=fmtDate(ds);
   document.getElementById('floatPrice').textContent=pv?`$${Math.round(pv).toLocaleString()}`:'—';
-  document.getElementById('floatVol').textContent=vol?`Vol $${(vol*pv/1e9).toFixed(2)}B`:'';
+  const fv=document.getElementById('floatVol');
+  fv.textContent=data?.volume?`Vol $${(data.volume*pv/1e9).toFixed(2)}B`:'';
   const fe=document.getElementById('floatEvt');
   if(nearby.length){fe.textContent=`${nearby.length} event${nearby.length>1?'s':''} — click to explore`;fe.style.display='flex';}
-  else{fe.style.display='none';}
+  else fe.style.display='none';
   document.getElementById('floatCard').style.display='block';
 }
 function floatHide(){document.getElementById('floatCard').style.display='none';}
 
-// ════════════════════════════════════════
-//  PANEL (click)
-// ════════════════════════════════════════
-function updatePanel(p){
-  const time=p.time;
-  const ds=typeof time==='string'?time:new Date(time*1000).toISOString().slice(0,10);
+function deskPanelUpdate(p){
+  const ds=toDateStr(p.time);
   const data=p.seriesData?.get(activeSeries);
   const pv=data?(data.close||data.value||0):0;
   document.getElementById('panelDate').textContent=fmtDate(ds);
   document.getElementById('panelPrice').textContent=pv?`$${Math.round(pv).toLocaleString()}`:'—';
-  const target=new Date(ds);
+  renderEventsTo('panelBody',ds);
+}
+function deskPanelReset(){
+  document.getElementById('panelDate').textContent='—';
+  document.getElementById('panelPrice').textContent='—';
+  document.getElementById('panelBody').innerHTML=`<div class="cta"><div class="cta-icon"></div><div class="cta-title">Click any point on the chart</div><div class="cta-sub">View macro events, on-chain signals, regulatory updates and <em>Polymarket prediction odds</em> at each BTC price level</div></div>`;
+}
+
+// ════════════════════════════════════════
+//  MOBILE INTERACTIONS
+// ════════════════════════════════════════
+function mobileUpdate(p){
+  const ds=toDateStr(p.time);
+  const data=p.seriesData?.get(activeSeries);
+  const pv=data?(data.close||data.value||0):0;
+  const nearby=EVENTS.filter(e=>dayDiff(e.date,ds)<=3&&(activeFilter==='all'||e.type===activeFilter));
+  document.getElementById('ibDate').textContent=fmtDate(ds);
+  document.getElementById('ibPrice').textContent=pv?`$${Math.round(pv).toLocaleString()}`:'—';
+  const ie=document.getElementById('ibEvt');
+  if(nearby.length){ie.textContent=`${nearby.length} event${nearby.length>1?'s':''}`;ie.classList.add('show');}
+  else ie.classList.remove('show');
+  renderEventsTo('mobileEvents',ds);
+}
+function mobileReset(){
+  document.getElementById('ibDate').textContent='Drag on chart to explore';
+  document.getElementById('ibPrice').textContent='—';
+  document.getElementById('ibEvt').classList.remove('show');
+  document.getElementById('mobileEvents').innerHTML=`<div class="cta"><div class="cta-icon">☝️</div><div class="cta-title">Drag on the chart above</div><div class="cta-sub">As you slide along the BTC price curve,<br>macro events, on-chain signals<br>and <em>Polymarket odds</em> appear here</div></div>`;
+}
+
+// ════════════════════════════════════════
+//  SHARED EVENT RENDERING
+// ════════════════════════════════════════
+function renderEventsTo(containerId,ds){
   const nearby=EVENTS.filter(e=>{
     if(activeFilter!=='all'&&e.type!==activeFilter)return false;
-    return Math.abs(new Date(e.date)-target)/86400000<=4;
-  }).sort((a,b)=>Math.abs(new Date(a.date)-target)-Math.abs(new Date(b.date)-target));
-
-  const body=document.getElementById('panelBody');
+    return dayDiff(e.date,ds)<=4;
+  }).sort((a,b)=>dayDiff(a.date,ds)-dayDiff(b.date,ds));
+  const el=document.getElementById(containerId);
   if(!nearby.length){
-    body.innerHTML=`<div class="empty"><div class="eico">◌</div><div class="etxt">No events within ±4 days of ${fmtDate(ds)}.<br>Try expanding filters or selecting a different period.</div></div>`;
+    el.innerHTML=`<div class="empty"><div class="eico">◌</div><div class="etxt">No events within ±4 days.<br>Try expanding filters.</div></div>`;
     return;
   }
   const groups={};
@@ -901,14 +778,14 @@ function updatePanel(p){
     html+=`<div class="srule"><span>${TCFG[type].label}</span></div>`;
     html+=evs.map(e=>cardHTML(e)).join('');
   }
-  body.innerHTML=html;
+  el.innerHTML=html;
 }
 
 function pmHTML(pm){
   if(!pm)return'';
-  if(pm.live||pm.yes===null)return`<div class="epm"><div class="epmlbl">📊 Prediction Market</div><div class="epmq">${pm.q||''}</div><div style="font-size:11px;color:var(--tx-3);font-family:var(--mono)">See Live Markets panel below ↓</div></div>`;
+  if(pm.live||pm.yes===null)return`<div class="epm"><div class="epmlbl">📊 Prediction Market · Live</div><div class="epmq">${pm.q||''}</div><div style="font-size:11px;color:var(--t3);font-family:var(--mono)">See panel below for current odds</div></div>`;
   const res=pm.resolved?`<span class="ores ${pm.outcome?'or-y':'or-n'}">${pm.outcome?'✓ YES':'✗ NO'}</span>`:'';
-  return`<div class="epm"><div class="epmlbl">📊 Polymarket — odds at event date</div>
+  return`<div class="epm"><div class="epmlbl">📊 Polymarket at event date</div>
     <div class="epmq">${pm.q}</div>
     <div class="obb-wrap"><span class="oyes">${pm.yes}%</span>
     <div class="obb-track"><div class="obb-fill" style="width:${pm.yes}%;background:${pm.yes>50?'var(--green)':'var(--amber)'}"></div></div>
@@ -918,7 +795,7 @@ function pmHTML(pm){
 
 function cardHTML(e){
   const t=TCFG[e.type];
-  const ic={bullish:'ib',bearish:'ir',neutral:'in'}[e.impact];
+  const ic={bullish:'ib2',bearish:'ir2',neutral:'in2'}[e.impact];
   const il={bullish:'▲ Bullish',bearish:'▼ Bearish',neutral:'◆ Neutral'}[e.impact];
   return`<div class="ecard"><div class="ehead"><div class="ebar" style="background:${t.color}"></div>
     <div class="ehc"><div class="ehrow"><div class="etitle">${e.title}</div><span class="echip ${t.chip}">${t.label}</span></div>
@@ -927,87 +804,113 @@ function cardHTML(e){
     <div class="efoot"><span class="eimp ${ic}">${il}</span></div></div>`;
 }
 
-function resetPanel(){
-  document.getElementById('panelDate').textContent='—';
-  document.getElementById('panelPrice').textContent='—';
-  document.getElementById('panelBody').innerHTML=`<div class="click-cta"><div class="cta-arrow">←</div><div class="cta-title">Click a point on the chart</div><div class="cta-sub">View macro events, on-chain signals,<br>regulatory updates and<br><em>Polymarket prediction odds</em><br>at any date on the BTC timeline</div></div>`;
-}
-
 // ════════════════════════════════════════
-//  API STATUS
+//  DATA LOADING
 // ════════════════════════════════════════
-function setApiStatus(s){
-  const dot=document.getElementById('apiDot');
-  const lbl=document.getElementById('apiLabel');
-  if(s==='ok'){dot.className='adot ok';lbl.textContent='Binance · Live';}
-  else if(s==='err'){dot.className='adot err';lbl.textContent='Offline data';}
-  else{dot.className='adot loading';lbl.textContent='loading...';}
-}
-
-// ════════════════════════════════════════
-//  CONTROLS
-// ════════════════════════════════════════
-document.getElementById('rangeGroup').addEventListener('click',e=>{
-  const b=e.target.closest('.rbtn'); if(!b)return;
-  document.querySelectorAll('.rbtn').forEach(x=>x.classList.remove('active'));
-  b.classList.add('active'); activeDays=parseInt(b.dataset.days);
-  loadData(activeDays);
-});
-document.getElementById('filterGroup').addEventListener('click',e=>{
-  const b=e.target.closest('.tag'); if(!b)return;
-  document.querySelectorAll('.tag').forEach(x=>x.classList.remove('active'));
-  b.classList.add('active'); activeFilter=b.dataset.t;
-  renderMarkers();
-});
-
-// ════════════════════════════════════════
-//  CLOCK
-// ════════════════════════════════════════
-function tick(){
-  const d=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Hong_Kong'}));
-  const p=n=>String(n).padStart(2,'0');
-  document.getElementById('hkClock').textContent=`${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
-}
-
-function fmtDate(s){
-  try{return new Date(s+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}catch{return s;}
-}
-
-// ════════════════════════════════════════
-//  MOBILE HELPERS
-// ════════════════════════════════════════
-function isMobile() { return window.innerWidth <= 768; }
-
-function updateMobileBar(p) {
-  const time = p.time;
-  const ds = typeof time==='string'?time:new Date(time*1000).toISOString().slice(0,10);
-  const data = p.seriesData?.get(activeSeries);
-  const pv = data?(data.close||data.value||0):0;
-  const nearby = EVENTS.filter(e=>Math.abs(new Date(e.date)-new Date(ds))/86400000<=3&&(activeFilter==='all'||e.type===activeFilter));
-  document.getElementById('mbDate').textContent = fmtDate(ds);
-  document.getElementById('mbPrice').textContent = pv?`$${Math.round(pv).toLocaleString()}`:'—';
-  const evEl = document.getElementById('mbEvt');
-  if (nearby.length) { evEl.textContent=`${nearby.length} event${nearby.length>1?'s':''}`; evEl.classList.add('show'); }
-  else { evEl.classList.remove('show'); }
-  // Hide initial CTA once user starts scrubbing
-  if (clickHintShown) { clickHintShown=false; }
-}
-
-function resetMobileBar() {
-  document.getElementById('mbDate').textContent='Drag on chart to explore';
-  document.getElementById('mbPrice').textContent='—';
-  document.getElementById('mbEvt').classList.remove('show');
-}
-
-// ════════════════════════════════════════
-//  BOOT — wait for lib + DOM ready
-// ════════════════════════════════════════
-function boot() {
-  if (typeof LightweightCharts === 'undefined') {
-    // Library still loading — retry in 200ms
-    setTimeout(boot, 200);
-    return;
+async function loadData(days){
+  document.getElementById('loader').style.display='flex';
+  let ok=false;
+  try{
+    document.getElementById('loaderTxt').textContent='BINANCE';
+    const limit=Math.min(days+2,1000);
+    const ctrl=new AbortController();setTimeout(()=>ctrl.abort(),8000);
+    const r=await fetch(`https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=${limit}`,{signal:ctrl.signal});
+    if(!r.ok)throw new Error();
+    const raw=await r.json();
+    if(!Array.isArray(raw)||raw.length<5)throw new Error();
+    const area=[],ohlc=[];
+    raw.forEach(k=>{const t=Math.floor(k[0]/1000);area.push({time:t,value:+k[4]});ohlc.push({time:t,open:+k[1],high:+k[2],low:+k[3],close:+k[4]});});
+    areaSeries.setData(area);candleSeries.setData(ohlc);ok=true;setApiStatus('ok');
+  }catch{
+    try{
+      document.getElementById('loaderTxt').textContent='COINGECKO';
+      const r=await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${days}&interval=daily`);
+      if(!r.ok)throw new Error();
+      const d=await r.json();
+      const a=d.prices.map(([ts,v])=>({time:Math.floor(ts/1000),value:v}));
+      areaSeries.setData(a);candleSeries.setData(a.map(p=>({time:p.time,open:p.value*.997,high:p.value*1.003,low:p.value*.994,close:p.value})));ok=true;setApiStatus('ok');
+    }catch{
+      document.getElementById('loaderTxt').textContent='OFFLINE DATA';
+      const fb=buildFallback(),cut=Date.now()/1000-days*86400,f=fb.filter(p=>p.time>=cut);
+      const d=f.length>10?f:fb;
+      areaSeries.setData(d);candleSeries.setData(d.map(p=>({time:p.time,open:p.value*.997,high:p.value*1.003,low:p.value*.994,close:p.value})));setApiStatus('err');
+    }
   }
+  chart.timeScale().fitContent();renderMarkers();
+  document.getElementById('loader').style.display='none';
+}
+
+function renderMarkers(){
+  const cut=new Date();cut.setDate(cut.getDate()-activeDays);
+  const evs=EVENTS.filter(e=>(activeFilter==='all'||e.type===activeFilter)&&new Date(e.date)>=cut);
+  const m=evs.map(e=>({time:e.date,position:e.impact==='bearish'?'aboveBar':'belowBar',color:TCFG[e.type]?.color||'#fff',shape:'circle',text:'',size:1.5})).sort((a,b)=>a.time>b.time?1:-1);
+  areaSeries.setMarkers(m);candleSeries.setMarkers(m);
+  const ec=document.getElementById('evCount');if(ec)ec.textContent=evs.length;
+}
+
+// ════════════════════════════════════════
+//  LIVE DATA
+// ════════════════════════════════════════
+async function fetchLivePrice(){try{const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');const d=await r.json();document.getElementById('livePrice').textContent=`$${Math.round(+d.lastPrice).toLocaleString()}`;const chg=+d.priceChangePercent;const el=document.getElementById('priceChg');el.textContent=`${chg>=0?'+':''}${chg.toFixed(2)}%`;el.className=`pchg ${chg>=0?'up':'dn'}`;const v=document.getElementById('volVal');if(v)v.textContent=`$${(+d.quoteVolume/1e9).toFixed(2)}B`;}catch{}}
+async function fetchFG(){try{const d=(await(await fetch('https://api.alternative.me/fng/?limit=1')).json()).data[0];const el=document.getElementById('fgVal');if(el){el.textContent=d.value;el.style.color=d.value<=25?'#ef4444':d.value<=50?'#f59e0b':'#00e87a';}}catch{}}
+async function fetchFunding(){try{const d=await(await fetch('https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT')).json();const rate=+d.lastFundingRate*100;const el=document.getElementById('fundingVal');if(el){el.textContent=`${rate>=0?'+':''}${rate.toFixed(4)}%`;el.style.color=rate<-0.01?'#00e87a':rate>0.05?'#ef4444':'#8b9db3';}}catch{}}
+async function fetchOI(){try{const d=await(await fetch('https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT')).json();const el=document.getElementById('oiVal');if(el)el.textContent=`${(+d.openInterest/1000).toFixed(1)}K BTC`;}catch{}}
+async function fetchDVOL(){try{const now=Date.now();const d=await(await fetch(`https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&start_timestamp=${now-7200000}&end_timestamp=${now}&resolution=3600`)).json();const data=d.result?.data;if(data?.length>0){const v=data[data.length-1][4];const el=document.getElementById('dvolVal');if(el){el.textContent=v.toFixed(1);el.className=`sv ${v>70?'r':v>50?'a':'g'}`;}};}catch{}}
+async function fetchMVRV(){try{const d=await(await fetch('https://community-api.coinmetrics.io/v4/timeseries/asset-metrics?assets=btc&metrics=CapMVRVCur&frequency=1d&page_size=1')).json();const v=parseFloat(d.data?.[0]?.CapMVRVCur);const el=document.getElementById('mvrvVal');if(v&&el)el.textContent=`${v.toFixed(2)}×`;}catch{}}
+async function fetchCBPrem(){try{const[cb,bn]=await Promise.all([fetch('https://api.coinbase.com/v2/prices/BTC-USD/spot').then(r=>r.json()).then(d=>+d.data.amount),fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT').then(r=>r.json()).then(d=>+d.price)]);const p=(cb-bn)/bn*100;const el=document.getElementById('cbPrem');if(el){el.textContent=`${p>=0?'+':''}${p.toFixed(3)}%`;el.className=`sv ${p>=0?'g':'r'}`;}}catch{}}
+
+async function fetchPolymarket(){
+  try{
+    const r=await fetch('https://gamma-api.polymarket.com/markets?q=bitcoin&active=true&limit=4&closed=false');
+    if(!r.ok)throw new Error();
+    const data=await r.json();
+    const mkts=(Array.isArray(data)?data:data.markets||[]).slice(0,4);
+    if(!mkts.length)throw new Error();
+    const pmSection=document.getElementById('pmSection');
+    if(!pmSection)return;
+    pmSection.style.display='block';
+    document.getElementById('pmSrc').textContent='Polymarket · Live';
+    document.getElementById('pmCards').innerHTML=mkts.map(m=>{
+      let pr=m.outcomePrices||'["0.5","0.5"]';
+      if(typeof pr==='string')pr=JSON.parse(pr);
+      const yes=Math.round(parseFloat(pr[0]||0.5)*100),no=100-yes;
+      const vol=m.volume?`$${(+m.volume/1e6).toFixed(2)}M`:'—';
+      return`<div class="pmcard"><div class="pmq">${m.question||m.title}</div><div class="pmrow"><span class="pmy">${yes}%</span><div class="pmtrack"><div class="pmfill" style="width:${yes}%"></div></div><span class="pmn">${no}%</span></div><div class="pmvol">Vol: ${vol} · Polymarket</div></div>`;
+    }).join('');
+  }catch{staticPM();}
+}
+function staticPM(){
+  const ms=[{q:'Will BTC close above $70K on Mar 31, 2026?',y:41,v:'$8.2M'},{q:'Will Fed cut rates at March 2026 FOMC?',y:18,v:'$14.5M'},{q:'Will US establish Strategic Bitcoin Reserve in 2026?',y:52,v:'$22.8M'},{q:'Will BTC reach new ATH ($110K+) in 2026?',y:57,v:'$31.1M'}];
+  const ps=document.getElementById('pmSection');if(!ps)return;
+  ps.style.display='block';
+  document.getElementById('pmSrc').textContent='Polymarket (cached)';
+  document.getElementById('pmCards').innerHTML=ms.map(m=>`<div class="pmcard"><div class="pmq">${m.q}</div><div class="pmrow"><span class="pmy">${m.y}%</span><div class="pmtrack"><div class="pmfill" style="width:${m.y}%"></div></div><span class="pmn">${100-m.y}%</span></div><div class="pmvol">Vol: ${m.v} · Polymarket</div></div>`).join('');
+}
+
+// ════════════════════════════════════════
+//  UTILS
+// ════════════════════════════════════════
+function toDateStr(time){return typeof time==='string'?time:new Date(time*1000).toISOString().slice(0,10);}
+function dayDiff(a,b){return Math.abs(new Date(a)-new Date(b))/86400000;}
+function fmtDate(s){try{return new Date(s+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}catch{return s;}}
+function setApiStatus(s){const d=document.getElementById('apiDot');const l=document.getElementById('apiLabel');if(!d)return;if(s==='ok'){d.className='adot ok';l.textContent='Binance · Live';}else if(s==='err'){d.className='adot err';l.textContent='Offline';}else{d.className='adot loading';l.textContent='loading…';}}
+function tick(){const d=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Hong_Kong'}));const p=n=>String(n).padStart(2,'0');const el=document.getElementById('hkClock');if(el)el.textContent=`${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;}}
+
+// Desktop controls
+const rgD=document.getElementById('rangeGroupDesktop');
+if(rgD)rgD.addEventListener('click',e=>{const b=e.target.closest('.rbtn');if(!b)return;rgD.querySelectorAll('.rbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeDays=parseInt(b.dataset.days);loadData(activeDays);});
+const fg=document.getElementById('filterGroup');
+if(fg)fg.addEventListener('click',e=>{const b=e.target.closest('.tag');if(!b)return;fg.querySelectorAll('.tag').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeFilter=b.dataset.t;renderMarkers();});
+// Mobile range
+const rgM=document.getElementById('rangeGroup');
+if(rgM)rgM.addEventListener('click',e=>{const b=e.target.closest('.rbtn');if(!b)return;rgM.querySelectorAll('.rbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeDays=parseInt(b.dataset.days);loadData(activeDays);});
+
+// ════════════════════════════════════════
+//  BOOT
+// ════════════════════════════════════════
+function boot(){
+  if(typeof LightweightCharts==='undefined'){setTimeout(boot,200);return;}
+  setupLayout();
   initChart();
   loadData(activeDays);
   Promise.all([fetchLivePrice(),fetchFG(),fetchFunding(),fetchOI(),fetchDVOL(),fetchMVRV(),fetchCBPrem(),fetchPolymarket()]);
@@ -1017,13 +920,9 @@ function boot() {
   setInterval(fetchFunding,30000);
   setInterval(fetchFG,300000);
   setInterval(fetchPolymarket,60000);
+  window.addEventListener('resize',setupLayout);
 }
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', boot);
-} else {
-  boot();
-}
+document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot):boot();
 </script>
 </body>
 </html>
