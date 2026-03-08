@@ -1488,16 +1488,18 @@ function calculate() {
     document.getElementById('sc-bps-' + k).textContent = bpsS + ' bps';
   });
 
-  // ─── Translation cards (use base case for stable reference) ───
+  // ─── Translation cards — all anchored to Base Case for stable reference ───
   const baseFeeSav = (2.50 - solFee) * annualTxns;
   const baseTot    = baseFeeSav + velocityGain;
+  const baseBps    = capital > 0 ? (baseTot / capital * 10000) : 0;
+  const baseBpsStr = baseBps >= 1 ? baseBps.toFixed(2) : baseBps.toFixed(3);
   const stressTot  = (10.00 - solFee) * annualTxns + velocityGain;
-  document.getElementById('t-per-txn').textContent    = '$' + (2.50 - solFee).toFixed(3) + '/txn';
-  document.getElementById('t-daily').textContent      = fmtUSD(baseFeeSav / 250) + '/day';
-  document.getElementById('t-bps-alt').textContent    = bpsStr + ' bps';
-  document.getElementById('t-3yr').textContent        = fmtUSD(baseTot * 3);
+  document.getElementById('t-per-txn').textContent       = '$' + (2.50 - solFee).toFixed(4) + '/txn';
+  document.getElementById('t-daily').textContent         = fmtUSD(baseFeeSav / 250) + '/day';
+  document.getElementById('t-bps-alt').textContent       = baseBpsStr + ' bps';   // base case only
+  document.getElementById('t-3yr').textContent           = fmtUSD(baseTot * 3);
   document.getElementById('t-stress-annual').textContent = fmtUSD(stressTot) + '/yr';
-  document.getElementById('t-hours').textContent      = Math.round(timeFreedHrs).toLocaleString() + ' hrs';
+  document.getElementById('t-hours').textContent         = Math.round(timeFreedHrs).toLocaleString() + ' hrs';
 
   // 3yr projection
   const eth3yr = ethAnnual * 3;
@@ -1589,12 +1591,10 @@ async function fetchLiveData() {
 
 function updateLiveBanner() {
   const ethFeeNow = liveGasGwei * INST_GAS_UNITS * liveEthPrice / 1e9;
-  const solFeeNow = (SOL_LAMPORTS / 1e9) * liveSolPrice;
-  const ratio     = ethFeeNow > 0 ? Math.round(ethFeeNow / solFeeNow) : 0;
-
-  // Always update global solFee with live SOL price (even in non-live scenarios)
-  // Base fee (5,000 lam) + typical priority (5,000 lam) = 10,000 lamports
+  // Use 10K lamports (base + priority) everywhere for consistency with calculator
   solFee = (SOL_LAMPORTS * 2) / 1e9 * liveSolPrice;  // ~$0.00082 at $82/SOL
+  const solFeeNow = solFee;  // banner and calculator now use same SOL fee
+  const ratio     = ethFeeNow > 0 ? Math.round(ethFeeNow / solFeeNow) : 0;
 
   // Banner
   document.getElementById('live-eth-fee').textContent  = '$' + ethFeeNow.toFixed(4);
@@ -1617,10 +1617,13 @@ function updateLiveBanner() {
   // If live scenario is active, re-run with fresh gas price
   if (currentScenario === 'live') {
     ethFee = ethFeeNow;
-    solFee = solFeeNow;
+    // solFee already updated at top of this function
     document.getElementById('scenario-note').textContent =
       'Live — real-time ETH gas: ' + liveGasGwei.toFixed(3) + ' Gwei · est. fee $' +
       ethFeeNow.toFixed(4) + '/txn · 150K gas (institutional USDC multi-sig). Auto-updates every 30s.';
+    calculate();
+  } else {
+    // Non-live scenarios: solFee updated, re-run to refresh SOL cost columns
     calculate();
   }
 
