@@ -5,7 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BTC Event Navigator | OSL Research</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<!-- CDN 1: jsdelivr (globally reliable) -->
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"
+  onerror="loadLWFallback()"></script>
+<script>
+function loadLWFallback(){
+  console.warn('jsdelivr failed, trying cdnjs...');
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/lightweight-charts/4.1.3/lightweight-charts.standalone.production.js';
+  s.onerror=function(){
+    console.warn('cdnjs failed, trying unpkg...');
+    var s2=document.createElement('script');
+    s2.src='https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js';
+    document.head.appendChild(s2);
+  };
+  document.head.appendChild(s);
+}
+</script>
 <style>
 :root {
   --bg-0:#05090f; --bg-1:#080d15; --bg-2:#0c1422; --bg-3:#101c2e; --bg-4:#152235;
@@ -77,11 +93,12 @@ html,body{height:100%;background:var(--bg-1);color:var(--tx-1);font-family:var(-
 .ev-cnt strong{color:var(--tx-1)}
 .mbtn{padding:3px 9px;font-size:11px;font-family:var(--mono);border:1px solid var(--bd-1);border-radius:3px;cursor:pointer;color:var(--tx-3);background:transparent;transition:all .15s}
 .mbtn.active{color:var(--blue);background:var(--bld);border-color:rgba(59,130,246,.3)}
-/* LAYOUT — critical: min-height:0 for flex children */
+/* LAYOUT — flex sizing with explicit height:0 trick */
 body{display:flex;flex-direction:column}
-.body{display:flex;flex:1;overflow:hidden;min-height:0}
-.chart-area{flex:1;position:relative;min-height:0;min-width:0;overflow:hidden;background:var(--bg-1)}
-#chart{position:absolute;inset:0}
+.body{display:flex;flex:1;height:0;min-height:0;overflow:hidden}
+.chart-area{flex:1;position:relative;height:100%;min-width:0;overflow:hidden;background:var(--bg-1)}
+/* #chart sized by autoSize:true — just needs a non-zero container */
+#chart{width:100%;height:100%}
 /* FLOAT CARD */
 .fcard{position:absolute;top:14px;left:14px;z-index:20;background:rgba(8,13,21,.95);border:1px solid var(--bd-2);border-radius:4px;padding:10px 14px;min-width:190px;backdrop-filter:blur(10px);pointer-events:none;display:none;box-shadow:0 4px 20px rgba(0,0,0,.5)}
 .fdate{font-size:11px;color:var(--tx-3);font-family:var(--mono);margin-bottom:2px}
@@ -454,9 +471,14 @@ let priceMap = {}; // timestamp → price for panel display
 //  CHART INIT
 // ════════════════════════════════════════
 function initChart() {
+  if (typeof LightweightCharts === 'undefined') {
+    document.getElementById('loaderTxt').textContent = 'CHART LIBRARY FAILED TO LOAD';
+    document.getElementById('loaderSub').textContent = 'Please check network / refresh';
+    return;
+  }
   const el = document.getElementById('chart');
-  // el must have explicit dimensions
   chart = LightweightCharts.createChart(el, {
+    autoSize: true,   // ← auto-tracks container, no manual resize needed
     layout:{background:{color:'#080d15'},textColor:'#4a6278'},
     grid:{vertLines:{color:'#0c1422'},horzLines:{color:'#0c1422'}},
     crosshair:{mode:LightweightCharts.CrosshairMode.Normal,
@@ -494,13 +516,6 @@ function initChart() {
     if (locked && lockedTime===p.time) { unlock(); return; }
     lock(p);
   });
-
-  // Resize observer
-  const ro = new ResizeObserver(() => {
-    const w=el.offsetWidth, h=el.offsetHeight;
-    if (w>0&&h>0) chart.resize(w,h);
-  });
-  ro.observe(el);
 }
 
 let lockedTime = null;
@@ -862,17 +877,30 @@ function fmtDate(s){
 }
 
 // ════════════════════════════════════════
-//  BOOT
+//  BOOT — wait for lib + DOM ready
 // ════════════════════════════════════════
-initChart();
-loadData(activeDays);
-Promise.all([fetchLivePrice(),fetchFG(),fetchFunding(),fetchOI(),fetchDVOL(),fetchMVRV(),fetchCBPrem(),fetchPolymarket()]);
-tick();
-setInterval(tick,1000);
-setInterval(fetchLivePrice,10000);
-setInterval(fetchFunding,30000);
-setInterval(fetchFG,300000);
-setInterval(fetchPolymarket,60000);
+function boot() {
+  if (typeof LightweightCharts === 'undefined') {
+    // Library still loading — retry in 200ms
+    setTimeout(boot, 200);
+    return;
+  }
+  initChart();
+  loadData(activeDays);
+  Promise.all([fetchLivePrice(),fetchFG(),fetchFunding(),fetchOI(),fetchDVOL(),fetchMVRV(),fetchCBPrem(),fetchPolymarket()]);
+  tick();
+  setInterval(tick,1000);
+  setInterval(fetchLivePrice,10000);
+  setInterval(fetchFunding,30000);
+  setInterval(fetchFG,300000);
+  setInterval(fetchPolymarket,60000);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}
 </script>
 </body>
 </html>
