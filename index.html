@@ -846,11 +846,11 @@ body {
 
   <div style="text-align:center;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">ETH FEE ENVIRONMENT</div>
   <div class="scenario-row">
-    <button class="scenario-btn" id="s-conservative" onclick="setScenario('conservative')">Conservative · ~$5/txn</button>
-    <button class="scenario-btn active-base" id="s-base" onclick="setScenario('base')">Base Case · ~$13.75/txn</button>
-    <button class="scenario-btn" id="s-stress" onclick="setScenario('stress')">Stress · ~$40/txn</button>
+    <button class="scenario-btn" id="s-conservative" onclick="setScenario('conservative')">Conservative · ~$0.50/txn</button>
+    <button class="scenario-btn active-base" id="s-base" onclick="setScenario('base')">Base Case · ~$2.50/txn</button>
+    <button class="scenario-btn" id="s-stress" onclick="setScenario('stress')">Stress · ~$10/txn</button>
   </div>
-  <div class="scenario-note" id="scenario-note">Blended: 75% normal market days ($5) + 25% elevated activity ($40). Historically accurate for full-year planning.</div>
+  <div class="scenario-note" id="scenario-note">Base case: 80% normal days (~$1.50) + 20% elevated activity (~$7.00). Reflects 2024–2025 post-L2 era institutional settlement reality.</div>
 </div>
 
 <div class="section-gap"></div>
@@ -860,14 +860,14 @@ body {
   <div class="vs-grid">
     <div class="chain-card eth">
       <div class="chain-name">Ethereum</div>
-      <div class="chain-fee" id="eth-txn-fee">$13.75</div>
+      <div class="chain-fee" id="eth-txn-fee">$2.50</div>
       <div class="chain-fee-sub">per transaction</div>
       <div class="chain-stats">
         <div class="stat-row"><span class="stat-key">Monthly cost</span><span class="stat-val-eth" id="eth-monthly">—</span></div>
         <div class="stat-row"><span class="stat-key">Annual cost</span><span class="stat-val-eth" id="eth-annual">—</span></div>
         <div class="stat-row"><span class="stat-key">Finality</span><span class="stat-val-eth">~12–15 min</span></div>
         <div class="stat-row"><span class="stat-key">Fee predictability</span><span class="stat-val-eth">Low</span></div>
-        <div class="stat-row"><span class="stat-key">P99 fee</span><span class="stat-val-eth">$80–$150+</span></div>
+        <div class="stat-row"><span class="stat-key">P99 fee</span><span class="stat-val-eth">$15–$40</span></div>
       </div>
     </div>
 
@@ -1050,7 +1050,7 @@ body {
       <div class="osl-disclaimer-block">
         <div class="osl-disclaimer-label">Methodology &amp; Data Sources</div>
         <div class="osl-disclaimer-text">
-          Fee model derived from 2023–2025 historical on-chain data. Base case assumes 75% normal-market days (~$5/txn) and 25% elevated-activity days (~$40/txn). Capital velocity model: Δfinality window × annual transaction volume × hourly capital cost at 4.5% p.a. Live prices fetched from public market APIs.
+          Fee model derived from 2024–2025 post-L2 era on-chain data. Base case: 80% normal-market days (~$1.50/txn, ~5 Gwei) + 20% elevated-activity days (~$7.00/txn, ~25 Gwei). Institutional USDC multi-sig settlement assumed at ~150,000 gas units. ETH/USD live-fetched from market APIs.
           Verify independently: <a href="https://etherscan.io/gastracker" target="_blank">Etherscan Gas Tracker</a> · <a href="https://solanabeach.io" target="_blank">Solana Beach</a> · <a href="https://status.solana.com" target="_blank">Solana Status</a>
         </div>
       </div>
@@ -1075,16 +1075,16 @@ body {
 </footer>
 
 <script>
-let ethFee = 13.75;
+let ethFee = 2.50;
 let solFee = 0.001;
 let currentScenario = 'base';
 let pageOpenTime = Date.now();
 let tickerInterval;
 
 const scenarios = {
-  conservative: { fee: 5.00, note: 'Conservative estimate — all normal market conditions. ETH rarely stays here.' },
-  base: { fee: 13.75, note: 'Base case — blended 75% normal ($5) + 25% elevated activity ($40). Historically accurate for annual planning.' },
-  stress: { fee: 40.00, note: 'Stress scenario — elevated/peak market conditions. Occurred on ~15–20% of 2024 trading days.' }
+  conservative: { fee: 0.50, note: 'Conservative — current ultra-low gas environment (~1–3 Gwei). Reflects 2025 L1 activity with heavy L2 offloading. Institutional USDC multi-sig (~150K gas).' },
+  base: { fee: 2.50, note: 'Base case — realistic 2024–2025 average (~8 Gwei). Blended: 80% normal days ($1.50) + 20% elevated activity ($7.00). Most accurate for annual planning.' },
+  stress: { fee: 10.00, note: 'Stress scenario — network congestion events (~35 Gwei). Occurs during major market moves, token launches, or protocol upgrades. ~10–15% of 2024 trading days.' }
 };
 
 function fmtUSD(n) {
