@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Settlement Cost Analyzer | Institutional Desk Tool</title>
+<title>Settlement Cost Analyzer | OSL Research</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -543,6 +543,217 @@ body {
 }
 .footnote a { color: #374151; }
 
+/* ─── OSL NAVBAR ─── */
+.osl-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(8,12,18,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+}
+.osl-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.osl-wordmark {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+}
+.osl-logo-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #00c97a 0%, #00a86b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.osl-logo-mark svg {
+  width: 16px;
+  height: 16px;
+}
+.osl-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.osl-brand-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #f1f5f9;
+}
+.osl-brand-sub {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #00c97a;
+  margin-top: 2px;
+}
+.osl-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.08);
+}
+.osl-tool-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+  letter-spacing: 0.02em;
+}
+.osl-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.osl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(0,201,122,0.08);
+  border: 1px solid rgba(0,201,122,0.2);
+  color: #00c97a;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.osl-badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #00c97a;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.osl-ts {
+  font-size: 10px;
+  color: #475569;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+}
+
+/* ─── OSL COMPLIANCE FOOTER ─── */
+.osl-footer {
+  margin-top: 0;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  background: #060a0f;
+}
+.osl-footer-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 32px 48px;
+}
+.osl-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.osl-footer-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #00c97a 0%, #00a86b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.osl-footer-logo svg { width: 14px; height: 14px; }
+.osl-footer-brand-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #cbd5e1;
+  letter-spacing: 0.04em;
+}
+.osl-footer-tagline {
+  font-size: 10px;
+  color: #334155;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-left: 4px;
+}
+.osl-footer-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.04);
+  margin: 20px 0;
+}
+.osl-disclaimer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 40px;
+  margin-bottom: 24px;
+}
+@media (max-width: 640px) {
+  .osl-disclaimer-grid { grid-template-columns: 1fr; }
+  .osl-nav { padding: 0 16px; }
+  .osl-tool-label { display: none; }
+}
+.osl-disclaimer-block {}
+.osl-disclaimer-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #334155;
+  margin-bottom: 7px;
+}
+.osl-disclaimer-text {
+  font-size: 11px;
+  color: #374151;
+  line-height: 1.7;
+}
+.osl-disclaimer-text a {
+  color: #4b5563;
+  text-decoration: none;
+  border-bottom: 1px solid #1f2937;
+}
+.osl-disclaimer-text a:hover { color: #6b7280; }
+.osl-footer-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.03);
+}
+.osl-footer-copyright {
+  font-size: 10px;
+  color: #1f2937;
+  letter-spacing: 0.03em;
+}
+.osl-footer-links {
+  display: flex;
+  gap: 20px;
+}
+.osl-footer-links a {
+  font-size: 10px;
+  color: #1f2937;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+}
+.osl-footer-links a:hover { color: #374151; }
+
 /* ─── ANIMATIONS ─── */
 @keyframes countUp {
   from { opacity: 0; transform: translateY(8px); }
@@ -552,6 +763,33 @@ body {
 </style>
 </head>
 <body>
+
+<!-- OSL RESEARCH NAVBAR -->
+<nav class="osl-nav">
+  <div class="osl-nav-left">
+    <a class="osl-wordmark" href="https://osl.com" target="_blank" rel="noopener">
+      <div class="osl-logo-mark">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 2L13.5 5.5V10.5L8 14L2.5 10.5V5.5L8 2Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+          <circle cx="8" cy="8" r="2" fill="white"/>
+        </svg>
+      </div>
+      <div class="osl-brand-text">
+        <span class="osl-brand-name">OSL Research</span>
+        <span class="osl-brand-sub">Institutional Digital Assets</span>
+      </div>
+    </a>
+    <div class="osl-divider"></div>
+    <span class="osl-tool-label">Settlement Cost Analyzer</span>
+  </div>
+  <div class="osl-nav-right">
+    <div class="osl-badge">
+      <div class="osl-badge-dot"></div>
+      Live Data
+    </div>
+    <span class="osl-ts" id="nav-clock"></span>
+  </div>
+</nav>
 
 <!-- HERO -->
 <div class="hero">
@@ -781,15 +1019,60 @@ body {
   </div>
 </div>
 
-<div class="footnote">
-  Fee model: 2023–2025 historical on-chain data. Base case = 75% normal ($5/txn) + 25% elevated ($40/txn).
-  Capital velocity model: settlement window difference × annual transactions × hourly capital cost (4.5% p.a.).<br>
-  Verify live data:
-  <a href="https://etherscan.io/gastracker" target="_blank">etherscan.io/gastracker</a> ·
-  <a href="https://solanabeach.io" target="_blank">solanabeach.io</a> ·
-  <a href="https://status.solana.com" target="_blank">status.solana.com</a><br>
-  For informational purposes only. Not financial or investment advice.
-</div>
+<footer class="osl-footer">
+  <div class="osl-footer-inner">
+    <div class="osl-footer-brand">
+      <div class="osl-footer-logo">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 2L13.5 5.5V10.5L8 14L2.5 10.5V5.5L8 2Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+          <circle cx="8" cy="8" r="2" fill="white"/>
+        </svg>
+      </div>
+      <span class="osl-footer-brand-name">OSL Research</span>
+      <span class="osl-footer-tagline">· Institutional Digital Assets Research</span>
+    </div>
+
+    <div class="osl-footer-divider"></div>
+
+    <div class="osl-disclaimer-grid">
+      <div class="osl-disclaimer-block">
+        <div class="osl-disclaimer-label">Important Disclosures</div>
+        <div class="osl-disclaimer-text">
+          This tool is published by OSL Research, a division of OSL Group (1499.HK). It is intended solely for informational and educational purposes for institutional and professional counterparties. The outputs of this calculator constitute illustrative modelling based on publicly available on-chain data and do not represent investment advice, a solicitation to trade, or a recommendation of any digital asset, product, or strategy.
+        </div>
+      </div>
+      <div class="osl-disclaimer-block">
+        <div class="osl-disclaimer-label">Risk Warning</div>
+        <div class="osl-disclaimer-text">
+          Digital asset markets are highly volatile and involve substantial risk of loss. Past fee and performance data are not indicative of future results. Blockchain network conditions, protocol upgrades, and regulatory changes may materially affect actual transaction costs and settlement times. All figures shown are estimates only. Actual savings will vary.
+        </div>
+      </div>
+      <div class="osl-disclaimer-block">
+        <div class="osl-disclaimer-label">Methodology &amp; Data Sources</div>
+        <div class="osl-disclaimer-text">
+          Fee model derived from 2023–2025 historical on-chain data. Base case assumes 75% normal-market days (~$5/txn) and 25% elevated-activity days (~$40/txn). Capital velocity model: Δfinality window × annual transaction volume × hourly capital cost at 4.5% p.a. Live prices fetched from public market APIs.
+          Verify independently: <a href="https://etherscan.io/gastracker" target="_blank">Etherscan Gas Tracker</a> · <a href="https://solanabeach.io" target="_blank">Solana Beach</a> · <a href="https://status.solana.com" target="_blank">Solana Status</a>
+        </div>
+      </div>
+      <div class="osl-disclaimer-block">
+        <div class="osl-disclaimer-label">Regulatory Notice</div>
+        <div class="osl-disclaimer-text">
+          OSL Digital Securities Limited is licensed by the Securities and Futures Commission of Hong Kong (SFC) for dealing in and advising on virtual assets (Type 1 &amp; Type 7). This material has not been reviewed by any regulatory authority. Distribution or use of this tool may be restricted in certain jurisdictions. Recipients are responsible for ensuring compliance with applicable laws and regulations in their own jurisdiction.
+        </div>
+      </div>
+    </div>
+
+    <div class="osl-footer-meta">
+      <span class="osl-footer-copyright">© 2026 OSL Group. All rights reserved. OSL Research is for professional and institutional use only.</span>
+      <div class="osl-footer-links">
+        <a href="https://osl.com" target="_blank" rel="noopener">osl.com</a>
+        <a href="https://osl.com/en/institution" target="_blank" rel="noopener">Institutional</a>
+        <a href="https://osl.com/en/terms" target="_blank" rel="noopener">Terms</a>
+        <a href="https://osl.com/en/privacy-policy" target="_blank" rel="noopener">Privacy</a>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <script>
 let ethFee = 13.75;
@@ -923,6 +1206,20 @@ function startTicker(annualFeeSavings) {
 
 // Init
 calculate();
+
+// Nav clock
+function updateClock() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const hk = new Intl.DateTimeFormat('en-HK', {
+    timeZone: 'Asia/Hong_Kong',
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+  }).format(now);
+  const el = document.getElementById('nav-clock');
+  if (el) el.textContent = 'HKT ' + hk;
+}
+updateClock();
+setInterval(updateClock, 1000);
 </script>
 </body>
 </html>
