@@ -199,84 +199,80 @@ body{display:flex;flex-direction:column}
 .pfoot{padding:8px 16px;border-top:1px solid var(--bd-1);flex-shrink:0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--bg-3)}
 
 /* ═══════════════════════════════════════════
-   RESPONSIVE — Mobile / Tablet
+   RESPONSIVE — Mobile-First
 ═══════════════════════════════════════════ */
 
-/* Tablet (≤1024px): narrow sidebar */
-@media(max-width:1024px){
-  .side{width:320px}
-}
+/* Tablet */
+@media(max-width:1024px){.side{width:310px}}
 
-/* Mobile (≤768px): stack vertically */
+/* ── MOBILE ─────────────────────────────── */
 @media(max-width:768px){
-  /* Header compact */
-  .header{height:auto;flex-wrap:wrap;padding:8px 12px;gap:8px}
-  .logo-prod{display:none}
-  .logo-div{display:none}
-  .hdr-mid{gap:10px}
-  .pvalue{font-size:16px}
-  .hdr-right{gap:8px}
+  /* Header: single tight row, no extras */
+  .header{height:44px;padding:0 12px}
+  .logo-div,.logo-prod,.strip,.click-hint,.fcard,.pfoot,.pmsec,.ctrl-end,.csep,.ch,.tag,.mbtn{display:none!important}
+  .logo-name{font-size:12px}
+  .pvalue{font-size:17px}
+  .ltxt{display:none}
+  .hdr-right{gap:6px}
   .dpill{padding:2px 7px}
+  .dpill:nth-child(2){display:none}
 
-  /* Data strip: horizontal scroll */
-  .strip{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding:0 12px}
-  .strip::-webkit-scrollbar{height:2px}
-  .strip::-webkit-scrollbar-thumb{background:var(--bd-3)}
-  .si{flex-shrink:0;padding:0 10px}
+  /* Controls: range only, compact */
+  .controls{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding:0 10px;height:34px}
+  .controls::-webkit-scrollbar{height:0}
+  .rbtn{padding:2px 8px;font-size:11px}
 
-  /* Controls: horizontal scroll */
-  .controls{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding:0 12px;height:auto;min-height:36px;flex-wrap:nowrap}
-  .controls::-webkit-scrollbar{height:2px}
-  .controls::-webkit-scrollbar-thumb{background:var(--bd-3)}
-  .csec{flex-shrink:0}
-  .csep{flex-shrink:0}
-  .ctrl-end{flex-shrink:0}
+  /* Layout: vertical */
+  .body{flex-direction:column;height:0;flex:1}
 
-  /* Body: vertical stack */
-  .body{flex-direction:column}
+  /* Chart fills most of screen */
+  .chart-area{flex:none;width:100%;height:50vw;min-height:190px;max-height:52vh}
 
-  /* Chart: top 45% of remaining height */
-  .chart-area{flex:none;height:45vh;width:100%}
+  /* Mobile info bar between chart and events */
+  .mobile-bar{display:flex!important}
 
-  /* Panel: bottom section, scrollable */
-  .side{width:100%;flex:1;min-height:0;border-left:none;border-top:1px solid var(--bd-1)}
+  /* Panel fills rest */
+  .side{width:100%;flex:1;min-height:0;border-left:none;border-top:none}
+  .ph{display:none}
 
-  /* Float card: bottom left on mobile */
-  .fcard{top:auto;bottom:14px;left:10px;right:auto;min-width:160px}
+  /* Tighter cards */
+  .ehead{padding:8px 10px 7px}
+  .ebar{width:2px}
+  .etitle{font-size:12px}
+  .ebody{padding:6px 10px 6px;padding-left:calc(10px + 2px + 7px)}
+  .edesc{font-size:11px;line-height:1.65}
+  .epm{padding:6px}
+  .epmq{font-size:10.5px}
+  .efoot{padding:4px 10px 6px;padding-left:calc(10px+2px+7px)}
+  .pbody{padding:8px}
+  .srule{margin:8px 0 5px}
 
-  /* Click hint: smaller */
-  .click-hint{bottom:auto;top:8px;font-size:11px;padding:5px 12px}
-  .ch-text{font-size:11px}
-
-  /* Panel head compact */
-  .ph{padding:8px 12px}
-  .phv{font-size:13px}
-
-  /* Event cards: tighter */
-  .ehead{padding:7px 9px 6px}
-  .ebody{padding:6px 9px 6px;padding-left:calc(9px + 3px + 7px)}
-  .edesc{font-size:11px}
-  .efoot{padding:4px 9px 6px;padding-left:calc(9px+3px+7px)}
-
-  /* Live PM section: hide on mobile to save space */
-  .pmsec{display:none!important}
-
-  /* Legend: hide on mobile */
-  .pfoot{display:none}
-
-  /* CTA arrow: point up instead of left */
-  .cta-arrow{font-size:24px}
-  @keyframes arrowBounce{0%,100%{transform:translateY(-3px)}50%{transform:translateY(3px)}}
+  /* CTA */
+  .click-cta{padding:20px 14px;gap:10px}
+  .cta-arrow{font-size:28px;animation:arrowUp 1.5s infinite}
+  @keyframes arrowUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .cta-title{font-size:13px}
   .cta-sub{font-size:11px}
 }
 
-/* Small mobile (≤480px) */
 @media(max-width:480px){
-  .chart-area{height:42vh}
-  .hdr-right .dpill:last-child{display:none} /* hide clock pill */
-  .api-s{display:none}
+  .chart-area{height:46vw}
   .pvalue{font-size:15px}
+  .api-s{display:none!important}
 }
+
+/* Mobile info bar — hidden on desktop */
+.mobile-bar{
+  display:none;align-items:center;justify-content:space-between;
+  height:34px;flex-shrink:0;padding:0 14px;
+  background:var(--bg-3);border-top:1px solid var(--bd-1);border-bottom:1px solid var(--bd-1);
+}
+.mb-date{font-size:11px;color:var(--tx-3);font-family:var(--mono)}
+.mb-right{display:flex;align-items:center;gap:10px}
+.mb-price{font-size:14px;font-weight:600;color:var(--green);font-family:var(--mono)}
+.mb-evt{font-size:11px;color:var(--amber);display:none;align-items:center;gap:4px}
+.mb-evt.show{display:flex}
+.mb-evt::before{content:'●';font-size:8px}
 .leg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--tx-4);font-family:var(--mono)}
 .ldot2{width:6px;height:6px;border-radius:50%}
 </style>
@@ -366,6 +362,15 @@ body{display:flex;flex-direction:column}
       <div class="lring"></div>
       <div class="ltxt" id="loaderTxt">CONNECTING TO BINANCE</div>
       <div class="lsub" id="loaderSub">fetching historical price data</div>
+    </div>
+  </div>
+
+  <!-- Mobile info bar (between chart and events) -->
+  <div class="mobile-bar" id="mobileBar">
+    <span class="mb-date" id="mbDate">Drag on chart to explore</span>
+    <div class="mb-right">
+      <span class="mb-evt" id="mbEvt">events nearby</span>
+      <span class="mb-price" id="mbPrice">—</span>
     </div>
   </div>
 
@@ -584,14 +589,21 @@ function initChart() {
   });
   activeSeries = areaSeries;
 
-  // HOVER — only update float card (not panel)
+  // HOVER — update float card on desktop; update panel on mobile (scrub = real-time)
   chart.subscribeCrosshairMove(p => {
-    if (!locked && p && p.time) updateFloat(p);
-    else if (!locked) floatHide();
+    if (isMobile()) {
+      // Mobile: scrubbing = real-time panel update, no lock needed
+      if (p && p.time) { updateMobileBar(p); updatePanel(p); }
+      else { resetMobileBar(); resetPanel(); }
+    } else {
+      if (!locked && p && p.time) updateFloat(p);
+      else if (!locked) floatHide();
+    }
   });
 
-  // CLICK — update full panel with events
+  // CLICK — desktop: lock panel; mobile: no-op (scrub already handles it)
   chart.subscribeClick(p => {
+    if (isMobile()) return;
     if (!p || !p.time) { unlock(); return; }
     if (locked && lockedTime===p.time) { unlock(); return; }
     lock(p);
@@ -959,6 +971,32 @@ function tick(){
 
 function fmtDate(s){
   try{return new Date(s+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}catch{return s;}
+}
+
+// ════════════════════════════════════════
+//  MOBILE HELPERS
+// ════════════════════════════════════════
+function isMobile() { return window.innerWidth <= 768; }
+
+function updateMobileBar(p) {
+  const time = p.time;
+  const ds = typeof time==='string'?time:new Date(time*1000).toISOString().slice(0,10);
+  const data = p.seriesData?.get(activeSeries);
+  const pv = data?(data.close||data.value||0):0;
+  const nearby = EVENTS.filter(e=>Math.abs(new Date(e.date)-new Date(ds))/86400000<=3&&(activeFilter==='all'||e.type===activeFilter));
+  document.getElementById('mbDate').textContent = fmtDate(ds);
+  document.getElementById('mbPrice').textContent = pv?`$${Math.round(pv).toLocaleString()}`:'—';
+  const evEl = document.getElementById('mbEvt');
+  if (nearby.length) { evEl.textContent=`${nearby.length} event${nearby.length>1?'s':''}`; evEl.classList.add('show'); }
+  else { evEl.classList.remove('show'); }
+  // Hide initial CTA once user starts scrubbing
+  if (clickHintShown) { clickHintShown=false; }
+}
+
+function resetMobileBar() {
+  document.getElementById('mbDate').textContent='Drag on chart to explore';
+  document.getElementById('mbPrice').textContent='—';
+  document.getElementById('mbEvt').classList.remove('show');
 }
 
 // ════════════════════════════════════════
