@@ -685,6 +685,72 @@ body {
 
 /* ─── SECTION SPACING ─── */
 .section-gap { height: 24px; }
+
+/* ─── SCENARIO COMPARE TABLE ─── */
+.scenario-compare-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.sc-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.sc-subtitle {
+  font-size: 12px;
+  color: #374151;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.sc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.sc-table th, .sc-table td {
+  padding: 10px 14px;
+  text-align: right;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.sc-table th:first-child, .sc-table td:first-child {
+  text-align: left;
+  color: var(--muted);
+  font-size: 11px;
+}
+.sc-table thead th {
+  background: rgba(255,255,255,0.03);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.sc-col-sub {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #374151;
+  display: block;
+  margin-top: 2px;
+}
+.sc-col-c { color: #93c5fd !important; }
+.sc-col-b { color: #fcd34d !important; }
+.sc-col-s { color: #fca5a5 !important; }
+.sc-table td { font-variant-numeric: tabular-nums; font-weight: 500; }
+.sc-row-hl td { background: rgba(255,255,255,0.02); font-weight: 700; }
+.sc-row-hl td:nth-child(2) { color: #93c5fd; }
+.sc-row-hl td:nth-child(3) { color: #fcd34d; }
+.sc-row-hl td:nth-child(4) { color: #fca5a5; }
 .footnote {
   text-align: center;
   font-size: 11px;
@@ -999,9 +1065,9 @@ body {
 
   <div style="text-align:center;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">ETH FEE ENVIRONMENT</div>
   <div class="scenario-row">
-    <button class="scenario-btn active-live" id="s-live" onclick="setScenario('live')">⬡ Live Now · <span id="live-btn-label">fetching…</span></button>
+    <button class="scenario-btn" id="s-live" onclick="setScenario('live')">⬡ Live Now · <span id="live-btn-label">fetching…</span></button>
     <button class="scenario-btn" id="s-conservative" onclick="setScenario('conservative')">Conservative · ~$0.50/txn</button>
-    <button class="scenario-btn" id="s-base" onclick="setScenario('base')">Base Case · ~$2.50/txn</button>
+    <button class="scenario-btn active-base" id="s-base" onclick="setScenario('base')">Base Case · ~$2.50/txn</button>
     <button class="scenario-btn" id="s-stress" onclick="setScenario('stress')">Stress · ~$10/txn</button>
   </div>
   <div class="scenario-note" id="scenario-note">Fetching live gas data… Using real-time ETH gas price (150K gas institutional USDC multi-sig).</div>
@@ -1112,39 +1178,65 @@ body {
 
 <div class="section-gap"></div>
 
+<!-- SCENARIO COMPARISON TABLE -->
+<div class="scenario-compare-wrap">
+  <div class="sc-title">Three Planning Scenarios — Side by Side</div>
+  <div class="sc-subtitle">Based on your current inputs. Stress scenario reflects historical congestion events (~10–20% of 2024 trading days).</div>
+  <table class="sc-table">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th class="sc-col-c">Conservative<br><span class="sc-col-sub">~$0.50/txn · 1–3 Gwei</span></th>
+        <th class="sc-col-b">Base Case<br><span class="sc-col-sub">~$2.50/txn · 8 Gwei</span></th>
+        <th class="sc-col-s">Stress<br><span class="sc-col-sub">~$10/txn · 35 Gwei</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>ETH fee / txn</td><td id="sc-eth-c">—</td><td id="sc-eth-b">—</td><td id="sc-eth-s">—</td></tr>
+      <tr><td>SOL fee / txn</td><td id="sc-sol-c">—</td><td id="sc-sol-b">—</td><td id="sc-sol-s">—</td></tr>
+      <tr class="sc-row-hl"><td>Annual fee savings</td><td id="sc-fee-c">—</td><td id="sc-fee-b">—</td><td id="sc-fee-s">—</td></tr>
+      <tr><td>Capital velocity gain</td><td id="sc-vel-c">—</td><td id="sc-vel-b">—</td><td id="sc-vel-s">—</td></tr>
+      <tr class="sc-row-hl"><td><strong>Total annual savings</strong></td><td id="sc-tot-c">—</td><td id="sc-tot-b">—</td><td id="sc-tot-s">—</td></tr>
+      <tr><td>Monthly savings</td><td id="sc-mo-c">—</td><td id="sc-mo-b">—</td><td id="sc-mo-s">—</td></tr>
+      <tr><td>3-year cumulative</td><td id="sc-3yr-c">—</td><td id="sc-3yr-b">—</td><td id="sc-3yr-s">—</td></tr>
+      <tr><td>bps on AUM</td><td id="sc-bps-c">—</td><td id="sc-bps-b">—</td><td id="sc-bps-s">—</td></tr>
+    </tbody>
+  </table>
+</div>
+
 <!-- TRANSLATION -->
 <div class="translation-section">
-  <div class="translation-title">What this savings is equivalent to</div>
+  <div class="translation-title">What the Base Case savings represent</div>
   <div class="translation-grid">
     <div class="trans-card">
-      <div class="trans-icon">👤</div>
-      <div class="trans-val" id="t-analysts">2.0 analysts</div>
-      <div class="trans-label">Full-time analyst salaries ($80K base)</div>
+      <div class="trans-icon">⚡</div>
+      <div class="trans-val" id="t-per-txn">—</div>
+      <div class="trans-label">Saved per settlement vs ETH (base case)</div>
     </div>
     <div class="trans-card">
       <div class="trans-icon">📅</div>
-      <div class="trans-val" id="t-daily">$458/day</div>
-      <div class="trans-label">Unnecessary cost, every trading day</div>
+      <div class="trans-val" id="t-daily">—</div>
+      <div class="trans-label">Fee savings per trading day (250 days)</div>
     </div>
     <div class="trans-card">
       <div class="trans-icon">📈</div>
-      <div class="trans-val" id="t-bps-alt">84 bps</div>
-      <div class="trans-label">Structural return improvement on capital</div>
+      <div class="trans-val" id="t-bps-alt">—</div>
+      <div class="trans-label">bps improvement on AUM (base case)</div>
     </div>
     <div class="trans-card">
       <div class="trans-icon">💵</div>
-      <div class="trans-val" id="t-3yr">$0</div>
-      <div class="trans-label">3-year cumulative (compounding)</div>
+      <div class="trans-val" id="t-3yr">—</div>
+      <div class="trans-label">3-year cumulative (base case)</div>
+    </div>
+    <div class="trans-card">
+      <div class="trans-icon">🔺</div>
+      <div class="trans-val" id="t-stress-annual">—</div>
+      <div class="trans-label">Annual savings in stress scenario</div>
     </div>
     <div class="trans-card">
       <div class="trans-icon">⏱</div>
-      <div class="trans-val" id="t-hours">1,483 hrs</div>
-      <div class="trans-label">Capital freed from settlement locks / year</div>
-    </div>
-    <div class="trans-card">
-      <div class="trans-icon">🗓</div>
-      <div class="trans-val" id="t-delay">$14K/mo</div>
-      <div class="trans-label">Monthly cost of delaying migration</div>
+      <div class="trans-val" id="t-hours">—</div>
+      <div class="trans-label">Settlement lock-time freed / year (hrs)</div>
     </div>
   </div>
 </div>
@@ -1276,7 +1368,7 @@ body {
 <script>
 let ethFee = 2.50;
 let solFee = 0.001;
-let currentScenario = 'live';
+let currentScenario = 'base';
 let pageOpenTime = Date.now();
 let tickerInterval;
 
@@ -1376,14 +1468,36 @@ function calculate() {
     ? (ratio/1000).toFixed(1) + 'K×'
     : Math.round(ratio) + '×';
 
-  // Translations
-  const analysts = total / 120000;  // mid-level financial analyst ~$120K all-in
-  document.getElementById('t-analysts').textContent = analysts.toFixed(1) + ' analysts';
-  document.getElementById('t-daily').textContent = fmtUSD(feeSavings / 250) + '/day';
-  document.getElementById('t-bps-alt').textContent = bpsStr + ' bps';
-  document.getElementById('t-3yr').textContent = fmtUSD(total * 3);
-  document.getElementById('t-hours').textContent = Math.round(timeFreedHrs).toLocaleString() + ' hrs';
-  document.getElementById('t-delay').textContent = fmtUSD(total / 12) + '/mo';
+  // ─── Scenario comparison table (always shows all 3 planning scenarios) ───
+  const scenarioFees = { conservative: 0.50, base: 2.50, stress: 10.00 };
+  const colKeys = ['c','b','s'];
+  const colFees = [0.50, 2.50, 10.00];
+  colFees.forEach((eFee, i) => {
+    const k = colKeys[i];
+    const fSav = (eFee - solFee) * annualTxns;
+    const tot  = fSav + velocityGain;          // velocity is scenario-independent
+    const bpsV = capital > 0 ? (tot / capital * 10000) : 0;
+    const bpsS = bpsV >= 1 ? bpsV.toFixed(2) : bpsV.toFixed(3);
+    document.getElementById('sc-eth-' + k).textContent = '$' + eFee.toFixed(2);
+    document.getElementById('sc-sol-' + k).textContent = '$' + solFee.toFixed(4);
+    document.getElementById('sc-fee-' + k).textContent = fmtUSD(fSav);
+    document.getElementById('sc-vel-' + k).textContent = fmtUSD(velocityGain);
+    document.getElementById('sc-tot-' + k).textContent = fmtUSD(tot);
+    document.getElementById('sc-mo-'  + k).textContent = fmtUSD(tot / 12) + '/mo';
+    document.getElementById('sc-3yr-' + k).textContent = fmtUSD(tot * 3);
+    document.getElementById('sc-bps-' + k).textContent = bpsS + ' bps';
+  });
+
+  // ─── Translation cards (use base case for stable reference) ───
+  const baseFeeSav = (2.50 - solFee) * annualTxns;
+  const baseTot    = baseFeeSav + velocityGain;
+  const stressTot  = (10.00 - solFee) * annualTxns + velocityGain;
+  document.getElementById('t-per-txn').textContent    = '$' + (2.50 - solFee).toFixed(3) + '/txn';
+  document.getElementById('t-daily').textContent      = fmtUSD(baseFeeSav / 250) + '/day';
+  document.getElementById('t-bps-alt').textContent    = bpsStr + ' bps';
+  document.getElementById('t-3yr').textContent        = fmtUSD(baseTot * 3);
+  document.getElementById('t-stress-annual').textContent = fmtUSD(stressTot) + '/yr';
+  document.getElementById('t-hours').textContent      = Math.round(timeFreedHrs).toLocaleString() + ' hrs';
 
   // 3yr projection
   const eth3yr = ethAnnual * 3;
