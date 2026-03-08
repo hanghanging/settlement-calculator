@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BTC Event Navigator | OSL Research</title>
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+  :root {
+    --bg:       #080C12;
+    --bg2:      #0d1117;
+    --bg3:      #141b25;
+    --border:   #1e2d3d;
+    --green:    #00FF88;
+    --blue:     #4a9eff;
+    --orange:   #ff9d4a;
+    --red:      #ff4d6d;
+    --gold:     #FFD700;
+    --purple:   #b57eff;
+    --text:     #e2e8f0;
+    --muted:    #6b7280;
+    --card-bg:  #111827;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'SF Pro Display', 'Inter', -apple-system, sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; height: 52px; border-bottom: 1px solid var(--border);
+    background: rgba(8,12,18,0.95); flex-shrink: 0;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-hex {
+    width: 28px; height: 28px; background: var(--green);
+    clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 900; color: #080C12; flex-shrink: 0;
+  }
+  .logo-text { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 0.3px; }
+  .logo-sub  { font-size: 11px; color: var(--muted); }
+  .header-center { display: flex; align-items: center; gap: 16px; }
+  .live-price { display: flex; align-items: center; gap: 8px; }
+  .price-val  { font-size: 20px; font-weight: 700; color: var(--green); font-variant-numeric: tabular-nums; }
+  .price-chg  { font-size: 13px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .price-chg.up   { color: var(--green); background: rgba(0,255,136,0.1); }
+  .price-chg.down { color: var(--red);   background: rgba(255,77,109,0.1); }
+  .live-badge { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--green); }
+  .live-dot   { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .header-right { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--muted); }
+  .hk-time { font-size: 13px; color: var(--text); font-variant-numeric: tabular-nums; }
+
+  /* ── CONTROLS ── */
+  .controls {
+    display: flex; align-items: center; gap: 16px; padding: 8px 20px;
+    border-bottom: 1px solid var(--border); background: var(--bg2); flex-shrink: 0;
+  }
+  .ctrl-group { display: flex; align-items: center; gap: 4px; }
+  .ctrl-label { font-size: 11px; color: var(--muted); margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .btn {
+    padding: 4px 12px; border-radius: 5px; border: 1px solid var(--border);
+    background: transparent; color: var(--muted); font-size: 12px; cursor: pointer;
+    transition: all 0.15s; font-weight: 500;
+  }
+  .btn:hover { border-color: var(--green); color: var(--green); }
+  .btn.active { background: rgba(0,255,136,0.15); border-color: var(--green); color: var(--green); }
+  .filter-btn {
+    padding: 3px 10px; border-radius: 20px; border: 1px solid var(--border);
+    font-size: 11px; cursor: pointer; background: transparent; color: var(--muted);
+    transition: all 0.15s; font-weight: 500;
+  }
+  .filter-btn:hover, .filter-btn.active { opacity: 1; }
+  .filter-btn[data-type="all"].active    { background: rgba(255,255,255,0.08); border-color: #fff; color: #fff; }
+  .filter-btn[data-type="macro"].active  { background: rgba(74,158,255,0.15); border-color: var(--blue);   color: var(--blue); }
+  .filter-btn[data-type="onchain"].active{ background: rgba(255,157,74,0.15); border-color: var(--orange); color: var(--orange); }
+  .filter-btn[data-type="regulatory"].active{ background: rgba(255,77,109,0.15); border-color: var(--red); color: var(--red); }
+  .filter-btn[data-type="etf"].active    { background: rgba(0,255,136,0.15);  border-color: var(--green);  color: var(--green); }
+  .filter-btn[data-type="market"].active { background: rgba(255,215,0,0.15);  border-color: var(--gold);   color: var(--gold); }
+  .controls-spacer { flex: 1; }
+  .event-count { font-size: 11px; color: var(--muted); }
+  .event-count span { color: var(--text); font-weight: 600; }
+
+  /* ── MAIN LAYOUT ── */
+  .main { display: flex; flex: 1; overflow: hidden; }
+  .chart-wrap { flex: 1; position: relative; overflow: hidden; }
+  #chart { width: 100%; height: 100%; }
+  .crosshair-info {
+    position: absolute; top: 12px; left: 12px; z-index: 10;
+    background: rgba(13,17,23,0.9); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 12px; font-size: 12px;
+    pointer-events: none; display: none;
+  }
+  .crosshair-date { color: var(--muted); margin-bottom: 3px; }
+  .crosshair-price { color: var(--green); font-size: 16px; font-weight: 700; }
+  .crosshair-event-hint { color: var(--gold); font-size: 11px; margin-top: 4px; }
+
+  /* ── SIDE PANEL ── */
+  .side-panel {
+    width: 360px; flex-shrink: 0; border-left: 1px solid var(--border);
+    background: var(--bg2); display: flex; flex-direction: column; overflow: hidden;
+  }
+  .panel-header {
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  }
+  .panel-date { font-size: 14px; font-weight: 600; color: var(--text); }
+  .panel-price-info { font-size: 12px; color: var(--muted); }
+  .panel-hint { font-size: 12px; color: var(--muted); font-style: italic; padding: 16px; text-align: center; }
+  .panel-events { flex: 1; overflow-y: auto; padding: 8px; }
+  .panel-events::-webkit-scrollbar { width: 4px; }
+  .panel-events::-webkit-scrollbar-track { background: transparent; }
+  .panel-events::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .event-card {
+    border-radius: 8px; padding: 12px; margin-bottom: 8px;
+    border-left: 3px solid transparent; background: var(--bg3);
+    cursor: pointer; transition: background 0.15s;
+  }
+  .event-card:hover { background: #1a2333; }
+  .event-card[data-type="macro"]      { border-color: var(--blue); }
+  .event-card[data-type="onchain"]    { border-color: var(--orange); }
+  .event-card[data-type="regulatory"] { border-color: var(--red); }
+  .event-card[data-type="etf"]        { border-color: var(--green); }
+  .event-card[data-type="market"]     { border-color: var(--gold); }
+
+  .event-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .event-title { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; }
+  .event-badge {
+    font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 600;
+    white-space: nowrap; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .badge-macro      { background: rgba(74,158,255,0.2);  color: var(--blue); }
+  .badge-onchain    { background: rgba(255,157,74,0.2);  color: var(--orange); }
+  .badge-regulatory { background: rgba(255,77,109,0.2);  color: var(--red); }
+  .badge-etf        { background: rgba(0,255,136,0.2);   color: var(--green); }
+  .badge-market     { background: rgba(255,215,0,0.2);   color: var(--gold); }
+
+  .event-desc  { font-size: 12px; color: #94a3b8; line-height: 1.6; }
+  .event-meta  { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .event-source{ font-size: 11px; color: var(--muted); }
+  .event-impact {
+    font-size: 10px; padding: 1px 6px; border-radius: 3px; font-weight: 600;
+  }
+  .impact-bullish { background: rgba(0,255,136,0.15); color: var(--green); }
+  .impact-bearish { background: rgba(255,77,109,0.15); color: var(--red); }
+  .impact-neutral { background: rgba(107,114,128,0.2); color: var(--muted); }
+
+  /* ── EMPTY STATE ── */
+  .no-events {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 32px 16px; color: var(--muted); text-align: center;
+  }
+  .no-events-icon { font-size: 32px; margin-bottom: 8px; opacity: 0.5; }
+  .no-events-text { font-size: 13px; line-height: 1.6; }
+
+  /* ── LEGEND ── */
+  .legend {
+    padding: 8px 16px; border-top: 1px solid var(--border);
+    display: flex; gap: 12px; flex-wrap: wrap; flex-shrink: 0;
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── LOADING ── */
+  .loading-overlay {
+    position: absolute; inset: 0; background: rgba(8,12,18,0.85);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 50; gap: 12px;
+  }
+  .spinner {
+    width: 36px; height: 36px; border: 3px solid var(--border);
+    border-top-color: var(--green); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-hex">⬡</div>
+    <div>
+      <div class="logo-text">OSL Research</div>
+      <div class="logo-sub">BTC Event Navigator</div>
+    </div>
+  </div>
+  <div class="header-center">
+    <div class="live-price">
+      <div class="price-val" id="livePrice">—</div>
+      <div class="price-chg" id="priceChg">—</div>
+    </div>
+    <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+  </div>
+  <div class="header-right">
+    <div class="hk-time" id="hkTime">—</div>
+    <div style="color:var(--muted);font-size:11px">HKT</div>
+  </div>
+</header>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <span class="ctrl-label">Range</span>
+  <div class="ctrl-group" id="rangeGroup">
+    <button class="btn" data-days="30">30D</button>
+    <button class="btn" data-days="90">90D</button>
+    <button class="btn active" data-days="180">180D</button>
+    <button class="btn" data-days="365">1Y</button>
+    <button class="btn" data-days="730">2Y</button>
+  </div>
+  <div style="width:1px;height:20px;background:var(--border)"></div>
+  <span class="ctrl-label">Events</span>
+  <div class="ctrl-group" id="filterGroup">
+    <button class="filter-btn active" data-type="all">All</button>
+    <button class="filter-btn" data-type="macro">🔵 Macro</button>
+    <button class="filter-btn" data-type="onchain">🟠 On-Chain</button>
+    <button class="filter-btn" data-type="regulatory">🔴 Regulatory</button>
+    <button class="filter-btn" data-type="etf">🟢 ETF/Inst.</button>
+    <button class="filter-btn" data-type="market">🟡 Market</button>
+  </div>
+  <div class="controls-spacer"></div>
+  <div class="event-count">Showing <span id="visibleCount">0</span> events</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="chart-wrap">
+    <div id="chart"></div>
+    <div class="crosshair-info" id="crosshairInfo">
+      <div class="crosshair-date" id="crosshairDate"></div>
+      <div class="crosshair-price" id="crosshairPrice"></div>
+      <div class="crosshair-event-hint" id="crosshairHint"></div>
+    </div>
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="spinner"></div>
+      <div class="loading-text">Loading BTC price data…</div>
+    </div>
+  </div>
+
+  <div class="side-panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-date" id="panelDate">Hover chart to explore events</div>
+        <div class="panel-price-info" id="panelPriceInfo"></div>
+      </div>
+    </div>
+    <div class="panel-events" id="panelEvents">
+      <div class="panel-hint">
+        Move your cursor over the chart or click any event pin (●) to see what happened.
+      </div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> Macro / Fed</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div> On-Chain</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Regulatory</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> ETF / Inst.</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div> Market</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+//  EVENTS DATABASE — key BTC price inflection catalysts
+// ════════════════════════════════════════════════════════
+const EVENTS_DB = [
+  // ── 2024 ──
+  {date:'2024-01-10', type:'regulatory', impact:'bullish',
+   title:'🇺🇸 US Spot BTC ETF Approved (11 ETFs)',
+   source:'SEC', icon:'🏛️',
+   desc:'SEC simultaneously approves 11 spot Bitcoin ETF applications including IBIT (BlackRock), FBTC (Fidelity), ARKB. Day-1 trading volume exceeded $4.6B. Marks the end of 10-year approval battle.'},
+  {date:'2024-01-12', type:'etf', impact:'bullish',
+   title:'IBIT Day-2: $1.3B inflow sets record',
+   source:'Bloomberg', icon:'📈',
+   desc:'IBIT records largest ETF Day-2 inflow in history. GBTC simultaneously sees $579M in outflows as investors rotate from high-fee wrapper. Net industry flow strongly positive.'},
+  {date:'2024-02-14', type:'onchain', impact:'bullish',
+   title:'MVRV reaches 2.5x — mid-bull territory',
+   source:'CoinMetrics', icon:'⛓️',
+   desc:'Bitcoin MVRV ratio surpasses 2.5x for first time since 2021 cycle peak. On-chain realized cap expanding, long-term holder distribution not yet triggered.'},
+  {date:'2024-03-05', type:'macro', impact:'bullish',
+   title:'Fed Powell: No rush to cut rates',
+   source:'FOMC', icon:'🏦',
+   desc:'Fed Chair Powell signals rate cuts remain possible but data-dependent. Market interprets as soft pivot. BTC surges past $65K. NASDAQ up 1.8% on same day.'},
+  {date:'2024-03-14', type:'market', impact:'bullish',
+   title:'🔺 BTC ATH $73,835 — Pre-halving peak',
+   source:'Binance', icon:'🔺',
+   desc:'Bitcoin sets all-time high at $73,835. Driven by ETF demand ($1B+/day), corporate treasury buying, and halving narrative. Options OI at record $34B. CME futures premium 15%.'},
+  {date:'2024-04-19', type:'market', impact:'neutral',
+   title:'⚡ Bitcoin Halving #4 — Block 840,000',
+   source:'Bitcoin Protocol', icon:'⚡',
+   desc:'4th Bitcoin halving reduces block reward from 6.25 to 3.125 BTC. Miner revenue drops 50%. Historically price peaks 6-18 months post-halving. Inscription fees spike 1000%.'},
+  {date:'2024-05-23', type:'regulatory', impact:'bullish',
+   title:'🇺🇸 SEC approves Ethereum Spot ETF (19b-4)',
+   source:'SEC', icon:'🏛️',
+   desc:'SEC unexpectedly approves Ethereum spot ETF 19b-4 filings from 8 issuers. Seen as signal of regulatory thaw under political pressure. BTC +6% on spillover.'},
+  {date:'2024-06-12', type:'macro', impact:'neutral',
+   title:'CPI 3.3% — Inflation cooling faster than expected',
+   source:'BLS', icon:'📊',
+   desc:'US CPI comes in at 3.3% vs 3.4% expected. Core CPI also soft. Risk assets rally. BTC breaks $67K. Fed Funds futures price in 2 cuts for 2024 after print.'},
+  {date:'2024-07-05', type:'onchain', impact:'bearish',
+   title:'🇩🇪 Germany BTC sell-off: 50,000 BTC seized',
+   source:'German Authorities', icon:'⛓️',
+   desc:'German government begins systematic liquidation of 50,000 confiscated BTC (~$3B at prices). Sells across 3 weeks. Coinbase/Kraken OTC desks absorb majority. Spot pressure visible.'},
+  {date:'2024-07-24', type:'onchain', impact:'bearish',
+   title:'Mt. Gox repayment begins: 142,000 BTC',
+   source:'Mt. Gox Trustee', icon:'⛓️',
+   desc:'Mt. Gox trustee begins distributing 142,000 BTC to creditors after 10-year wait. Fear of mass selling; actual sell pressure moderate as many creditors are long-term holders.'},
+  {date:'2024-08-05', type:'macro', impact:'bearish',
+   title:'🇯🇵 BOJ rate hike → Global carry trade unwind',
+   source:'Bank of Japan', icon:'🌍',
+   desc:'BOJ raises rates to 0.25%, shocking markets. Yen carry trades ($4T+) unwind rapidly. VIX spikes to 65. BTC drops 18% in 24h. SPX -3%. Forced liquidations cascade. IBIT largest single-day outflow.'},
+  {date:'2024-09-18', type:'macro', impact:'bullish',
+   title:'🇺🇸 Fed first rate cut: -50bps (emergency sized)',
+   source:'FOMC', icon:'🏦',
+   desc:'Fed cuts by 50bps vs expected 25bps. Powell signals easing cycle beginning. Risk assets rally. BTC +5% in 48h. Dollar weakens. Liquidity expectations shift.'},
+  {date:'2024-11-05', type:'macro', impact:'bullish',
+   title:'🇺🇸 Trump wins US Presidential Election',
+   source:'AP/Elections', icon:'🏛️',
+   desc:'Donald Trump wins 2024 presidential election with pro-crypto platform. BTC surges 9% on election night. Promises to make US "Bitcoin superpower", fire Gensler, create strategic reserve. Markets price in regulatory tailwind.'},
+  {date:'2024-11-13', type:'market', impact:'bullish',
+   title:'🔺 BTC $93,000 — Post-election euphoria',
+   source:'Binance', icon:'🔺',
+   desc:'BTC reaches $93K driven by Trump euphoria, ETF record inflows ($1.1B/day), and strategic reserve speculation. CME futures open interest $27B. Retail participation resurges.'},
+  {date:'2024-12-18', type:'macro', impact:'bearish',
+   title:'Fed hawkish pivot: Only 2 cuts in 2025',
+   source:'FOMC', icon:'🏦',
+   desc:'Fed signals slower rate cuts in 2025 (2 vs 4 projected). DXY spikes. BTC drops 8% from $106K. Dot plot shift disappoints risk markets.'},
+  {date:'2024-12-19', type:'market', impact:'bullish',
+   title:'🔺 BTC ATH $108,135',
+   source:'Binance', icon:'🔺',
+   desc:'Bitcoin sets new all-time high at $108,135 driven by Strategic Reserve Act expectations, MicroStrategy $21B raise, and ETF inflows. Market cap exceeds $2.1T.'},
+  // ── 2025 ──
+  {date:'2025-01-20', type:'regulatory', impact:'bullish',
+   title:'Trump inaugurated — Bitcoin EO Day-1',
+   source:'White House', icon:'🏛️',
+   desc:'Trump signs executive order on Day-1: crypto-friendly direction, establishes Presidential Working Group on digital assets. Gary Gensler resigns as SEC Chair. Regulatory uncertainty era ends.'},
+  {date:'2025-01-23', type:'regulatory', impact:'bullish',
+   title:'Strategic Bitcoin Reserve executive order signed',
+   source:'White House', icon:'🏛️',
+   desc:'Trump signs EO directing Treasury to explore Bitcoin Strategic Reserve. Instructs agencies to inventory seized BTC (~198K BTC). Signals potential government HODL strategy.'},
+  {date:'2025-02-07', type:'etf', impact:'bullish',
+   title:'IBIT AUM surpasses $50B — fastest ETF in history',
+   source:'BlackRock', icon:'📈',
+   desc:'IBIT reaches $50B AUM in record time, surpassing GLD (gold ETF) at equivalent age. BlackRock CEO Larry Fink calls Bitcoin "digital gold". Options volume 3x gold ETF.'},
+  {date:'2025-03-07', type:'onchain', impact:'neutral',
+   title:'White House Crypto Summit — Industry meets Trump',
+   source:'White House', icon:'🏛️',
+   desc:'First-ever White House Crypto Summit. Major exchanges, miners, and ETF issuers attend. No immediate policy announcements but tone constructive. BTC OI stable.'},
+  // ── 2026 ──
+  {date:'2026-01-15', type:'macro', impact:'bearish',
+   title:'US tariffs expanded — Trade war escalation',
+   source:'White House', icon:'🌍',
+   desc:'Trump expands tariffs to 25% on Canada/Mexico, 145% on China. Global trade uncertainty rises. SPX -4% over 2 weeks. BTC initially correlates down, then decouples as dollar safe-haven flows emerge.'},
+  {date:'2026-02-12', type:'onchain', impact:'bearish',
+   title:'Exchange outflows spike — Suspected whale distribution',
+   source:'CryptoQuant', icon:'⛓️',
+   desc:'Binance records largest 7-day net outflow since Nov 2022. On-chain analysis suggests 2-3 large wallets transferring to OTC desks. MVRV approaches 1.8x — distribution zone.'},
+  {date:'2026-03-09', type:'onchain', impact:'neutral',
+   title:'F&G = 12 Extreme Fear — Accumulation zone',
+   source:'Alternative.me', icon:'⛓️',
+   desc:'Fear & Greed drops to 12 (Extreme Fear). Historically, F&G ≤15 has been a strong accumulation signal. MVRV 1.24x suggests market is still below 2021 equivalent overheat levels. ETF inflows accelerating.'},
+  {date:'2026-03-09', type:'etf', impact:'bullish',
+   title:'ETF consecutive 4-day inflow — $1.39B weekly net',
+   source:'SoSoValue', icon:'📈',
+   desc:'US spot BTC ETFs record 4th consecutive day of net inflows. 7-day cumulative $1.39B. IBIT dominates (+$245M today). State of Wisconsin pension fund disclosed Q1-25 13F. Structural demand narrative intact.'},
+];
+
+// ════════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════════
+let chart = null;
+let priceSeries = null;
+let allPriceData = [];
+let activeFilter = 'all';
+let activeDays = 180;
+let lockedDate = null;
+const TYPE_COLORS = {
+  macro: '#4a9eff', onchain: '#ff9d4a',
+  regulatory: '#ff4d6d', etf: '#00FF88', market: '#FFD700'
+};
+
+// ════════════════════════════════════════════════════════
+//  INIT CHART
+// ════════════════════════════════════════════════════════
+function initChart() {
+  const el = document.getElementById('chart');
+  chart = LightweightCharts.createChart(el, {
+    layout: { background: { color: '#080C12' }, textColor: '#6b7280' },
+    grid: { vertLines: { color: '#0d1117' }, horzLines: { color: '#0d1117' } },
+    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+    rightPriceScale: { borderColor: '#1e2d3d', textColor: '#6b7280' },
+    timeScale: { borderColor: '#1e2d3d', textColor: '#6b7280', timeVisible: true },
+    handleScroll: true, handleScale: true,
+    width: el.clientWidth, height: el.clientHeight,
+  });
+
+  priceSeries = chart.addAreaSeries({
+    lineColor: '#00FF88', topColor: 'rgba(0,255,136,0.15)',
+    bottomColor: 'rgba(0,255,136,0)', lineWidth: 2,
+    priceFormat: { type: 'price', precision: 0, minMove: 1 },
+  });
+
+  // Crosshair move
+  chart.subscribeCrosshairMove(param => {
+    if (!lockedDate) updatePanel(param);
+    updateCrosshairInfo(param);
+  });
+  // Click to lock/unlock
+  chart.subscribeClick(param => {
+    if (param.time) {
+      lockedDate = lockedDate === param.time ? null : param.time;
+      updatePanel(param);
+    } else {
+      lockedDate = null;
+      clearPanel();
+    }
+  });
+
+  // Resize
+  new ResizeObserver(() => {
+    chart.resize(el.clientWidth, el.clientHeight);
+  }).observe(el);
+}
+
+// ════════════════════════════════════════════════════════
+//  FETCH PRICE DATA
+// ════════════════════════════════════════════════════════
+async function fetchPriceData(days) {
+  const url = `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${days}&interval=daily`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error('CoinGecko error');
+  const data = await r.json();
+  return data.prices.map(([ts, price]) => ({
+    time: Math.floor(ts / 1000),
+    value: price,
+    dateStr: new Date(ts).toISOString().slice(0, 10)
+  }));
+}
+
+async function loadChart(days) {
+  document.getElementById('loadingOverlay').style.display = 'flex';
+  try {
+    const priceData = await fetchPriceData(days);
+    allPriceData = priceData;
+    priceSeries.setData(priceData.map(d => ({ time: d.time, value: d.value })));
+    renderMarkers();
+    chart.timeScale().fitContent();
+  } catch(e) {
+    console.warn('Price fetch failed, using mock data:', e);
+    // Fallback: minimal static data
+    const now = Date.now();
+    const mock = [];
+    for (let i = days; i >= 0; i--) {
+      mock.push({ time: Math.floor((now - i * 86400000) / 1000), value: 65000 + Math.random() * 10000 });
+    }
+    allPriceData = mock;
+    priceSeries.setData(mock);
+    renderMarkers();
+  }
+  document.getElementById('loadingOverlay').style.display = 'none';
+}
+
+// ════════════════════════════════════════════════════════
+//  MARKERS
+// ════════════════════════════════════════════════════════
+function getFilteredEvents() {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - activeDays);
+  return EVENTS_DB.filter(e => {
+    const d = new Date(e.date);
+    const typeOk = activeFilter === 'all' || e.type === activeFilter;
+    return typeOk && d >= cutoff;
+  });
+}
+
+function renderMarkers() {
+  const events = getFilteredEvents();
+  const markers = events.map(e => ({
+    time: e.date,
+    position: e.impact === 'bearish' ? 'aboveBar' : 'belowBar',
+    color: TYPE_COLORS[e.type] || '#fff',
+    shape: 'circle',
+    text: '',
+    size: 1.2,
+  }));
+  priceSeries.setMarkers(markers.sort((a,b) => a.time > b.time ? 1 : -1));
+  document.getElementById('visibleCount').textContent = events.length;
+}
+
+// ════════════════════════════════════════════════════════
+//  PANEL
+// ════════════════════════════════════════════════════════
+function updatePanel(param) {
+  if (!param || !param.time) { clearPanel(); return; }
+
+  const time = param.time;
+  const dateStr = typeof time === 'string' ? time :
+    new Date(time * 1000).toISOString().slice(0, 10);
+  const price = param.seriesData?.get(priceSeries);
+  const priceVal = price ? `$${Math.round(price.value).toLocaleString()}` : '';
+
+  document.getElementById('panelDate').textContent = formatDate(dateStr);
+  document.getElementById('panelPriceInfo').textContent = priceVal ? `BTC ${priceVal}` : '';
+
+  // Find events within ±3 days
+  const target = new Date(dateStr);
+  const nearby = EVENTS_DB.filter(e => {
+    if (activeFilter !== 'all' && e.type !== activeFilter) return false;
+    const diff = Math.abs(new Date(e.date) - target) / 86400000;
+    return diff <= 3;
+  }).sort((a, b) => Math.abs(new Date(a.date) - target) - Math.abs(new Date(b.date) - target));
+
+  const panel = document.getElementById('panelEvents');
+  if (nearby.length === 0) {
+    panel.innerHTML = `<div class="no-events"><div class="no-events-icon">🔍</div><div class="no-events-text">No events near ${formatDate(dateStr)}.<br>Try a different date or expand event filters.</div></div>`;
+    return;
+  }
+  panel.innerHTML = nearby.map(e => renderCard(e)).join('');
+}
+
+function clearPanel() {
+  document.getElementById('panelDate').textContent = 'Hover chart to explore events';
+  document.getElementById('panelPriceInfo').textContent = '';
+  document.getElementById('panelEvents').innerHTML = `<div class="panel-hint">Move your cursor over the chart or click any event pin (●) to see what happened.</div>`;
+}
+
+function renderCard(e) {
+  const badgeClass = `badge-${e.type}`;
+  const impactClass = `impact-${e.impact}`;
+  const impactLabel = {bullish:'📈 Bullish', bearish:'📉 Bearish', neutral:'⚖️ Neutral'}[e.impact] || '';
+  return `<div class="event-card" data-type="${e.type}">
+    <div class="event-card-top">
+      <div class="event-title">${e.icon || ''} ${e.title}</div>
+      <span class="event-badge ${badgeClass}">${e.type}</span>
+    </div>
+    <div class="event-desc">${e.desc}</div>
+    <div class="event-meta">
+      <span class="event-source">📅 ${e.date} · ${e.source}</span>
+      <span class="event-impact ${impactClass}">${impactLabel}</span>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════
+//  CROSSHAIR INFO
+// ════════════════════════════════════════════════════════
+function updateCrosshairInfo(param) {
+  const el = document.getElementById('crosshairInfo');
+  if (!param || !param.time) { el.style.display = 'none'; return; }
+
+  const time = param.time;
+  const dateStr = typeof time === 'string' ? time :
+    new Date(time * 1000).toISOString().slice(0, 10);
+  const price = param.seriesData?.get(priceSeries);
+  const priceVal = price ? `$${Math.round(price.value).toLocaleString()}` : '';
+
+  // Check for nearby events
+  const target = new Date(dateStr);
+  const nearby = EVENTS_DB.filter(e => Math.abs(new Date(e.date) - target) / 86400000 <= 2);
+
+  document.getElementById('crosshairDate').textContent = formatDate(dateStr);
+  document.getElementById('crosshairPrice').textContent = priceVal;
+  document.getElementById('crosshairHint').textContent = nearby.length > 0
+    ? `● ${nearby.length} event${nearby.length > 1 ? 's' : ''} — click to lock`
+    : '';
+  el.style.display = 'block';
+}
+
+// ════════════════════════════════════════════════════════
+//  LIVE PRICE
+// ════════════════════════════════════════════════════════
+async function updateLivePrice() {
+  try {
+    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+    const d = await r.json();
+    const p = d.bitcoin;
+    document.getElementById('livePrice').textContent = `$${Math.round(p.usd).toLocaleString()}`;
+    const chg = p.usd_24h_change || 0;
+    const el = document.getElementById('priceChg');
+    el.textContent = `${chg >= 0 ? '+' : ''}${chg.toFixed(2)}%`;
+    el.className = `price-chg ${chg >= 0 ? 'up' : 'down'}`;
+  } catch {}
+}
+
+// ════════════════════════════════════════════════════════
+//  CLOCK
+// ════════════════════════════════════════════════════════
+function updateClock() {
+  const d = new Date();
+  const hkt = new Date(d.toLocaleString('en-US', {timeZone:'Asia/Hong_Kong'}));
+  const pad = n => String(n).padStart(2,'0');
+  document.getElementById('hkTime').textContent =
+    `${pad(hkt.getHours())}:${pad(hkt.getMinutes())}:${pad(hkt.getSeconds())}`;
+}
+
+// ════════════════════════════════════════════════════════
+//  UTILS
+// ════════════════════════════════════════════════════════
+function formatDate(s) {
+  try {
+    return new Date(s + 'T00:00:00').toLocaleDateString('en-US',
+      {year:'numeric', month:'short', day:'numeric'});
+  } catch { return s; }
+}
+
+// ════════════════════════════════════════════════════════
+//  CONTROLS
+// ════════════════════════════════════════════════════════
+document.getElementById('rangeGroup').addEventListener('click', e => {
+  const btn = e.target.closest('.btn');
+  if (!btn) return;
+  document.querySelectorAll('#rangeGroup .btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeDays = parseInt(btn.dataset.days);
+  loadChart(activeDays);
+});
+
+document.getElementById('filterGroup').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.type;
+  renderMarkers();
+});
+
+// ════════════════════════════════════════════════════════
+//  BOOT
+// ════════════════════════════════════════════════════════
+initChart();
+loadChart(activeDays);
+updateLivePrice();
+updateClock();
+setInterval(updateClock, 1000);
+setInterval(updateLivePrice, 30000);
+</script>
+</body>
+</html>
