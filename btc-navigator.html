@@ -197,6 +197,86 @@ body{display:flex;flex-direction:column}
 .etxt{font-size:12px;color:var(--tx-4);line-height:1.6}
 /* LEGEND */
 .pfoot{padding:8px 16px;border-top:1px solid var(--bd-1);flex-shrink:0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--bg-3)}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — Mobile / Tablet
+═══════════════════════════════════════════ */
+
+/* Tablet (≤1024px): narrow sidebar */
+@media(max-width:1024px){
+  .side{width:320px}
+}
+
+/* Mobile (≤768px): stack vertically */
+@media(max-width:768px){
+  /* Header compact */
+  .header{height:auto;flex-wrap:wrap;padding:8px 12px;gap:8px}
+  .logo-prod{display:none}
+  .logo-div{display:none}
+  .hdr-mid{gap:10px}
+  .pvalue{font-size:16px}
+  .hdr-right{gap:8px}
+  .dpill{padding:2px 7px}
+
+  /* Data strip: horizontal scroll */
+  .strip{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding:0 12px}
+  .strip::-webkit-scrollbar{height:2px}
+  .strip::-webkit-scrollbar-thumb{background:var(--bd-3)}
+  .si{flex-shrink:0;padding:0 10px}
+
+  /* Controls: horizontal scroll */
+  .controls{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding:0 12px;height:auto;min-height:36px;flex-wrap:nowrap}
+  .controls::-webkit-scrollbar{height:2px}
+  .controls::-webkit-scrollbar-thumb{background:var(--bd-3)}
+  .csec{flex-shrink:0}
+  .csep{flex-shrink:0}
+  .ctrl-end{flex-shrink:0}
+
+  /* Body: vertical stack */
+  .body{flex-direction:column}
+
+  /* Chart: top 45% of remaining height */
+  .chart-area{flex:none;height:45vh;width:100%}
+
+  /* Panel: bottom section, scrollable */
+  .side{width:100%;flex:1;min-height:0;border-left:none;border-top:1px solid var(--bd-1)}
+
+  /* Float card: bottom left on mobile */
+  .fcard{top:auto;bottom:14px;left:10px;right:auto;min-width:160px}
+
+  /* Click hint: smaller */
+  .click-hint{bottom:auto;top:8px;font-size:11px;padding:5px 12px}
+  .ch-text{font-size:11px}
+
+  /* Panel head compact */
+  .ph{padding:8px 12px}
+  .phv{font-size:13px}
+
+  /* Event cards: tighter */
+  .ehead{padding:7px 9px 6px}
+  .ebody{padding:6px 9px 6px;padding-left:calc(9px + 3px + 7px)}
+  .edesc{font-size:11px}
+  .efoot{padding:4px 9px 6px;padding-left:calc(9px+3px+7px)}
+
+  /* Live PM section: hide on mobile to save space */
+  .pmsec{display:none!important}
+
+  /* Legend: hide on mobile */
+  .pfoot{display:none}
+
+  /* CTA arrow: point up instead of left */
+  .cta-arrow{font-size:24px}
+  @keyframes arrowBounce{0%,100%{transform:translateY(-3px)}50%{transform:translateY(3px)}}
+  .cta-sub{font-size:11px}
+}
+
+/* Small mobile (≤480px) */
+@media(max-width:480px){
+  .chart-area{height:42vh}
+  .hdr-right .dpill:last-child{display:none} /* hide clock pill */
+  .api-s{display:none}
+  .pvalue{font-size:15px}
+}
 .leg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--tx-4);font-family:var(--mono)}
 .ldot2{width:6px;height:6px;border-radius:50%}
 </style>
@@ -279,7 +359,7 @@ body{display:flex;flex-direction:column}
     <!-- Click hint -->
     <div class="click-hint" id="clickHint">
       <span class="ch-icon">👆</span>
-      <span class="ch-text">Click anywhere on the chart to see <em>macro · on-chain · news</em></span>
+      <span class="ch-text">Click / tap the chart to see <em>macro · on-chain · news</em></span>
     </div>
     <!-- Loader -->
     <div class="loader" id="loader">
