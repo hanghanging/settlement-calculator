@@ -539,8 +539,8 @@
 
   /* Demo label */
   #demo-label {
-    position: fixed; top: calc(var(--sat) + 2px); left: 50%; transform: translateX(-50%);
-    font-size: 10px; color: rgba(0,200,83,0.6);
+    position: fixed; bottom: 10px; right: 12px;
+    font-size: 9px; color: rgba(255,255,255,0.15);
     letter-spacing: 1px; font-weight: 600;
     text-transform: uppercase; z-index: 300;
     pointer-events: none;
@@ -704,13 +704,14 @@
             </div>
           </div>
         </div>
-        <button class="btn-primary tappable" onclick="nav('home')">Start Verification (Sandbox: Auto-approve) →</button>
+        <button class="btn-primary tappable" onclick="nav('home')">Start Verification →</button>
         <button class="btn-secondary tappable" onclick="nav('home')" style="margin-top:-6px">Skip — limited features</button>
       </div>
     </div>
   </div>
 
   <!-- ══════════════ HOME ══════════════ -->
+    <!-- ══════════════ HOME ══════════════ -->
   <div id="screen-home" class="screen">
     <div class="status-bar">
       <span class="status-time">9:41</span>
@@ -723,18 +724,19 @@
     <div class="screen-body">
       <div class="page-content">
         <div class="s-header">
-          <div class="avatar">OK</div>
+          <div class="avatar">SK</div>
           <div class="greeting-col">
             <div class="greeting-sub">your savings grew $0.04 today 🌱</div>
-            <div class="greeting-name">+234 801 234 5678</div>
+            <div class="greeting-name">Seun K.</div>
           </div>
           <div style="font-size:24px; padding:8px">🔔</div>
         </div>
 
         <div class="balance-card">
-          <div class="balance-label">USDC Balance</div>
+          <div class="balance-label">Balance</div>
           <div class="balance-amount">$250.00</div>
           <div class="balance-ngn">≈ ₦ 400,000 NGN</div>
+          <div style="font-size:11px; color:var(--text3); margin-top:6px">USDC is a stablecoin pegged 1:1 to USD</div>
           <div class="balance-footer">
             <div class="rate-chip">1 USDC = ₦ 1,600</div>
             <div class="yield-info">Earning <b>5.2% APY</b></div>
@@ -743,26 +745,11 @@
 
         <div class="trust-row">
           <div class="trust-badge">🔒 Licensed & Regulated</div>
-          <div class="trust-badge">⛓️ On-Chain Verified</div>
+          <div class="trust-badge">⛓️ Assets On-Chain</div>
           <div class="trust-badge">🛡️ Self-Custody</div>
         </div>
 
-        <div class="new-user-card">
-          <div class="nuc-title">🎉 Welcome! Make Your First Deposit</div>
-          <div class="nuc-sub">Deposit for the first time and earn $5 USDC</div>
-          <div class="pills">
-            <div class="pill done">✓ Registered</div>
-            <div class="pill">Verify ID</div>
-            <div class="pill">First Deposit</div>
-          </div>
-          <button class="btn-primary tappable" onclick="nav('deposit')">Deposit Now, Earn $5 →</button>
-        </div>
-
-        <div class="yield-banner tappable" onclick="showToast('Earn screen — 5.2% APY on your USDC balance')">
-          <div class="yield-banner-text">📈 $250 earning $0.04/day · See breakdown →</div>
-          <span style="color:var(--primary); font-size:20px">›</span>
-        </div>
-
+        <!-- 🔑 QUICK ACTIONS 提前到首屏可见 -->
         <div class="section">
           <div class="section-title">Quick Actions</div>
           <div class="actions-card">
@@ -774,7 +761,7 @@
               <div class="action-icon" style="background:rgba(59,130,246,0.12)">📤</div>
               <div class="action-label">Send Home</div>
             </button>
-            <button class="action-btn" onclick="showToast('Earn 5.2% APY on your USDC')">
+            <button class="action-btn" onclick="nav('earn')">
               <div class="action-icon" style="background:rgba(245,158,11,0.12)">📈</div>
               <div class="action-label">Earn</div>
             </button>
@@ -783,6 +770,20 @@
               <div class="action-label">Withdraw</div>
             </button>
           </div>
+        </div>
+
+        <!-- 精简的 New User Banner（单行，可快速关闭）-->
+        <div id="new-user-banner" style="background:var(--primary-dim); border:1px solid var(--primary-border); border-radius:14px; padding:12px 16px; display:flex; align-items:center; justify-content:space-between;">
+          <div style="flex:1">
+            <div style="font-size:13px; font-weight:700; color:var(--text)">🎉 Make your first deposit · Earn $5 USDC</div>
+          </div>
+          <button style="background:var(--primary); border:none; border-radius:10px; padding:8px 16px; font-size:13px; font-weight:700; color:#000; cursor:pointer; margin-left:8px" onclick="nav('deposit')">Go →</button>
+          <button style="background:none; border:none; color:var(--text3); font-size:18px; padding:4px 8px; cursor:pointer; margin-left:4px" onclick="document.getElementById('new-user-banner').style.display='none'">✕</button>
+        </div>
+
+        <div class="yield-banner tappable" onclick="nav('earn')">
+          <div class="yield-banner-text">📈 $250 earning $0.04/day · See breakdown →</div>
+          <span style="color:var(--primary); font-size:20px">›</span>
         </div>
 
         <div class="invite-banner tappable" onclick="showToast('Invite friends → earn $2 per referral!')">
@@ -834,15 +835,93 @@
       <button class="nav-item" onclick="nav('transfer')">
         <span class="nav-icon">📤</span><span class="nav-label">Send</span>
       </button>
-      <button class="nav-item" onclick="showToast('Earn — 5.2% APY')">
+      <button class="nav-item" onclick="nav('earn')">
         <span class="nav-icon">📈</span><span class="nav-label">Earn</span>
       </button>
       <button class="nav-item" onclick="nav('history')">
         <span class="nav-icon">📋</span><span class="nav-label">History</span>
       </button>
-      <button class="nav-item" onclick="showToast('Settings')">
+      <button class="nav-item" onclick="nav('settings')">
         <span class="nav-icon">⚙️</span><span class="nav-label">Settings</span>
       </button>
+    </div>
+  </div>
+
+  <!-- ══════════════ EARN ══════════════ -->
+  <div id="screen-earn" class="screen">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">📶 📡 🔋</div>
+    </div>
+    <div class="screen-body">
+      <div class="page-header">
+        <button class="back-btn tappable" onclick="nav('home')">←</button>
+        <div class="ph-title">Earn 5.2% APY</div>
+      </div>
+      <div class="page-content" style="padding-top:14px">
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:22px; padding:24px; text-align:center">
+          <div style="font-size:13px; color:var(--text2); margin-bottom:6px">Current Balance</div>
+          <div style="font-size:42px; font-weight:800; color:var(--text); letter-spacing:-1px">$250.00</div>
+          <div style="font-size:14px; color:var(--text2); margin-top:4px">USDC</div>
+          <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--border)">
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px">
+              <span style="font-size:14px; color:var(--text2)">Daily Earnings</span>
+              <span style="font-size:16px; font-weight:700; color:var(--primary)">+$0.04</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px">
+              <span style="font-size:14px; color:var(--text2)">Monthly</span>
+              <span style="font-size:16px; font-weight:700; color:var(--primary)">+$1.08</span>
+            </div>
+            <div style="display:flex; justify-content:space-between">
+              <span style="font-size:14px; color:var(--text2)">Yearly (5.2% APY)</span>
+              <span style="font-size:16px; font-weight:700; color:var(--primary)">+$13.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--primary-dim); border:1px solid var(--primary-border); border-radius:18px; padding:18px">
+          <div style="font-size:15px; font-weight:700; color:var(--text); margin-bottom:12px">💡 How it works</div>
+          <div style="font-size:13px; color:var(--text2); line-height:1.6">
+            <div style="margin-bottom:8px">✓ Your USDC earns 5.2% APY automatically</div>
+            <div style="margin-bottom:8px">✓ Interest compounds daily</div>
+            <div>✓ Withdraw anytime without penalty</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title" style="font-size:16px">Calculate Earnings</div>
+          <div class="amount-card" style="padding:20px">
+            <div>
+              <label class="form-label">Deposit Amount ($)</label>
+              <div class="big-input-wrap">
+                <span class="big-currency" style="font-size:18px">$</span>
+                <input id="earn-calc-input" class="big-input" style="font-size:24px" type="number" inputmode="decimal" value="1000" oninput="calcEarnings()">
+              </div>
+            </div>
+            <div style="background:var(--surface2); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:8px">
+              <div style="display:flex; justify-content:space-between; font-size:13px">
+                <span style="color:var(--text2)">Daily</span>
+                <span style="color:var(--primary); font-weight:600" id="earn-daily">+$0.14</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:13px">
+                <span style="color:var(--text2)">Monthly</span>
+                <span style="color:var(--primary); font-weight:600" id="earn-monthly">+$4.33</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:14px">
+                <span style="color:var(--text2)">Yearly</span>
+                <span style="color:var(--primary); font-weight:700; font-size:16px" id="earn-yearly">+$52.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="nav-item" onclick="nav('home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+      <button class="nav-item" onclick="nav('transfer')"><span class="nav-icon">📤</span><span class="nav-label">Send</span></button>
+      <button class="nav-item active"><span class="nav-icon">📈</span><span class="nav-label">Earn</span></button>
+      <button class="nav-item" onclick="nav('history')"><span class="nav-icon">📋</span><span class="nav-label">History</span></button>
+      <button class="nav-item" onclick="nav('settings')"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></button>
     </div>
   </div>
 
@@ -1160,6 +1239,94 @@
     </div>
   </div>
 
+  <!-- ══════════════ SETTINGS ══════════════ -->
+  <div id="screen-settings" class="screen">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">📶 📡 🔋</div>
+    </div>
+    <div class="screen-body">
+      <div class="page-header">
+        <button class="back-btn tappable" onclick="nav('home')">←</button>
+        <div class="ph-title">Settings</div>
+      </div>
+      <div class="page-content" style="padding-top:14px">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:24px">
+          <div class="avatar" style="width:80px; height:80px; font-size:28px">SK</div>
+          <div style="text-align:center">
+            <div style="font-size:20px; font-weight:700; color:var(--text)">Seun K.</div>
+            <div style="font-size:14px; color:var(--text2); margin-top:2px">+234 801 234 5678</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title" style="font-size:14px; margin-bottom:10px">Account</div>
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:18px; overflow:hidden">
+            <button style="width:100%; display:flex; align-items:center; justify-content:space-between; padding:16px; border:none; background:none; cursor:pointer; border-bottom:1px solid var(--border)" onclick="showToast('Edit Profile')">
+              <span style="font-size:15px; color:var(--text)">Edit Profile</span>
+              <span style="color:var(--text3); font-size:18px">›</span>
+            </button>
+            <button style="width:100%; display:flex; align-items:center; justify-content:space-between; padding:16px; border:none; background:none; cursor:pointer; border-bottom:1px solid var(--border)" onclick="showToast('Bank Accounts')">
+              <span style="font-size:15px; color:var(--text)">Bank Accounts</span>
+              <span style="color:var(--text3); font-size:18px">›</span>
+            </button>
+            <button style="width:100%; display:flex; align-items:center; justify-content:space-between; padding:16px; border:none; background:none; cursor:pointer" onclick="showToast('KYC Verification')">
+              <div style="display:flex; align-items:center; gap:10px">
+                <span style="font-size:15px; color:var(--text)">KYC Verification</span>
+                <span style="font-size:11px; padding:3px 8px; border-radius:10px; background:rgba(245,158,11,0.15); color:var(--amber)">Pending</span>
+              </div>
+              <span style="color:var(--text3); font-size:18px">›</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title" style="font-size:14px; margin-bottom:10px">Security</div>
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:18px; overflow:hidden">
+            <button style="width:100%; display:flex; align-items:center; justify-content:space-between; padding:16px; border:none; background:none; cursor:pointer; border-bottom:1px solid var(--border)" onclick="showToast('Change PIN')">
+              <span style="font-size:15px; color:var(--text)">Change PIN</span>
+              <span style="color:var(--text3); font-size:18px">›</span>
+            </button>
+            <button style="width:100%; display:flex; align-items:center; justify-content:space-between; padding:16px; border:none; background:none; cursor:pointer" onclick="showToast('Biometric Login')">
+              <span style="font-size:15px; color:var(--text)">Biometric Login</span>
+              <div style="display:flex; align-items:center; gap:8px">
+                <span style="font-size:13px; color:var(--primary)">On</span>
+                <span style="color:var(--text3); font-size:18px">›</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title" style="font-size:14px; margin-bottom:10px">Preferences</div>
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:18px; overflow:hidden">
+            <button style="width:100%; display:flex; align-items:center; justify-content:space-between; padding:16px; border:none; background:none; cursor:pointer; border-bottom:1px solid var(--border)" onclick="showToast('Notifications')">
+              <span style="font-size:15px; color:var(--text)">Notifications</span>
+              <span style="color:var(--text3); font-size:18px">›</span>
+            </button>
+            <button style="width:100%; display:flex; align-items:center; justify-content:space-between; padding:16px; border:none; background:none; cursor:pointer" onclick="showToast('Language: English')">
+              <span style="font-size:15px; color:var(--text)">Language</span>
+              <div style="display:flex; align-items:center; gap:8px">
+                <span style="font-size:13px; color:var(--text2)">English</span>
+                <span style="color:var(--text3); font-size:18px">›</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn-secondary" style="margin-top:12px" onclick="showToast('Logged out')">Log Out</button>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="nav-item" onclick="nav('home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+      <button class="nav-item" onclick="nav('transfer')"><span class="nav-icon">📤</span><span class="nav-label">Send</span></button>
+      <button class="nav-item" onclick="nav('earn')"><span class="nav-icon">📈</span><span class="nav-label">Earn</span></button>
+      <button class="nav-item" onclick="nav('history')"><span class="nav-icon">📋</span><span class="nav-label">History</span></button>
+      <button class="nav-item active"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></button>
+    </div>
+  </div>
+
+
 </div><!-- #app -->
 
 <!-- Toast notification -->
@@ -1185,7 +1352,7 @@ function nav(id) {
   if (!next || id === current) return;
 
   // Determine direction
-  const flow = ['onboarding','login','otp','kyc','home','deposit','bank-instructions','deposit-success','transfer','withdraw','history'];
+  const flow = ['onboarding','login','otp','kyc','home','earn','deposit','bank-instructions','deposit-success','transfer','withdraw','history','settings'];
   const prevIdx = flow.indexOf(current);
   const nextIdx = flow.indexOf(id);
   const goingBack = nextIdx < prevIdx;
@@ -1253,6 +1420,19 @@ function calcWithdraw() {
   document.getElementById('w-ngn').textContent = '≈ ₦ ' + Math.round(ngn).toLocaleString();
 }
 
+
+// ── Earn Calculator ───────────────────────────────────────────
+const APY = 0.052;
+function calcEarnings() {
+  const amount = parseFloat(document.getElementById('earn-calc-input').value) || 0;
+  const daily = amount * (APY / 365);
+  const monthly = amount * (APY / 12);
+  const yearly = amount * APY;
+  document.getElementById('earn-daily').textContent = '+$' + daily.toFixed(2);
+  document.getElementById('earn-monthly').textContent = '+$' + monthly.toFixed(2);
+  document.getElementById('earn-yearly').textContent = '+$' + yearly.toFixed(2);
+}
+
 // ── Deposit simulation ────────────────────────────────────────
 function doDeposit(btn) {
   btn.textContent = '⏳ Confirming transfer...';
@@ -1318,6 +1498,7 @@ document.querySelectorAll('.filter-chip').forEach(chip => {
 // ── Init calcs ────────────────────────────────────────────────
 calcDeposit();
 calcWithdraw();
+if(document.getElementById("earn-calc-input")) calcEarnings();
 
 // ── Splash screen ─────────────────────────────────────────────
 window.addEventListener('load', () => {
