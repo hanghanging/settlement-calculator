@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="StableWallet">
+<meta name="theme-color" content="#080c14">
+<title>StableWallet</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --bg: #080c14;
+    --surface: #0f1623;
+    --surface2: #161e2e;
+    --border: rgba(255,255,255,0.08);
+    --primary: #00c853;
+    --primary-dim: rgba(0,200,83,0.12);
+    --primary-border: rgba(0,200,83,0.25);
+    --blue: #3b82f6;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --text: #f0f4f8;
+    --text2: rgba(255,255,255,0.5);
+    --text3: rgba(255,255,255,0.25);
+    --r: 20px;
+    --r-sm: 12px;
+    /* iPhone 17 safe areas */
+    --sat: env(safe-area-inset-top, 54px);
+    --sab: env(safe-area-inset-bottom, 34px);
+    --sal: env(safe-area-inset-left, 0px);
+    --sar: env(safe-area-inset-right, 0px);
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    touch-action: manipulation;
+  }
+
+  /* ── App shell ── */
+  #app {
+    width: 100%; height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Screens ── */
+  .screen {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    background: var(--bg);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(30px);
+    transition: opacity 0.28s cubic-bezier(0.4,0,0.2,1), transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    will-change: opacity, transform;
+    overflow: hidden;
+  }
+  .screen.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(0);
+  }
+  .screen.slide-back {
+    transform: translateX(-20px);
+  }
+
+  /* ── Scrollable body ── */
+  .screen-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+    scrollbar-width: none;
+  }
+  .screen-body::-webkit-scrollbar { display: none; }
+
+  /* ── Status bar (dynamic island area) ── */
+  .status-bar {
+    padding: var(--sat) 28px 10px;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    background: var(--bg);
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    flex-shrink: 0;
+  }
+  .status-time { font-size: 15px; font-weight: 600; }
+  .status-icons { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+
+  /* Dynamic Island */
+  .dynamic-island {
+    position: fixed;
+    top: calc(var(--sat) - 42px);
+    left: 50%; transform: translateX(-50%);
+    width: 126px; height: 36px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 200;
+    pointer-events: none;
+  }
+
+  /* ── Page content padding ── */
+  .page-content {
+    padding: 16px 20px calc(var(--sab) + 84px);
+    display: flex; flex-direction: column; gap: 18px;
+  }
+
+  /* ── Nav bar ── */
+  .nav-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    padding: 10px 0 calc(var(--sab) + 4px);
+    background: rgba(8,12,20,0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 100;
+  }
+  .nav-item {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; gap: 3px;
+    border: none; background: none;
+    padding: 6px 4px; cursor: pointer;
+  }
+  .nav-icon { font-size: 22px; opacity: 0.35; transition: all 0.15s; }
+  .nav-label { font-size: 10px; color: var(--text2); opacity: 0.35; transition: all 0.15s; }
+  .nav-item.active .nav-icon { opacity: 1; filter: none; }
+  .nav-item.active .nav-label { opacity: 1; color: var(--primary); }
+
+  /* ── Page header ── */
+  .page-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 0 20px 4px;
+  }
+  .back-btn {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--surface); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: var(--text2); flex-shrink: 0;
+    cursor: pointer; -webkit-touch-callout: none;
+    transition: background 0.15s;
+  }
+  .back-btn:active { background: var(--surface2); }
+  .ph-title { font-size: 17px; font-weight: 700; color: var(--text); }
+  .ph-sub { font-size: 12px; color: var(--text2); margin-top: 1px; }
+
+  /* ── Tap ripple ── */
+  .tappable { transition: opacity 0.1s; }
+  .tappable:active { opacity: 0.7; }
+
+  /* ──────────────────────────────────────────────
+     COMPONENTS
+  ────────────────────────────────────────────── */
+
+  /* Header */
+  .s-header { display: flex; align-items: center; gap: 12px; }
+  .avatar {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: #000; flex-shrink: 0;
+  }
+  .greeting-col { flex: 1; overflow: hidden; }
+  .greeting-sub { font-size: 12px; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .greeting-name { font-size: 16px; font-weight: 700; color: var(--text); }
+
+  /* Balance card */
+  .balance-card {
+    background: linear-gradient(140deg, #0d1926 0%, #091420 50%, #0b1318 100%);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 24px;
+    padding: 24px 22px;
+    position: relative; overflow: hidden;
+  }
+  .balance-card::before {
+    content: '';
+    position: absolute; top: -50px; right: -30px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,200,83,0.1) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .balance-label { font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .balance-amount {
+    font-size: 44px; font-weight: 800; color: var(--text);
+    letter-spacing: -1.5px;
+    font-variant-numeric: tabular-nums;
+  }
+  .balance-ngn { font-size: 14px; color: var(--text2); margin-top: 4px; }
+  .balance-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 18px; padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .rate-chip {
+    font-size: 12px; color: var(--primary);
+    background: var(--primary-dim);
+    padding: 5px 12px; border-radius: 20px;
+    border: 1px solid var(--primary-border);
+    font-weight: 600;
+  }
+  .yield-info { font-size: 12px; color: var(--text2); }
+  .yield-info b { color: var(--primary); }
+
+  /* Trust badges */
+  .trust-row { display: flex; gap: 7px; overflow-x: auto; scrollbar-width: none; }
+  .trust-row::-webkit-scrollbar { display: none; }
+  .trust-badge {
+    white-space: nowrap; font-size: 11px; color: var(--text2);
+    padding: 6px 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px; flex-shrink: 0;
+  }
+
+  /* New user card */
+  .new-user-card {
+    background: var(--primary-dim);
+    border: 1px solid var(--primary-border);
+    border-radius: 20px;
+    padding: 18px;
+  }
+  .nuc-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .nuc-sub { font-size: 13px; color: var(--text2); margin-bottom: 14px; }
+  .pills { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .pill { font-size: 11px; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.07); color: var(--text3); }
+  .pill.done { background: rgba(0,200,83,0.15); color: var(--primary); }
+
+  /* Quick actions */
+  .actions-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 18px 12px;
+    display: flex; justify-content: space-around;
+  }
+  .action-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    cursor: pointer; border: none; background: none;
+    padding: 4px 10px; border-radius: 14px;
+    transition: background 0.15s;
+  }
+  .action-btn:active { background: var(--surface2); }
+  .action-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .action-label { font-size: 12px; color: var(--text2); font-weight: 500; }
+
+  /* Yield banner */
+  .yield-banner {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--primary-dim);
+    border: 1px solid var(--primary-border);
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .yield-banner-text { font-size: 13px; color: var(--primary); font-weight: 500; }
+
+  /* Invite banner */
+  .invite-banner {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 16px;
+  }
+  .invite-left { display: flex; align-items: center; gap: 12px; }
+  .invite-emoji { font-size: 26px; }
+  .invite-text { font-size: 14px; font-weight: 600; color: var(--text); }
+
+  /* Section */
+  .section { display: flex; flex-direction: column; gap: 10px; }
+  .section-header { display: flex; justify-content: space-between; align-items: center; }
+  .section-title { font-size: 17px; font-weight: 700; color: var(--text); }
+  .see-all { font-size: 14px; color: var(--primary); font-weight: 600; }
+
+  /* Tx list */
+  .tx-card { background: var(--surface); border: 1px solid var(--border); border-radius: 22px; overflow: hidden; }
+  .tx-item { display: flex; align-items: center; gap: 14px; padding: 16px; }
+  .tx-item + .tx-item { border-top: 1px solid var(--border); }
+  .tx-icon {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .tx-info { flex: 1; overflow: hidden; }
+  .tx-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .tx-sub { font-size: 12px; color: var(--text2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tx-amount { font-size: 15px; font-weight: 700; }
+  .tx-amount.pos { color: var(--primary); }
+  .tx-amount.neg { color: var(--red); }
+
+  /* ── Auth screens ── */
+  .auth-wrap {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px 24px calc(var(--sab) + 28px);
+    gap: 28px;
+  }
+  .auth-logo { font-size: 34px; font-weight: 800; color: var(--text); letter-spacing: -1px; }
+  .auth-logo span { color: var(--primary); }
+  .auth-tagline { font-size: 15px; color: var(--text2); margin-top: 6px; }
+  .auth-form { display: flex; flex-direction: column; gap: 14px; }
+  .form-label { font-size: 13px; color: var(--text2); margin-bottom: 6px; display: block; font-weight: 500; }
+  .phone-input-wrap { display: flex; gap: 10px; }
+  .flag-badge {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 0 14px;
+    display: flex; align-items: center; gap: 7px;
+    font-size: 16px; color: var(--text); flex-shrink: 0;
+    height: 56px;
+  }
+  .s-input {
+    flex: 1; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 0 16px;
+    font-size: 17px; color: var(--text);
+    outline: none; height: 56px; width: 100%;
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+  }
+  .s-input:focus { border-color: var(--primary); }
+  .btn-primary {
+    width: 100%; height: 58px; border-radius: 16px;
+    background: var(--primary); border: none;
+    font-size: 17px; font-weight: 700; color: #000;
+    cursor: pointer; -webkit-appearance: none;
+    transition: transform 0.1s, opacity 0.1s;
+  }
+  .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
+  .btn-secondary {
+    width: 100%; height: 54px; border-radius: 16px;
+    background: var(--surface); border: 1px solid var(--border);
+    font-size: 16px; font-weight: 600; color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-secondary:active { background: var(--surface2); }
+  .auth-footer { font-size: 12px; color: var(--text3); text-align: center; line-height: 1.7; }
+
+  /* OTP */
+  .otp-row { display: flex; gap: 10px; justify-content: center; }
+  .otp-box {
+    width: 52px; height: 62px; border-radius: 14px;
+    background: var(--surface2); border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 800; color: var(--text);
+  }
+  .otp-box.filled { border-color: var(--primary); }
+
+  /* KYC steps */
+  .kyc-step {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 16px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 16px;
+  }
+  .kyc-num {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--primary-dim); border: 1px solid var(--primary-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: var(--primary); flex-shrink: 0;
+  }
+  .kyc-num.done { background: var(--primary); color: #000; border-color: var(--primary); }
+  .kyc-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .kyc-desc { font-size: 13px; color: var(--text2); line-height: 1.4; }
+
+  /* Deposit */
+  .amount-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 22px; padding: 22px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .big-input-wrap { position: relative; }
+  .big-currency { position: absolute; top: 50%; left: 16px; transform: translateY(-50%); font-size: 22px; font-weight: 700; color: var(--text2); pointer-events: none; }
+  .big-input {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px 16px 16px 40px;
+    font-size: 32px; font-weight: 800; color: var(--text);
+    outline: none; -webkit-appearance: none;
+    letter-spacing: -0.5px;
+    transition: border-color 0.2s;
+  }
+  .big-input:focus { border-color: var(--primary); }
+  .quick-amounts { display: flex; gap: 8px; }
+  .qa-btn {
+    flex: 1; padding: 10px 4px; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 10px;
+    font-size: 13px; color: var(--text2); font-weight: 600;
+    transition: all 0.15s; cursor: pointer;
+  }
+  .qa-btn:active, .qa-btn.active { background: var(--primary-dim); border-color: var(--primary-border); color: var(--primary); }
+  .exchange-info {
+    background: var(--surface2); border-radius: 12px; padding: 14px 16px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .ei-row { display: flex; justify-content: space-between; font-size: 14px; }
+  .ei-label { color: var(--text2); }
+  .ei-value { color: var(--text); font-weight: 600; }
+  .ei-value.green { color: var(--primary); font-size: 16px; }
+  .ei-divider { border: none; border-top: 1px solid var(--border); }
+
+  /* Bank details */
+  .bank-card {
+    background: var(--surface2); border: 1px solid var(--primary-border);
+    border-radius: 22px; padding: 22px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .bank-card-title { font-size: 14px; font-weight: 700; color: var(--primary); }
+  .bank-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .bank-label { font-size: 13px; color: var(--text2); flex-shrink: 0; }
+  .bank-value { font-size: 14px; font-weight: 600; color: var(--text); text-align: right; }
+  .copy-btn {
+    font-size: 12px; color: var(--primary); cursor: pointer;
+    background: var(--primary-dim); padding: 5px 10px;
+    border-radius: 8px; border: none; font-weight: 600; flex-shrink: 0;
+    transition: opacity 0.1s;
+  }
+  .copy-btn:active { opacity: 0.7; }
+  .timer-badge {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 12px; padding: 12px 16px;
+  }
+  .timer-text { font-size: 13px; color: var(--amber); line-height: 1.4; }
+
+  /* Success */
+  .success-wrap {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 28px 28px calc(var(--sab) + 110px);
+    gap: 14px;
+  }
+  .success-icon {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: var(--primary-dim); border: 2px solid var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 42px; margin-bottom: 8px;
+  }
+  .success-title { font-size: 26px; font-weight: 800; color: var(--text); }
+  .success-sub { font-size: 15px; color: var(--text2); text-align: center; line-height: 1.6; }
+  .success-amount { font-size: 42px; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
+
+  /* Transfer */
+  .contact-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 16px;
+    cursor: pointer; transition: border-color 0.15s;
+  }
+  .contact-row:active { border-color: var(--primary-border); background: var(--surface2); }
+  .contact-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: #000; flex-shrink: 0;
+  }
+  .contact-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .contact-addr { font-size: 12px; color: var(--text2); font-family: 'Courier New', monospace; margin-top: 2px; }
+  .wallet-input-wrap {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px;
+  }
+  .wallet-input {
+    background: none; border: none; outline: none;
+    width: 100%; font-size: 14px; color: var(--text);
+    font-family: 'Courier New', monospace;
+  }
+
+  /* History filter */
+  .filter-row { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+  .filter-row::-webkit-scrollbar { display: none; }
+  .filter-chip {
+    white-space: nowrap; font-size: 13px; font-weight: 600;
+    padding: 8px 16px; border-radius: 20px;
+    border: 1px solid var(--border); background: none;
+    color: var(--text2); cursor: pointer; transition: all 0.15s;
+    -webkit-appearance: none; flex-shrink: 0;
+  }
+  .filter-chip.active { background: var(--primary-dim); border-color: var(--primary-border); color: var(--primary); }
+
+  /* Onboarding */
+  .ob-visual {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: calc(var(--sat) + 20px) 20px 20px;
+    position: relative; overflow: hidden;
+  }
+  .ob-glow {
+    position: absolute; width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,200,83,0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .ob-card-stack { position: relative; width: 280px; height: 165px; }
+  .ob-card {
+    position: absolute; width: 260px;
+    border-radius: 20px; padding: 18px 20px;
+    background: linear-gradient(135deg, #0d1a2e, #091420);
+    border: 1px solid rgba(255,255,255,0.09);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+  .ob-card-1 { transform: rotate(-7deg) translateY(25px); }
+  .ob-card-2 { transform: rotate(3deg); top: 0; left: 10px; }
+  .ob-card-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+  .ob-card-val { font-size: 22px; font-weight: 800; color: var(--text); }
+  .ob-card-sub { font-size: 12px; color: var(--primary); margin-top: 3px; font-weight: 600; }
+  .ob-content {
+    background: var(--surface); border-radius: 32px 32px 0 0;
+    padding: 28px 28px calc(var(--sab) + 28px);
+    margin-top: -24px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .ob-title { font-size: 26px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; line-height: 1.2; }
+  .ob-desc { font-size: 15px; color: var(--text2); line-height: 1.65; margin-top: -6px; }
+  .dots { display: flex; gap: 7px; }
+  .dot-ind { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: all 0.2s; }
+  .dot-ind.active { background: var(--primary); width: 26px; border-radius: 5px; }
+
+  /* Alert notification */
+  .info-banner {
+    background: var(--primary-dim); border: 1px solid var(--primary-border);
+    border-radius: 14px; padding: 14px 16px;
+    font-size: 13px; color: var(--primary); line-height: 1.5;
+  }
+  .warn-banner {
+    background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 14px; padding: 14px 16px;
+    font-size: 13px; color: var(--amber); line-height: 1.5;
+  }
+
+  /* Demo label */
+  #demo-label {
+    position: fixed; top: calc(var(--sat) + 2px); left: 50%; transform: translateX(-50%);
+    font-size: 10px; color: rgba(0,200,83,0.6);
+    letter-spacing: 1px; font-weight: 600;
+    text-transform: uppercase; z-index: 300;
+    pointer-events: none;
+  }
+
+  /* Loading overlay */
+  #loading {
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 999; gap: 20px;
+    transition: opacity 0.4s;
+  }
+  .splash-logo { font-size: 42px; font-weight: 900; color: var(--text); letter-spacing: -2px; }
+  .splash-logo span { color: var(--primary); }
+  .splash-tagline { font-size: 14px; color: var(--text2); }
+  .splash-loader {
+    width: 40px; height: 4px; background: var(--surface2); border-radius: 4px; overflow: hidden; margin-top: 8px;
+  }
+  .splash-loader-fill {
+    height: 100%; background: var(--primary); border-radius: 4px;
+    animation: load 1.2s ease-in-out forwards;
+  }
+  @keyframes load { from { width: 0% } to { width: 100% } }
+</style>
+</head>
+<body>
+
+<!-- Splash loader -->
+<div id="loading">
+  <div class="splash-logo">Stable<span>Wallet</span></div>
+  <div class="splash-tagline">USDC neobank for Nigeria 🇳🇬</div>
+  <div class="splash-loader"><div class="splash-loader-fill"></div></div>
+</div>
+
+<!-- Dynamic Island (iPhone 17) -->
+<div class="dynamic-island"></div>
+
+<!-- Demo watermark -->
+<div id="demo-label">Demo Mode</div>
+
+<div id="app">
+
+  <!-- ══════════════ ONBOARDING ══════════════ -->
+  <div id="screen-onboarding" class="screen">
+    <div class="ob-visual">
+      <div class="ob-glow"></div>
+      <div class="ob-card-stack">
+        <div class="ob-card ob-card-1">
+          <div class="ob-card-label">USDC Balance</div>
+          <div class="ob-card-val">$250.00</div>
+          <div class="ob-card-sub">≈ ₦ 400,000 NGN</div>
+        </div>
+        <div class="ob-card ob-card-2">
+          <div class="ob-card-label">Daily Yield</div>
+          <div class="ob-card-val">+$0.04</div>
+          <div class="ob-card-sub">5.2% APY 📈</div>
+        </div>
+      </div>
+    </div>
+    <div class="ob-content">
+      <div class="dots">
+        <div class="dot-ind active"></div>
+        <div class="dot-ind"></div>
+        <div class="dot-ind"></div>
+      </div>
+      <div class="ob-title">Your USDC,<br>your Naira, your way</div>
+      <div class="ob-desc">Store, send, and convert between USDC and NGN instantly. Earn 5.2% APY on your balance while you sleep.</div>
+      <button class="btn-primary tappable" onclick="nav('login')">Get Started</button>
+      <button class="btn-secondary tappable" onclick="nav('login')">I already have an account</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ LOGIN ══════════════ -->
+  <div id="screen-login" class="screen">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="white" opacity=".9"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0.5" width="3" height="11.5" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white" opacity=".9"><path d="M8 2.4C5.2 2.4 2.7 3.6 1 5.5L0 4.4C2 2.2 4.8 0.8 8 0.8s6 1.4 8 3.6l-1 1.1C13.3 3.6 10.8 2.4 8 2.4zM8 6C6.3 6 4.8 6.7 3.7 7.8L2.7 6.7C4.1 5.3 6 4.4 8 4.4s3.9.9 5.3 2.3l-1 1.1C11.2 6.7 9.7 6 8 6zM8 9.6c-.9 0-1.7.4-2.3 1L8 13l2.3-2.4C9.7 10 8.9 9.6 8 9.6z"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="white" stroke-opacity=".35"/><rect x="1.5" y="1.5" width="17" height="9" rx="2.5" fill="white"/><path d="M23 4v4a2 2 0 000-4z" fill="white" opacity=".4"/></svg>
+      </div>
+    </div>
+    <div class="auth-wrap">
+      <div>
+        <div class="auth-logo">Stable<span>Wallet</span></div>
+        <div class="auth-tagline">USDC neobank for Nigeria 🇳🇬</div>
+      </div>
+      <div class="auth-form">
+        <label class="form-label">Phone number</label>
+        <div class="phone-input-wrap">
+          <div class="flag-badge">🇳🇬 +234</div>
+          <input class="s-input" type="tel" inputmode="numeric" value="801 234 5678" placeholder="801 234 5678">
+        </div>
+        <button class="btn-primary tappable" onclick="nav('otp')">Send Verification Code →</button>
+      </div>
+      <div class="auth-footer">By continuing, you agree to our Terms of Service and Privacy Policy. Your account is protected by end-to-end encryption.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ OTP ══════════════ -->
+  <div id="screen-otp" class="screen">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">📶 📡 🔋</div>
+    </div>
+    <div class="auth-wrap">
+      <div>
+        <div style="font-size:44px; margin-bottom:12px">📱</div>
+        <div class="auth-logo" style="font-size:24px">Verify your number</div>
+        <div class="auth-tagline" style="margin-top:8px">Code sent to +234 801 234 5678</div>
+      </div>
+      <div class="otp-row">
+        <div class="otp-box filled">1</div>
+        <div class="otp-box filled">2</div>
+        <div class="otp-box filled">3</div>
+        <div class="otp-box filled">4</div>
+        <div class="otp-box filled">5</div>
+        <div class="otp-box filled">6</div>
+      </div>
+      <button class="btn-primary tappable" onclick="nav('kyc')">Verify →</button>
+      <div class="auth-footer">Didn't receive it? Resend in 0:42<br>Sandbox OTP: <strong style="color:var(--primary)">123456</strong></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ KYC ══════════════ -->
+  <div id="screen-kyc" class="screen">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">📶 📡 🔋</div>
+    </div>
+    <div class="screen-body">
+      <div class="page-header">
+        <button class="back-btn tappable" onclick="nav('otp')">←</button>
+        <div>
+          <div class="ph-title">Verify Identity</div>
+          <div class="ph-sub">Required for NGN deposits & withdrawals</div>
+        </div>
+      </div>
+      <div class="page-content" style="padding-top:14px">
+        <div class="info-banner">✅ KYC protects you and ensures regulatory compliance. Most users complete in under 2 minutes.</div>
+        <div style="display:flex; flex-direction:column; gap:10px">
+          <div class="kyc-step">
+            <div class="kyc-num done">✓</div>
+            <div>
+              <div class="kyc-title">Phone Verified</div>
+              <div class="kyc-desc">+234 801 234 5678 confirmed</div>
+            </div>
+          </div>
+          <div class="kyc-step">
+            <div class="kyc-num">2</div>
+            <div>
+              <div class="kyc-title">Upload NIN / BVN</div>
+              <div class="kyc-desc">National ID or Bank Verification Number</div>
+            </div>
+          </div>
+          <div class="kyc-step">
+            <div class="kyc-num">3</div>
+            <div>
+              <div class="kyc-title">Selfie Liveness Check</div>
+              <div class="kyc-desc">Quick face scan via camera</div>
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary tappable" onclick="nav('home')">Start Verification (Sandbox: Auto-approve) →</button>
+        <button class="btn-secondary tappable" onclick="nav('home')" style="margin-top:-6px">Skip — limited features</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ HOME ══════════════ -->
+  <div id="screen-home" class="screen">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="white" opacity=".9"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0.5" width="3" height="11.5" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1"/></svg>
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white" opacity=".9"><path d="M8 2.4C5.2 2.4 2.7 3.6 1 5.5L0 4.4C2 2.2 4.8 0.8 8 0.8s6 1.4 8 3.6l-1 1.1C13.3 3.6 10.8 2.4 8 2.4zM8 6C6.3 6 4.8 6.7 3.7 7.8L2.7 6.7C4.1 5.3 6 4.4 8 4.4s3.9.9 5.3 2.3l-1 1.1C11.2 6.7 9.7 6 8 6zM8 9.6c-.9 0-1.7.4-2.3 1L8 13l2.3-2.4C9.7 10 8.9 9.6 8 9.6z"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="white" stroke-opacity=".35"/><rect x="1.5" y="1.5" width="19" height="9" rx="2.5" fill="white"/><path d="M23 4v4a2 2 0 000-4z" fill="white" opacity=".4"/></svg>
+      </div>
+    </div>
+    <div class="screen-body">
+      <div class="page-content">
+        <div class="s-header">
+          <div class="avatar">OK</div>
+          <div class="greeting-col">
+            <div class="greeting-sub">your savings grew $0.04 today 🌱</div>
+            <div class="greeting-name">+234 801 234 5678</div>
+          </div>
+          <div style="font-size:24px; padding:8px">🔔</div>
+        </div>
+
+        <div class="balance-card">
+          <div class="balance-label">USDC Balance</div>
+          <div class="balance-amount">$250.00</div>
+          <div class="balance-ngn">≈ ₦ 400,000 NGN</div>
+          <div class="balance-footer">
+            <div class="rate-chip">1 USDC = ₦ 1,600</div>
+            <div class="yield-info">Earning <b>5.2% APY</b></div>
+          </div>
+        </div>
+
+        <div class="trust-row">
+          <div class="trust-badge">🔒 Licensed & Regulated</div>
+          <div class="trust-badge">⛓️ On-Chain Verified</div>
+          <div class="trust-badge">🛡️ Self-Custody</div>
+        </div>
+
+        <div class="new-user-card">
+          <div class="nuc-title">🎉 Welcome! Make Your First Deposit</div>
+          <div class="nuc-sub">Deposit for the first time and earn $5 USDC</div>
+          <div class="pills">
+            <div class="pill done">✓ Registered</div>
+            <div class="pill">Verify ID</div>
+            <div class="pill">First Deposit</div>
+          </div>
+          <button class="btn-primary tappable" onclick="nav('deposit')">Deposit Now, Earn $5 →</button>
+        </div>
+
+        <div class="yield-banner tappable" onclick="showToast('Earn screen — 5.2% APY on your USDC balance')">
+          <div class="yield-banner-text">📈 $250 earning $0.04/day · See breakdown →</div>
+          <span style="color:var(--primary); font-size:20px">›</span>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Quick Actions</div>
+          <div class="actions-card">
+            <button class="action-btn" onclick="nav('deposit')">
+              <div class="action-icon" style="background:rgba(0,200,83,0.12)">➕</div>
+              <div class="action-label">Add Money</div>
+            </button>
+            <button class="action-btn" onclick="nav('transfer')">
+              <div class="action-icon" style="background:rgba(59,130,246,0.12)">📤</div>
+              <div class="action-label">Send Home</div>
+            </button>
+            <button class="action-btn" onclick="showToast('Earn 5.2% APY on your USDC')">
+              <div class="action-icon" style="background:rgba(245,158,11,0.12)">📈</div>
+              <div class="action-label">Earn</div>
+            </button>
+            <button class="action-btn" onclick="nav('withdraw')">
+              <div class="action-icon" style="background:rgba(239,68,68,0.12)">⬆️</div>
+              <div class="action-label">Withdraw</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="invite-banner tappable" onclick="showToast('Invite friends → earn $2 per referral!')">
+          <div class="invite-left">
+            <div class="invite-emoji">🎁</div>
+            <div class="invite-text">Invite friends · Earn $2 per referral</div>
+          </div>
+          <span style="color:var(--text2); font-size:20px">›</span>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">Transactions</div>
+            <div class="see-all tappable" onclick="nav('history')">See All</div>
+          </div>
+          <div class="tx-card">
+            <div class="tx-item tappable">
+              <div class="tx-icon" style="background:rgba(0,200,83,0.12)">💰</div>
+              <div class="tx-info">
+                <div class="tx-title">Deposit</div>
+                <div class="tx-sub">NGN → USDC · First Bank · 2 min ago</div>
+              </div>
+              <div class="tx-amount pos">+$50.00</div>
+            </div>
+            <div class="tx-item tappable">
+              <div class="tx-icon" style="background:rgba(59,130,246,0.12)">📤</div>
+              <div class="tx-info">
+                <div class="tx-title">Transfer to Chioma</div>
+                <div class="tx-sub">0x1a2b...3c4d · Yesterday</div>
+              </div>
+              <div class="tx-amount neg">-$20.00</div>
+            </div>
+            <div class="tx-item tappable">
+              <div class="tx-icon" style="background:rgba(239,68,68,0.12)">⬆️</div>
+              <div class="tx-info">
+                <div class="tx-title">Withdraw to GTBank</div>
+                <div class="tx-sub">USDC → NGN · Mar 8</div>
+              </div>
+              <div class="tx-amount neg">-$30.00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="nav-item active" onclick="nav('home')">
+        <span class="nav-icon">🏠</span><span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" onclick="nav('transfer')">
+        <span class="nav-icon">📤</span><span class="nav-label">Send</span>
+      </button>
+      <button class="nav-item" onclick="showToast('Earn — 5.2% APY')">
+        <span class="nav-icon">📈</span><span class="nav-label">Earn</span>
+      </button>
+      <button class="nav-item" onclick="nav('history')">
+        <span class="nav-icon">📋</span><span class="nav-label">History</span>
+      </button>
+      <button class="nav-item" onclick="showToast('Settings')">
+        <span class="nav-icon">⚙️</span><span class="nav-label">Settings</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════ DEPOSIT ══════════════ -->
+  <div id="screen-deposit" class="screen">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">📶 📡 🔋</div>
+    </div>
+    <div class="screen-body">
+      <div class="page-header">
+        <button class="back-btn tappable" onclick="nav('home')">←</button>
+        <div>
+          <div class="ph-title">Add Money</div>
+          <div class="ph-sub">NGN → USDC via bank transfer</div>
+        </div>
+      </div>
+      <div class="page-content" style="padding-top:14px">
+        <div class="amount-card">
+          <div>
+            <label class="form-label">Amount in Naira (₦)</label>
+            <div class="big-input-wrap">
+              <span class="big-currency">₦</span>
+              <input id="d-input" class="big-input" type="number" inputmode="numeric" value="50000" oninput="calcDeposit()">
+            </div>
+          </div>
+          <div class="quick-amounts">
+            <button class="qa-btn" onclick="setD(10000)">₦10K</button>
+            <button class="qa-btn active" onclick="setD(50000)">₦50K</button>
+            <button class="qa-btn" onclick="setD(100000)">₦100K</button>
+            <button class="qa-btn" onclick="setD(200000)">₦200K</button>
+          </div>
+          <div class="exchange-info">
+            <div class="ei-row"><span class="ei-label">Amount (NGN)</span><span class="ei-value" id="d-ngn">₦ 50,000</span></div>
+            <div class="ei-row"><span class="ei-label">Exchange Rate</span><span class="ei-value">1 USDC = ₦ 1,600</span></div>
+            <div class="ei-row"><span class="ei-label">Processing Fee (0.8%)</span><span class="ei-value" id="d-fee">₦ 400</span></div>
+            <hr class="ei-divider">
+            <div class="ei-row"><span class="ei-label">You receive</span><span class="ei-value green" id="d-usdc">≈ $31.00 USDC</span></div>
+          </div>
+        </div>
+        <button class="btn-primary tappable" onclick="nav('bank-instructions')">Continue → Get Bank Details</button>
+        <div style="font-size:12px; color:var(--text3); text-align:center">Powered by Yellow Card · Sandbox mode</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ BANK INSTRUCTIONS ══════════════ -->
+  <div id="screen-bank-instructions" class="screen">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">📶 📡 🔋</div>
+    </div>
+    <div class="screen-body">
+      <div class="page-header">
+        <button class="back-btn tappable" onclick="nav('deposit')">←</button>
+        <div>
+          <div class="ph-title">Transfer ₦ 50,000</div>
+          <div class="ph-sub">Make a bank transfer to complete</div>
+        </div>
+      </div>
+      <div class="page-content" style="padding-top:14px">
+        <div class="bank-card">
+          <div class="bank-card-title">📋 Transfer to this account</div>
+          <div class="bank-row">
+            <span class="bank-label">Bank Name</span>
+            <span class="bank-value">First Bank of Nigeria</span>
+          </div>
+          <div class="bank-row">
+            <span class="bank-label">Account No.</span>
+            <div style="display:flex; align-items:center; gap:8px">
+              <span class="bank-value">3012345678</span>
+              <button class="copy-btn" onclick="copyText('3012345678', this)">Copy</button>
+            </div>
+          </div>
+          <div class="bank-row">
+            <span class="bank-label">Account Name</span>
+            <span class="bank-value" style="font-size:13px">STABLEWALLET ESCROW</span>
+          </div>
+          <div class="bank-row">
+            <span class="bank-label">Exact Amount</span>
+            <span class="bank-value" style="color:var(--primary)">₦ 50,000.00</span>
+          </div>
+          <div class="bank-row">
+            <span class="bank-label">Reference</span>
+            <div style="display:flex; align-items:center; gap:8px">
+              <span class="bank-value" style="font-family:monospace; font-size:12px">SW-20260310-0042</span>
+              <button class="copy-btn" onclick="copyText('SW-20260310-0042', this)">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="timer-badge">
+          <span style="font-size:20px">⏰</span>
+          <span class="timer-text">Order expires in <strong id="mob-countdown">14:37</strong> — transfer now</span>
+        </div>
+
+        <div class="warn-banner">⚠️ <strong style="color:var(--text)">Important:</strong> Include the exact reference. Transfer the exact amount. Transfers from any Nigerian bank are accepted.</div>
+
+        <button id="confirm-btn" class="btn-primary tappable" onclick="doDeposit(this)">✅ I've Made the Transfer</button>
+        <div style="font-size:12px; color:var(--text3); text-align:center">Sandbox: Auto-confirms in 3 seconds</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ DEPOSIT SUCCESS ══════════════ -->
+  <div id="screen-deposit-success" class="screen">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">📶 📡 🔋</div>
+    </div>
+    <div class="success-wrap">
+      <div class="success-icon">✅</div>
+      <div class="success-amount">+$31.00 USDC</div>
+      <div class="success-title">Deposit Successful!</div>
+      <div class="success-sub">₦ 50,000 received · Converted at ₦ 1,600 · New balance: <strong style="color:var(--primary)">$281.00</strong></div>
+      <div class="info-banner" style="width:100%; text-align:center">🎉 First deposit bonus: +$5.00 USDC credited!</div>
+      <button class="btn-primary tappable" style="width:100%" onclick="nav('home')">Back to Home</button>
+      <button class="btn-secondary tappable" style="width:100%" onclick="nav('history')">View Transaction</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ TRANSFER ══════════════ -->
+  <div id="screen-transfer" class="screen">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">📶 📡 🔋</div>
+    </div>
+    <div class="screen-body">
+      <div class="page-header">
+        <button class="back-btn tappable" onclick="nav('home')">←</button>
+        <div>
+          <div class="ph-title">Send USDC</div>
+          <div class="ph-sub">On-chain · Instant · ~$0.001 fee</div>
+        </div>
+      </div>
+      <div class="page-content" style="padding-top:14px">
+        <div class="amount-card">
+          <div>
+            <label class="form-label">Amount (USDC)</label>
+            <div class="big-input-wrap">
+              <span class="big-currency" style="font-size:20px">$</span>
+              <input class="big-input" type="number" inputmode="decimal" value="20" placeholder="0.00">
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center">
+            <span style="font-size:14px; color:var(--text2)">Available: <strong style="color:var(--text)">$250.00 USDC</strong></span>
+            <button style="background:var(--primary-dim); border:1px solid var(--primary-border); border-radius:8px; padding:5px 12px; font-size:12px; color:var(--primary); font-weight:700; cursor:pointer">MAX</button>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title" style="font-size:16px">Recent Contacts</div>
+          <div class="contact-row tappable" onclick="selectContact(this)">
+            <div class="contact-avatar" style="background:var(--blue)">C</div>
+            <div style="flex:1; overflow:hidden">
+              <div class="contact-name">Chioma Adeyemi</div>
+              <div class="contact-addr">0x1a2b3c4d...8f9e</div>
+            </div>
+            <span style="color:var(--text3); font-size:20px">›</span>
+          </div>
+          <div class="contact-row tappable" onclick="selectContact(this)">
+            <div class="contact-avatar" style="background:var(--amber)">E</div>
+            <div style="flex:1; overflow:hidden">
+              <div class="contact-name">Emeka Okafor</div>
+              <div class="contact-addr">0x5d6e7f8a...2a1b</div>
+            </div>
+            <span style="color:var(--text3); font-size:20px">›</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">Or enter wallet address</label>
+          <div class="wallet-input-wrap">
+            <input class="wallet-input" type="text" placeholder="0x... wallet address or StableWallet username">
+          </div>
+        </div>
+
+        <button class="btn-primary tappable" onclick="nav('home'); showToast('✅ $20 USDC sent to Chioma · Tx confirmed in 2s on Base')">Send $20.00 →</button>
+        <div style="font-size:12px; color:var(--text3); text-align:center">Network fee: ~$0.001 on Base · Usually &lt;2 sec</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ WITHDRAW ══════════════ -->
+  <div id="screen-withdraw" class="screen">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">📶 📡 🔋</div>
+    </div>
+    <div class="screen-body">
+      <div class="page-header">
+        <button class="back-btn tappable" onclick="nav('home')">←</button>
+        <div>
+          <div class="ph-title">Withdraw</div>
+          <div class="ph-sub">USDC → NGN bank transfer</div>
+        </div>
+      </div>
+      <div class="page-content" style="padding-top:14px">
+        <div class="amount-card">
+          <div>
+            <label class="form-label">USDC to withdraw</label>
+            <div class="big-input-wrap">
+              <span class="big-currency" style="font-size:20px">$</span>
+              <input id="w-input" class="big-input" type="number" inputmode="decimal" value="30" oninput="calcWithdraw()">
+            </div>
+          </div>
+          <div class="exchange-info">
+            <div class="ei-row"><span class="ei-label">USDC Amount</span><span class="ei-value" id="w-usdc">$30.00</span></div>
+            <div class="ei-row"><span class="ei-label">Exchange Rate</span><span class="ei-value">1 USDC = ₦ 1,600</span></div>
+            <div class="ei-row"><span class="ei-label">Fee (1%)</span><span class="ei-value" id="w-fee">$0.30</span></div>
+            <hr class="ei-divider">
+            <div class="ei-row"><span class="ei-label">You receive (NGN)</span><span class="ei-value green" id="w-ngn">≈ ₦ 47,520</span></div>
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">Bank account</label>
+          <div class="contact-row">
+            <div class="contact-avatar" style="background:var(--primary); font-size:22px">🏦</div>
+            <div style="flex:1">
+              <div class="contact-name">GTBank — 0123456789</div>
+              <div class="contact-addr">Oluwaseun Kehinde · Verified ✓</div>
+            </div>
+            <span style="font-size:13px; color:var(--primary); font-weight:700; cursor:pointer">Change</span>
+          </div>
+        </div>
+
+        <button class="btn-primary tappable" onclick="nav('home'); showToast('Withdrawal initiated! ₦ 47,520 → GTBank 0123456789\nArrives within 15 minutes')">Confirm Withdrawal →</button>
+        <div style="font-size:12px; color:var(--text3); text-align:center">Typically arrives in 5-15 minutes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ HISTORY ══════════════ -->
+  <div id="screen-history" class="screen">
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">📶 📡 🔋</div>
+    </div>
+    <div class="screen-body">
+      <div class="page-header">
+        <button class="back-btn tappable" onclick="nav('home')">←</button>
+        <div class="ph-title">Transaction History</div>
+      </div>
+      <div class="page-content" style="padding-top:14px">
+        <div class="filter-row">
+          <button class="filter-chip active">All</button>
+          <button class="filter-chip">Deposits</button>
+          <button class="filter-chip">Withdrawals</button>
+          <button class="filter-chip">Transfers</button>
+          <button class="filter-chip">Yield</button>
+        </div>
+        <div style="font-size:12px; color:var(--text2); font-weight:600; text-transform:uppercase; letter-spacing:0.5px">March 2026</div>
+        <div class="tx-card">
+          <div class="tx-item tappable">
+            <div class="tx-icon" style="background:rgba(0,200,83,0.12)">💰</div>
+            <div class="tx-info">
+              <div class="tx-title">Deposit</div>
+              <div class="tx-sub">NGN → USDC · First Bank · Today 09:41</div>
+            </div>
+            <div>
+              <div class="tx-amount pos">+$31.00</div>
+              <div style="font-size:10px; color:var(--text3); text-align:right; margin-top:2px">✓ Completed</div>
+            </div>
+          </div>
+          <div class="tx-item tappable">
+            <div class="tx-icon" style="background:rgba(0,200,83,0.08)">🌱</div>
+            <div class="tx-info">
+              <div class="tx-title">Yield Earned</div>
+              <div class="tx-sub">5.2% APY · Daily · Today</div>
+            </div>
+            <div class="tx-amount pos">+$0.04</div>
+          </div>
+          <div class="tx-item tappable">
+            <div class="tx-icon" style="background:rgba(59,130,246,0.12)">📤</div>
+            <div class="tx-info">
+              <div class="tx-title">Transfer to Chioma</div>
+              <div class="tx-sub">0x1a2b...3c4d · Yesterday</div>
+            </div>
+            <div class="tx-amount neg">-$20.00</div>
+          </div>
+          <div class="tx-item tappable">
+            <div class="tx-icon" style="background:rgba(239,68,68,0.12)">⬆️</div>
+            <div class="tx-info">
+              <div class="tx-title">Withdraw to GTBank</div>
+              <div class="tx-sub">USDC → ₦ 47,520 · Mar 8</div>
+            </div>
+            <div class="tx-amount neg">-$30.00</div>
+          </div>
+          <div class="tx-item tappable">
+            <div class="tx-icon" style="background:rgba(0,200,83,0.12)">💰</div>
+            <div class="tx-info">
+              <div class="tx-title">Deposit</div>
+              <div class="tx-sub">₦ 200,000 → USDC · Mar 7</div>
+            </div>
+            <div class="tx-amount pos">+$123.75</div>
+          </div>
+          <div class="tx-item tappable">
+            <div class="tx-icon" style="background:rgba(0,200,83,0.08)">🎁</div>
+            <div class="tx-info">
+              <div class="tx-title">Welcome Bonus</div>
+              <div class="tx-sub">First deposit reward · Mar 7</div>
+            </div>
+            <div class="tx-amount pos">+$5.00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="nav-item" onclick="nav('home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+      <button class="nav-item" onclick="nav('transfer')"><span class="nav-icon">📤</span><span class="nav-label">Send</span></button>
+      <button class="nav-item" onclick="showToast('Earn — 5.2% APY')"><span class="nav-icon">📈</span><span class="nav-label">Earn</span></button>
+      <button class="nav-item active"><span class="nav-icon">📋</span><span class="nav-label">History</span></button>
+      <button class="nav-item" onclick="showToast('Settings')"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></button>
+    </div>
+  </div>
+
+</div><!-- #app -->
+
+<!-- Toast notification -->
+<div id="toast" style="
+  position: fixed; bottom: calc(var(--sab) + 90px); left: 20px; right: 20px;
+  background: rgba(15,22,35,0.97); border: 1px solid var(--border);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px; padding: 14px 18px;
+  font-size: 14px; color: var(--text); line-height: 1.5;
+  opacity: 0; pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 500;
+"></div>
+
+<script>
+// ── Navigation ────────────────────────────────────────────────
+let current = 'onboarding';
+
+function nav(id) {
+  const prev = document.getElementById('screen-' + current);
+  const next = document.getElementById('screen-' + id);
+  if (!next || id === current) return;
+
+  // Determine direction
+  const flow = ['onboarding','login','otp','kyc','home','deposit','bank-instructions','deposit-success','transfer','withdraw','history'];
+  const prevIdx = flow.indexOf(current);
+  const nextIdx = flow.indexOf(id);
+  const goingBack = nextIdx < prevIdx;
+
+  if (prev) {
+    prev.classList.remove('active');
+    if (goingBack) {
+      prev.style.transform = 'translateX(60px)';
+      prev.style.opacity = '0';
+      setTimeout(() => { prev.style.transform = ''; prev.style.opacity = ''; }, 300);
+    }
+  }
+
+  next.style.transform = goingBack ? 'translateX(-30px)' : 'translateX(40px)';
+  next.style.opacity = '0';
+  next.classList.add('active');
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      next.style.transform = '';
+      next.style.opacity = '';
+    });
+  });
+
+  // scroll to top
+  const body = next.querySelector('.screen-body');
+  if (body) body.scrollTop = 0;
+
+  current = id;
+
+  // Sync nav bar active states
+  document.querySelectorAll('.nav-item').forEach(item => {
+    const onclick = item.getAttribute('onclick') || '';
+    item.classList.toggle('active', onclick.includes("nav('home')") && id === 'home' || onclick.includes("nav('transfer')") && id === 'transfer' || onclick.includes("nav('history')") && id === 'history');
+  });
+}
+
+// ── Calculators ───────────────────────────────────────────────
+const RATE = 1600;
+
+function calcDeposit() {
+  const ngn = parseFloat(document.getElementById('d-input').value) || 0;
+  const fee = ngn * 0.008;
+  const usdc = (ngn - fee) / RATE;
+  document.getElementById('d-ngn').textContent = '₦ ' + ngn.toLocaleString();
+  document.getElementById('d-fee').textContent = '₦ ' + Math.round(fee).toLocaleString();
+  document.getElementById('d-usdc').textContent = '≈ $' + usdc.toFixed(2) + ' USDC';
+}
+
+function setD(val) {
+  document.getElementById('d-input').value = val;
+  calcDeposit();
+  document.querySelectorAll('.qa-btn').forEach(b => {
+    const v = b.textContent.includes('10K') ? 10000 : b.textContent.includes('50K') ? 50000 : b.textContent.includes('100K') ? 100000 : 200000;
+    b.classList.toggle('active', v === val);
+  });
+}
+
+function calcWithdraw() {
+  const usdc = parseFloat(document.getElementById('w-input').value) || 0;
+  const fee = usdc * 0.01;
+  const ngn = (usdc - fee) * RATE;
+  document.getElementById('w-usdc').textContent = '$' + usdc.toFixed(2);
+  document.getElementById('w-fee').textContent = '$' + fee.toFixed(2);
+  document.getElementById('w-ngn').textContent = '≈ ₦ ' + Math.round(ngn).toLocaleString();
+}
+
+// ── Deposit simulation ────────────────────────────────────────
+function doDeposit(btn) {
+  btn.textContent = '⏳ Confirming transfer...';
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  setTimeout(() => {
+    nav('deposit-success');
+    btn.textContent = '✅ I\'ve Made the Transfer';
+    btn.disabled = false;
+    btn.style.opacity = '';
+  }, 2500);
+}
+
+// ── Copy ──────────────────────────────────────────────────────
+function copyText(text, btn) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).catch(() => {});
+  }
+  const orig = btn.textContent;
+  btn.textContent = '✓ Copied!';
+  setTimeout(() => btn.textContent = orig, 2000);
+}
+
+// ── Contact select ────────────────────────────────────────────
+function selectContact(el) {
+  document.querySelectorAll('.contact-row').forEach(r => r.style.borderColor = '');
+  el.style.borderColor = 'var(--primary)';
+  showToast('Selected: ' + el.querySelector('.contact-name').textContent);
+}
+
+// ── Toast ─────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  t.style.transform = 'translateY(0)';
+  t.style.pointerEvents = 'auto';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transform = 'translateY(10px)';
+    t.style.pointerEvents = 'none';
+  }, 3000);
+}
+
+// ── Countdown ─────────────────────────────────────────────────
+let secs = 877;
+setInterval(() => {
+  secs = Math.max(0, secs - 1);
+  const el = document.getElementById('mob-countdown');
+  if (el) el.textContent = String(Math.floor(secs/60)).padStart(2,'0') + ':' + String(secs%60).padStart(2,'0');
+}, 1000);
+
+// ── Filter chips ──────────────────────────────────────────────
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    this.closest('.filter-row').querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// ── Init calcs ────────────────────────────────────────────────
+calcDeposit();
+calcWithdraw();
+
+// ── Splash screen ─────────────────────────────────────────────
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const loading = document.getElementById('loading');
+    loading.style.opacity = '0';
+    setTimeout(() => {
+      loading.style.display = 'none';
+      document.getElementById('screen-onboarding').classList.add('active');
+    }, 400);
+  }, 1400);
+});
+
+// prevent pull-to-refresh
+document.body.addEventListener('touchmove', function(e) {
+  if (e.target.closest('.screen-body')) return;
+  e.preventDefault();
+}, { passive: false });
+
+// update real time
+function updateTime() {
+  const now = new Date();
+  const h = now.getHours().toString().padStart(2,'0');
+  const m = now.getMinutes().toString().padStart(2,'0');
+  const timeStr = h + ':' + m;
+  document.querySelectorAll('.status-time').forEach(el => el.textContent = timeStr);
+}
+updateTime();
+setInterval(updateTime, 30000);
+</script>
+</body>
+</html>
