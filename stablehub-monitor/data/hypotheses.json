@@ -16,7 +16,7 @@
         "growth_7d_pct_min": 0,
         "addressable_b_min": 30
       },
-      "last_updated": "2026-03-23T14:07:00Z",
+      "last_updated": "2026-03-23T22:10:09.103380+00:00",
       "data_freshness": "LIVE"
     },
     {
@@ -30,8 +30,8 @@
       "supporting_count": 2,
       "disconfirming_count": 0,
       "supporting_pct": 1.0,
-      "last_updated": "2026-03-20T00:00:00Z",
-      "data_freshness": "MANUAL"
+      "last_updated": "2026-03-23T22:10:09.103380+00:00",
+      "data_freshness": "LIVE"
     },
     {
       "id": "payment-pain-h1",
@@ -46,7 +46,7 @@
       "supporting_pct": null,
       "interview_count_completed": 0,
       "interview_count_target": 20,
-      "last_updated": "2026-03-22T00:00:00Z",
+      "last_updated": "2026-03-23T22:10:09.103380+00:00",
       "data_freshness": "MANUAL"
     },
     {
@@ -60,9 +60,9 @@
       "supporting_count": 3,
       "disconfirming_count": 0,
       "supporting_pct": 0.75,
-      "competitive_window_months": 9,
-      "last_updated": "2026-03-17T00:00:00Z",
-      "data_freshness": "MANUAL"
+      "competitive_window_months": 8,
+      "last_updated": "2026-03-23T22:10:09.103380+00:00",
+      "data_freshness": "LIVE"
     }
   ]
 }

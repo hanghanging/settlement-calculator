@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-03-23T22:00:00Z",
+  "generated_at": "2026-03-23T22:10:09.103380+00:00",
   "data_freshness": {
     "market": {
       "status": "LIVE",
-      "last_updated": "2026-03-23T22:00:00Z",
+      "last_updated": "2026-03-23T22:10:09.103380+00:00",
       "note": "Fetches live from DefiLlama"
     },
     "customer": {
@@ -25,9 +25,9 @@
       "interviews_completed": null,
       "interviews_target": null,
       "window_months": null,
-      "last_updated": "2026-03-23T14:07:00Z",
-      "one_line": "TAM >$315B confirmed. 16.6% addressable base for institutional alternatives.",
-      "one_line_zh": "TAM >$315B 已确认，16.6%可寻址基础供机构替代品进入。"
+      "last_updated": "2026-03-23T22:10:09.103380+00:00",
+      "one_line": "TAM >$315.2B confirmed. 16.6% addressable base for institutional alternatives.",
+      "one_line_zh": "TAM >$315.2B 已确认，16.6%可寻址基础供机构替代品进入。"
     },
     "customer_pain": {
       "status": "INSUFFICIENT",
@@ -58,7 +58,7 @@
       "interviews_completed": null,
       "interviews_target": null,
       "window_months": null,
-      "last_updated": "2026-03-23T22:00:00Z",
+      "last_updated": "2026-03-23T22:10:09.103380+00:00",
       "one_line": "Market confirmed. Competitor window closing. Customer Pain is the blocking unknown.",
       "one_line_zh": "市场已确认，竞争窗口关闭中，客户痛点是阻塞未知项。"
     }

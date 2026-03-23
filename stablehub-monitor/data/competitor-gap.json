@@ -2,13 +2,13 @@
   "status": "WATCH",
   "confidence": "MED",
   "evidence_count": 4,
-  "last_updated": "2026-03-17T00:00:00Z",
-  "data_freshness": "MANUAL",
+  "last_updated": "2026-03-23T22:10:09.103380+00:00",
+  "data_freshness": "LIVE",
   "competitive_window": {
-    "months_remaining": 9,
+    "months_remaining": 8,
     "confidence": "MED",
     "rationale": "Mastercard/BVNK integration expected to reach scale by Q4 2026",
-    "last_assessed": "2026-03-17T00:00:00Z"
+    "last_assessed": "2026-03-23T22:10:09.103380+00:00"
   },
   "competitors": [
     {
@@ -22,9 +22,9 @@
         "No dedicated Asian B2B coverage"
       ],
       "latest_event": {
-        "date": "2026-03-17",
-        "title": "Acquired for $1.8B",
-        "source": "Reuters",
+        "date": "2026-03-23",
+        "title": "Mastercard’s BVNK acquisition shows stablecoins are catching on - CFO Brew",
+        "source": "CFO Brew",
         "impact": "HIGH"
       }
     },
@@ -39,9 +39,9 @@
         "Limited Asian B2B"
       ],
       "latest_event": {
-        "date": "2026-03-20",
-        "title": "GENIUS Act compliance review initiated",
-        "source": "Internal",
+        "date": "2026-03-22",
+        "title": "Circle Internet Group: The Crystallization of the Institutional Pivot and the Trillion-Dollar Stable",
+        "source": "TradingKey",
         "impact": "MED"
       }
     },
@@ -57,8 +57,8 @@
       ],
       "latest_event": {
         "date": "2026-03-23",
-        "title": "Q1 2026: institutional AUM +34% YoY",
-        "source": "CoinDesk",
+        "title": "Rho X Becomes First Onchain Venue on BitGo’s Go Network - Markets Media",
+        "source": "Markets Media",
         "impact": "MED"
       }
     }

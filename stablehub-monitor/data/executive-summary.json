@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-23T22:00:00Z",
+  "generated_at": "2026-03-23T22:10:09.103380+00:00",
   "overall_verdict": "CONDITIONAL_GO",
   "paragraphs": [
     {
@@ -12,16 +12,16 @@
         "usdt_share_pct",
         "addressable_usd"
       ],
-      "text": "Stablecoin total supply reached <strong>$315.4B ATH</strong>. USDC maintained <span class='hl-t'>25% market share</span> vs USDT 58.4%, leaving a <span class='hl-t'>16.6% addressable base</span> (~$52B) for institutional alternatives like USDGO.",
-      "text_zh": "稳定币总供应量创历史新高 <strong>$315.4B</strong>。USDC 维持 <span class='hl-t'>25%市场份额</span>，对比 USDT 58.4%，留下了 <span class='hl-t'>16.6%可寻址基础</span>（~$52B）供 USDGO 等机构替代品进入。"
+      "text": "Stablecoin total supply reached <strong>$315.2B</strong>. USDC maintained <span class='hl-t'>25.0% market share</span> vs USDT 58.4%, leaving a <span class='hl-t'>16.6% addressable base</span> (~$52.4B) for institutional alternatives like USDGO.",
+      "text_zh": "Stablecoin total supply reached <strong>$315.2B</strong>. USDC maintained <span class='hl-t'>25.0% market share</span> vs USDT 58.4%, leaving a <span class='hl-t'>16.6% addressable base</span> (~$52.4B) for institutional alternatives like USDGO."
     },
     {
       "id": "strategic-priority",
       "theme": "all",
       "confidence": "HIGH",
       "auto_fields": [],
-      "text": "<span class='hl-t'>STRATEGIC PRIORITY:</span> US GENIUS Act breakthrough unlocks USDGO yield distribution compliance. HKMA registration window is live. Mastercard/BVNK acquisition compresses StableHub competitive window to 6-12 months — accelerate B2B pipeline.",
-      "text_zh": "<span class='hl-t'>战略优先项：</span>美国 GENIUS Act 突破解锁 USDGO 收益分配合规路径。HKMA 注册窗口已开放。Mastercard/BVNK 收购将 StableHub 竞争窗口压缩至6-12个月——加速 B2B 管道。"
+      "text": "<span class='hl-t'>STRATEGIC PRIORITY:</span> US GENIUS Act breakthrough unlocks USDGO yield distribution. Top threat: Mastercard’s BVNK acquisition shows stablecoins are catching on - CFO Brew. Accelerate B2B pipeline.",
+      "text_zh": "<span class='hl-t'>STRATEGIC PRIORITY:</span> US GENIUS Act breakthrough unlocks USDGO yield distribution. Top threat: Mastercard’s BVNK acquisition shows stablecoins are catching on - CFO Brew. Accelerate B2B pipeline."
     },
     {
       "id": "p0-gap",
@@ -30,8 +30,8 @@
       "auto_fields": [
         "interview_count"
       ],
-      "text": "<span class='hl-a'>P0 GAP:</span> Customer Pain (Theme 2) has only 1 weak signal. Cannot confirm PMF without 30+ structured interviews. This is the research priority before any product investment decision.",
-      "text_zh": "<span class='hl-a'>P0 缺口：</span>客户痛点(主题2)仅有1条弱信号，无法在30+结构化访谈前确认PMF，这是任何产品投资决策前的研究优先项。"
+      "text": "<span class='hl-a'>P0 GAP:</span> Customer Pain (Theme 2) has only 1 weak signal(s). Cannot confirm PMF without 30+ structured interviews (0 completed). This is the research priority before any product investment decision.",
+      "text_zh": "<span class='hl-a'>P0 GAP:</span> Customer Pain (Theme 2) has only 1 weak signal(s). Cannot confirm PMF without 30+ structured interviews (0 completed). This is the research priority before any product investment decision."
     }
   ]
 }

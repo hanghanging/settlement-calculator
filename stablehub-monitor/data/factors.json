@@ -6,12 +6,12 @@
       "name_zh": "市场",
       "status": "GO",
       "confidence": "HIGH",
-      "confidence_pct": 78,
+      "confidence_pct": 80,
       "data_points": [
         {
           "label": "Total supply",
           "label_zh": "总供应",
-          "value": "$315.4B",
+          "value": "$315.2B",
           "direction": "CONFIRMING",
           "source": "defillama",
           "is_live": true
@@ -27,14 +27,14 @@
         {
           "label": "USDGO addressable",
           "label_zh": "USDGO可寻址",
-          "value": "~$52B",
+          "value": "~$52.4B",
           "direction": "CONFIRMING",
           "source": "computed",
           "is_live": true
         }
       ],
       "evidence_count": 6,
-      "last_updated": "2026-03-23T14:07:00Z"
+      "last_updated": "2026-03-23T22:10:09.103380+00:00"
     },
     {
       "id": "customer-factor",
@@ -42,7 +42,7 @@
       "name_zh": "客户",
       "status": "INSUFFICIENT",
       "confidence": "LOW",
-      "confidence_pct": 12,
+      "confidence_pct": 5,
       "data_points": [
         {
           "label": "Interviews completed",
@@ -70,7 +70,7 @@
         }
       ],
       "evidence_count": 1,
-      "last_updated": "2026-03-22T00:00:00Z"
+      "last_updated": "2026-03-23T22:10:09.103380+00:00"
     },
     {
       "id": "competitor-factor",
@@ -106,7 +106,7 @@
         }
       ],
       "evidence_count": 4,
-      "last_updated": "2026-03-17T00:00:00Z"
+      "last_updated": "2026-03-23T22:10:09.103380+00:00"
     },
     {
       "id": "regulatory-factor",
@@ -114,7 +114,7 @@
       "name_zh": "监管",
       "status": "GO",
       "confidence": "HIGH",
-      "confidence_pct": 80,
+      "confidence_pct": 75,
       "data_points": [
         {
           "label": "US GENIUS Act",
@@ -150,7 +150,7 @@
         }
       ],
       "evidence_count": 4,
-      "last_updated": "2026-03-20T00:00:00Z"
+      "last_updated": "2026-03-23T22:10:09.103380+00:00"
     },
     {
       "id": "timing-factor",
@@ -186,7 +186,7 @@
         }
       ],
       "evidence_count": 3,
-      "last_updated": "2026-03-17T00:00:00Z"
+      "last_updated": "2026-03-23T22:10:09.103380+00:00"
     },
     {
       "id": "evidence-quality-factor",
