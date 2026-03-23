@@ -1,228 +1,327 @@
 {
+  "generated_at": "2026-03-24T06:35:00Z",
+  "data_freshness": "LIVE",
+  "methodology": "OSL global strategic factor framework v2.0 — 7 factors covering market opportunity, multi-jurisdiction regulatory windows, OSL distribution moat, demand signals, competitive pressure, window velocity, and yield economics.",
   "factors": [
     {
-      "id": "market-factor",
-      "name": "Market",
-      "name_zh": "市场",
-      "status": "GO",
-      "confidence": "HIGH",
+      "id": "market-opportunity",
+      "label": "MARKET OPPORTUNITY",
+      "label_zh": "市场机遇",
+      "theme_color": "blue",
       "confidence_pct": 80,
-      "data_points": [
-        {
-          "label": "Total supply",
-          "label_zh": "总供应",
-          "value": "$315.2B",
-          "direction": "CONFIRMING",
-          "source": "defillama",
-          "is_live": true
-        },
-        {
-          "label": "7D growth",
-          "label_zh": "7天增长",
-          "value": "+2.1%",
-          "direction": "CONFIRMING",
-          "source": "defillama",
-          "is_live": true
-        },
-        {
-          "label": "USDGO addressable",
-          "label_zh": "USDGO可寻址",
-          "value": "~$52.4B",
-          "direction": "CONFIRMING",
-          "source": "computed",
-          "is_live": true
-        }
-      ],
-      "evidence_count": 6,
-      "last_updated": "2026-03-23T22:19:59.837351+00:00"
-    },
-    {
-      "id": "customer-factor",
-      "name": "Customer",
-      "name_zh": "客户",
-      "status": "INSUFFICIENT",
-      "confidence": "LOW",
-      "confidence_pct": 50,
-      "data_points": [
-        {
-          "label": "Interviews completed",
-          "label_zh": "已完成访谈",
-          "value": "0 / 50",
-          "direction": "NEUTRAL",
-          "source": "manual",
-          "is_live": false
-        },
-        {
-          "label": "WTP confirmed",
-          "label_zh": "付费意愿确认",
-          "value": "Unknown",
-          "direction": "NEUTRAL",
-          "source": "manual",
-          "is_live": false
-        },
-        {
-          "label": "Pain validated",
-          "label_zh": "痛点验证",
-          "value": "No data",
-          "direction": "NEUTRAL",
-          "source": "manual",
-          "is_live": false
-        }
-      ],
-      "evidence_count": 1,
-      "last_updated": "2026-03-23T22:19:59.837351+00:00"
-    },
-    {
-      "id": "competitor-factor",
-      "name": "Competitor",
-      "name_zh": "竞品",
-      "status": "WATCH",
-      "confidence": "MED",
-      "confidence_pct": 55,
-      "data_points": [
-        {
-          "label": "Gap identified",
-          "label_zh": "缺口已识别",
-          "value": "Multi-FX, yield, Asia",
-          "direction": "CONFIRMING",
-          "source": "manual",
-          "is_live": false
-        },
-        {
-          "label": "Window remaining",
-          "label_zh": "窗口剩余",
-          "value": "6-12 months",
-          "direction": "WATCH",
-          "source": "manual",
-          "is_live": false
-        },
-        {
-          "label": "Main threat",
-          "label_zh": "主要威胁",
-          "value": "Mastercard/BVNK",
-          "direction": "WATCH",
-          "source": "manual",
-          "is_live": false
-        }
-      ],
-      "evidence_count": 4,
-      "last_updated": "2026-03-23T22:19:59.837351+00:00"
-    },
-    {
-      "id": "regulatory-factor",
-      "name": "Regulatory",
-      "name_zh": "监管",
       "status": "GO",
       "confidence": "HIGH",
-      "confidence_pct": 75,
+      "description": "Global stablecoin TAM, institutional adoption velocity, and macro rate environment",
       "data_points": [
         {
-          "label": "US GENIUS Act",
-          "label_zh": "美国GENIUS法",
-          "value": "Breakthrough",
-          "direction": "CONFIRMING",
-          "source": "manual",
-          "is_live": false
+          "label": "Total stablecoin supply",
+          "value": "$315.2B",
+          "freshness": "LIVE"
         },
         {
-          "label": "HK HKMA",
-          "label_zh": "香港金管局",
-          "value": "Window open",
-          "direction": "CONFIRMING",
-          "source": "manual",
-          "is_live": false
+          "label": "7D supply growth",
+          "value": "+2.1%",
+          "freshness": "LIVE"
         },
         {
-          "label": "EU MiCA",
-          "label_zh": "欧盟MiCA",
-          "value": "Enforced",
-          "direction": "CONFIRMING",
-          "source": "manual",
-          "is_live": false
+          "label": "USDGO addressable TAM",
+          "value": "~$52B (16.6%)",
+          "freshness": "LIVE"
         },
         {
-          "label": "SG MAS",
-          "label_zh": "新加坡MAS",
-          "value": "Active",
-          "direction": "CONFIRMING",
-          "source": "manual",
-          "is_live": false
+          "label": "Fed funds rate",
+          "value": "~4.25–4.5%",
+          "freshness": "MANUAL"
+        },
+        {
+          "label": "DeFi avg stablecoin APY",
+          "value": "~4–8%",
+          "freshness": "LIVE"
         }
       ],
-      "evidence_count": 4,
-      "last_updated": "2026-03-23T22:19:59.837351+00:00"
+      "last_updated": "2026-03-24T06:35:00Z"
     },
     {
-      "id": "timing-factor",
-      "name": "Timing / Window",
-      "name_zh": "时机/窗口",
+      "id": "regulatory-window",
+      "label": "REGULATORY WINDOW MATRIX",
+      "label_zh": "监管窗口矩阵",
+      "theme_color": "purple",
+      "confidence_pct": 78,
+      "status": "GO",
+      "confidence": "HIGH",
+      "description": "Multi-jurisdiction regulatory windows scored for OSL's ability to issue/distribute USDGO",
+      "jurisdictions": [
+        {
+          "code": "US",
+          "framework": "GENIUS Act",
+          "status": "ACTIVE",
+          "osl_advantage": "MED",
+          "note": "Yield distribution now legal"
+        },
+        {
+          "code": "HK",
+          "framework": "HKMA Stablecoin Issuer Regime",
+          "status": "ACTIVE",
+          "osl_advantage": "HIGH",
+          "note": "OSL SFC licensed, HKMA sandbox accessible"
+        },
+        {
+          "code": "SG",
+          "framework": "MAS PSA Stablecoin Framework",
+          "status": "ACTIVE",
+          "osl_advantage": "MED",
+          "note": "MAS major payment institution pathway"
+        },
+        {
+          "code": "EU",
+          "framework": "MiCA EMT/ART",
+          "status": "ENFORCED",
+          "osl_advantage": "LOW",
+          "note": "High compliance cost, Circle dominant"
+        },
+        {
+          "code": "UAE",
+          "framework": "ADGM / VARA",
+          "status": "PROGRESSING",
+          "osl_advantage": "MED",
+          "note": "DIFC sandbox open, Gulf institutional demand high"
+        },
+        {
+          "code": "JP",
+          "framework": "FSA Electronic Payment Instruments",
+          "status": "ACTIVE",
+          "osl_advantage": "LOW",
+          "note": "Yen-denominated preferred locally"
+        },
+        {
+          "code": "AU",
+          "framework": "ASIC Digital Assets Framework",
+          "status": "PROGRESSING",
+          "osl_advantage": "LOW",
+          "note": "2026 licensing framework in progress"
+        }
+      ],
+      "priority_windows": [
+        "HK",
+        "SG",
+        "UAE"
+      ],
+      "last_updated": "2026-03-24T06:35:00Z"
+    },
+    {
+      "id": "osl-distribution-moat",
+      "label": "OSL DISTRIBUTION MOAT",
+      "label_zh": "OSL 分发护城河",
+      "theme_color": "teal",
+      "confidence_pct": 70,
+      "status": "GO",
+      "confidence": "MED",
+      "description": "OSL's existing regulated infrastructure and institutional client base as USDGO distribution advantage",
+      "data_points": [
+        {
+          "label": "SFC Type 1 + 7 licenses",
+          "value": "Active — institutional trust signal",
+          "freshness": "STATIC"
+        },
+        {
+          "label": "Existing institutional clients",
+          "value": "OTC + Custody + Exchange base",
+          "freshness": "STATIC"
+        },
+        {
+          "label": "OSL vs Circle/Tether",
+          "value": "Regulated in Asia — Circle/Tether are NOT SFC licensed",
+          "freshness": "STATIC"
+        },
+        {
+          "label": "HashKey advantage",
+          "value": "HashKey also SFC licensed — direct competitor for HK distribution",
+          "freshness": "STATIC"
+        },
+        {
+          "label": "Warm channel value",
+          "value": "Existing client relationships = lower USDGO distribution CAC",
+          "freshness": "STATIC"
+        }
+      ],
+      "moat_score": 70,
+      "moat_risks": [
+        "HashKey Group also building stablecoin products with SFC license",
+        "OSL's exchange volume lower than Binance/OKX (unlicensed but larger)",
+        "Institutional client stickiness unverified"
+      ],
+      "last_updated": "2026-03-24T06:35:00Z"
+    },
+    {
+      "id": "demand-signal",
+      "label": "DEMAND SIGNAL",
+      "label_zh": "需求信号",
+      "theme_color": "teal",
+      "confidence_pct": 50,
+      "status": "WATCH",
+      "confidence": "LOW",
+      "description": "Multi-segment customer demand inferred from proxy signals — payment cos, institutional holders, corporate treasury, exchanges",
+      "segments_tracked": [
+        "Cross-border payment companies (Airwallex, PingPong, Xtransfer, dLocal)",
+        "Institutional asset managers (family offices, hedge funds, crypto funds)",
+        "Corporate treasury (MNCs with Asia FX exposure)",
+        "Crypto exchanges (needing stablecoin settlement rails)"
+      ],
+      "proxy_score": 50,
+      "proxy_score_max": 100,
+      "evidence_count": 3,
+      "data_points": [
+        {
+          "label": "Payment cos proxy score",
+          "value": "WATCH — Airwallex $120M Series F",
+          "freshness": "LIVE"
+        },
+        {
+          "label": "Inst. holders proxy score",
+          "value": "WATCH — BitGo AUM +34% YoY",
+          "freshness": "LIVE"
+        },
+        {
+          "label": "HK→CN corridor cost (World Bank)",
+          "value": "Pending API",
+          "freshness": "PENDING"
+        },
+        {
+          "label": "US→PH corridor cost (World Bank)",
+          "value": "Pending API",
+          "freshness": "PENDING"
+        }
+      ],
+      "last_updated": "2026-03-24T06:35:00Z"
+    },
+    {
+      "id": "competitive-pressure",
+      "label": "COMPETITIVE PRESSURE",
+      "label_zh": "竞争压力",
+      "theme_color": "amber",
+      "confidence_pct": 55,
       "status": "WATCH",
       "confidence": "MED",
-      "confidence_pct": 65,
+      "description": "Global competitor map — Western (BVNK/Circle/BitGo) + Asian (HashKey/Amber) — and OSL's differentiation gaps",
+      "competitors": [
+        {
+          "name": "BVNK→Mastercard",
+          "region": "Global",
+          "threat": "HIGH",
+          "osl_gap": "BVNK lacks: multi-FX, Asian B2B, yield"
+        },
+        {
+          "name": "Circle (USDC)",
+          "region": "US/EU",
+          "threat": "HIGH",
+          "osl_gap": "Circle lacks: HK SFC license, Asia distribution"
+        },
+        {
+          "name": "HashKey",
+          "region": "HK/Asia",
+          "threat": "HIGH",
+          "osl_gap": "HashKey IS SFC licensed — direct overlap in HK"
+        },
+        {
+          "name": "BitGo",
+          "region": "US/Global",
+          "threat": "MED",
+          "osl_gap": "BitGo lacks: stablecoin yield, Asian B2B"
+        },
+        {
+          "name": "Amber Group",
+          "region": "Asia",
+          "threat": "MED",
+          "osl_gap": "Amber lacks: public regulatory profile"
+        },
+        {
+          "name": "Ripple (RLUSD)",
+          "region": "Global",
+          "threat": "MED",
+          "osl_gap": "RLUSD gaining institutional traction fast"
+        }
+      ],
+      "window_months_remaining": 8,
+      "last_updated": "2026-03-24T06:35:00Z"
+    },
+    {
+      "id": "window-velocity",
+      "label": "WINDOW VELOCITY",
+      "label_zh": "窗口压缩速度",
+      "theme_color": "red",
+      "confidence_pct": 60,
+      "status": "WATCH",
+      "confidence": "MED",
+      "description": "Rate at which the competitive window is closing — competitor signal acceleration, not just static countdown",
       "data_points": [
+        {
+          "label": "Competitor news acceleration",
+          "value": "BVNK+Mastercard $1.8B — window compressing",
+          "freshness": "LIVE"
+        },
+        {
+          "label": "Regulatory velocity",
+          "value": "GENIUS Act + HKMA active simultaneously — 2 major frameworks in 30d",
+          "freshness": "LIVE"
+        },
         {
           "label": "Optimal entry",
-          "label_zh": "最佳入场",
           "value": "Now → Q3 2026",
-          "direction": "CONFIRMING",
-          "source": "manual",
-          "is_live": false
+          "freshness": "MANUAL"
         },
         {
-          "label": "Competitor ETA",
-          "label_zh": "竞品到达",
-          "value": "6-12 months",
-          "direction": "WATCH",
-          "source": "manual",
-          "is_live": false
-        },
-        {
-          "label": "Reg tailwind",
-          "label_zh": "监管顺风",
-          "value": "Active",
-          "direction": "CONFIRMING",
-          "source": "manual",
-          "is_live": false
+          "label": "Risk if delayed",
+          "value": "BVNK scaling by Q4 2026 eliminates gap",
+          "freshness": "MANUAL"
         }
       ],
-      "evidence_count": 3,
-      "last_updated": "2026-03-23T22:19:59.837351+00:00"
+      "velocity_score": 65,
+      "last_updated": "2026-03-24T06:35:00Z"
     },
     {
-      "id": "evidence-quality-factor",
-      "name": "Evidence Quality",
-      "name_zh": "证据质量",
+      "id": "yield-economics",
+      "label": "YIELD ECONOMICS",
+      "label_zh": "收益经济学",
+      "theme_color": "blue",
+      "confidence_pct": 55,
       "status": "WATCH",
       "confidence": "MED",
-      "confidence_pct": 45,
+      "description": "USDGO yield product viability — can we offer competitive yield vs DeFi and TradFi benchmarks?",
       "data_points": [
         {
-          "label": "Market data",
-          "label_zh": "市场数据",
-          "value": "HIGH — live API",
-          "direction": "CONFIRMING",
-          "source": "automated",
-          "is_live": true
+          "label": "US T-bill 3M yield",
+          "value": "~4.25%",
+          "freshness": "MANUAL"
         },
         {
-          "label": "Customer data",
-          "label_zh": "客户数据",
-          "value": "LOW — 1 proxy signal",
-          "direction": "WATCH",
-          "source": "manual",
-          "is_live": false
+          "label": "Aave USDC APY",
+          "value": "Pending yields.llama.fi",
+          "freshness": "PENDING"
         },
         {
-          "label": "Competitor data",
-          "label_zh": "竞品数据",
-          "value": "MED — news/earnings",
-          "direction": "NEUTRAL",
-          "source": "manual",
-          "is_live": false
+          "label": "Ethena sUSDe APY",
+          "value": "~5-8% (funding-rate linked)",
+          "freshness": "MANUAL"
+        },
+        {
+          "label": "Sky USDS APY",
+          "value": "~6-7% (recent growth signal)",
+          "freshness": "LIVE"
+        },
+        {
+          "label": "USDGO min competitive yield",
+          "value": ">4% to beat T-bill; >6% for DeFi-native clients",
+          "freshness": "STATIC"
+        },
+        {
+          "label": "GENIUS Act yield legality",
+          "value": "CONFIRMED — yield distribution to holders now legal in US",
+          "freshness": "LIVE"
         }
       ],
-      "evidence_count": 3,
-      "last_updated": "2026-03-23T14:07:00Z"
+      "yield_gap_status": "VIABLE — T-bill at 4.25% means USDGO needs 4.5%+ to be competitive",
+      "risk": "If Fed cuts to 3%, DeFi yield compresses, USDGO yield window narrows",
+      "last_updated": "2026-03-24T06:35:00Z"
     }
   ]
 }

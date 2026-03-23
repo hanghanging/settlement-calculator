@@ -88,8 +88,8 @@ nav{flex:1;padding:5px 0}
 .fdb-head{display:flex;align-items:center;padding:6px 10px;border-bottom:1px solid var(--bd);cursor:pointer;gap:8px}
 .fdb-title{font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--td)}
 .fdb-toggle{margin-left:auto;font-size:8px;color:var(--tf)}
-.fdb-body{display:none;grid-template-columns:repeat(3,1fr);gap:0}
-#fdb.open .fdb-body{display:grid}
+.fdb-body{display:none;grid-template-columns:repeat(4,1fr);gap:0}
+#fdb.open .fdb-body{display:grid;grid-template-columns:repeat(4,1fr)}
 #fdb.open .fdb-toggle::after{content:'▲'}
 .fdb-toggle::after{content:'▼';margin-left:3px}
 .fd-col{padding:8px 10px;border-right:1px solid var(--bd)}
@@ -418,63 +418,72 @@ tr:last-child td{border-bottom:none}
       <div id="fdb" onclick="toggleFDB()">
         <div class="fdb-head">
           <span class="fdb-title" data-en="FACTOR DECOMPOSITION BOARD" data-zh="因子分解面板">FACTOR DECOMPOSITION BOARD</span>
-          <span style="font-size:8px;color:var(--td)" data-en="6 factors · evidence & confidence — click to expand" data-zh="6个因子 · 证据与置信度 — 点击展开">6 factors · evidence & confidence — click to expand</span>
+          <span style="font-size:8px;color:var(--td)" data-en="6 factors · evidence & confidence — click to expand" data-zh="7个因子 · 全局战略框架 — 点击展开">6 factors · evidence & confidence — click to expand</span>
           <span class="fdb-toggle"></span>
         </div>
         <div class="fdb-body" id="fdb-body">
           <div class="fd-col">
-            <div class="fd-name mkt" data-en="MARKET FACTOR" data-zh="市场因子">MARKET FACTOR</div>
-            <div class="fd-row"><span class="fd-k" data-en="TAM size" data-zh="TAM规模">TAM size</span><span class="fd-v" style="color:var(--teal)">$315.4B ✓</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Growth rate" data-zh="增速">Growth rate</span><span class="fd-v" style="color:var(--teal)">+2.1% 7D ✓</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Addressable" data-zh="可寻址">Addressable</span><span class="fd-v" style="color:var(--teal)">~$52B (16.6%)</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Yield demand" data-zh="收益需求">Yield demand</span><span class="fd-v" style="color:var(--amb)">Inferred</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-market-factor" style="width:78%"></div></div>
-            <div class="fd-verdict" id="fd-verdict-market-factor" style="color:var(--teal)" data-en="Confidence: HIGH" data-zh="置信度：高">Confidence: HIGH</div>
+            <div class="fd-name mkt">MARKET OPPORTUNITY</div>
+            <div class="fd-row"><span class="fd-k">Total supply</span><span class="fd-v" id="fd-mkt-supply" style="color:var(--teal)">$315.2B ✓</span></div>
+            <div class="fd-row"><span class="fd-k">7D growth</span><span class="fd-v" id="fd-mkt-growth" style="color:var(--teal)">+2.1% ATH</span></div>
+            <div class="fd-row"><span class="fd-k">USDGO TAM</span><span class="fd-v" id="fd-mkt-tam" style="color:var(--amb)">~$52B</span></div>
+            <div class="fd-row"><span class="fd-k">Rate env.</span><span class="fd-v" style="color:var(--teal)">4.25% — yield viable</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill high" id="fd-fill-market-opportunity" style="width:80%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-market-opportunity" style="color:var(--teal)">Confidence: HIGH</div>
           </div>
           <div class="fd-col">
-            <div class="fd-name cst" data-en="CUSTOMER FACTOR" data-zh="客户因子">CUSTOMER FACTOR</div>
-            <div class="fd-row"><span class="fd-k" data-en="Pain validated" data-zh="痛点验证">Pain validated</span><span class="fd-v" style="color:var(--tf)">No data</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="WTP confirmed" data-zh="付费意愿确认">WTP confirmed</span><span class="fd-v" style="color:var(--tf)">No data</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Interviews done" data-zh="已完成访谈">Interviews done</span><span class="fd-v" style="color:var(--tf)">0 / 50</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Referral signal" data-zh="推荐信号">Referral signal</span><span class="fd-v" style="color:var(--tf)">No data</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-customer-factor" style="width:12%"></div></div>
-            <div class="fd-verdict" id="fd-verdict-customer-factor" style="color:var(--tf)" data-en="Confidence: LOW — interviews needed" data-zh="置信度：低 — 需要访谈">Confidence: LOW — interviews needed</div>
+            <div class="fd-name reg">REGULATORY WINDOW</div>
+            <div class="fd-row"><span class="fd-k">HK (HKMA)</span><span class="fd-v" style="color:var(--teal)">OSL adv: HIGH ✓</span></div>
+            <div class="fd-row"><span class="fd-k">US (GENIUS)</span><span class="fd-v" style="color:var(--teal)">Yield legal ✓</span></div>
+            <div class="fd-row"><span class="fd-k">SG (MAS)</span><span class="fd-v" style="color:var(--teal)">PSA active ✓</span></div>
+            <div class="fd-row"><span class="fd-k">UAE (ADGM)</span><span class="fd-v" style="color:var(--amb)">Progressing</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill high" id="fd-fill-regulatory-window" style="width:78%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-regulatory-window" style="color:var(--teal)">Priority: HK · SG · UAE</div>
           </div>
           <div class="fd-col">
-            <div class="fd-name cmp" data-en="COMPETITOR FACTOR" data-zh="竞品因子">COMPETITOR FACTOR</div>
-            <div class="fd-row"><span class="fd-k" data-en="Gap identified" data-zh="缺口已识别">Gap identified</span><span class="fd-v" style="color:var(--teal)">Yes (multi-FX, yield)</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Window size" data-zh="窗口大小">Window size</span><span class="fd-v" style="color:var(--amb)">6–12 months</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Main threat" data-zh="主要威胁">Main threat</span><span class="fd-v" style="color:var(--rb)">Mastercard/BVNK</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Differentiation" data-zh="差异化">Differentiation</span><span class="fd-v" style="color:var(--teal)">Multi-FX + Asia + yield</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-competitor-factor" style="width:55%"></div></div>
-            <div class="fd-verdict" id="fd-verdict-competitor-factor" style="color:var(--amb)" data-en="Confidence: MED — window compressing" data-zh="置信度：中 — 窗口收窄">Confidence: MED — window compressing</div>
+            <div class="fd-name" style="color:var(--teal)">OSL DISTRIB. MOAT</div>
+            <div class="fd-row"><span class="fd-k">SFC Type 1+7</span><span class="fd-v" style="color:var(--teal)">Active ✓</span></div>
+            <div class="fd-row"><span class="fd-k">vs Circle/Tether</span><span class="fd-v" style="color:var(--teal)">NOT SFC licensed</span></div>
+            <div class="fd-row"><span class="fd-k">vs HashKey</span><span class="fd-v" style="color:var(--rb)">Also SFC — risk</span></div>
+            <div class="fd-row"><span class="fd-k">Client base</span><span class="fd-v" style="color:var(--teal)">OTC+Custody+Exch</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill med" id="fd-fill-osl-distribution-moat" style="width:70%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-osl-distribution-moat" style="color:var(--amb)">Moat: MED — HashKey risk</div>
           </div>
           <div class="fd-col">
-            <div class="fd-name reg" data-en="REGULATORY FACTOR" data-zh="监管因子">REGULATORY FACTOR</div>
-            <div class="fd-row"><span class="fd-k" data-en="US (GENIUS)" data-zh="美国(GENIUS)">US (GENIUS)</span><span class="fd-v" style="color:var(--teal)">Breakthrough ✓</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="HK (HKMA)" data-zh="香港(HKMA)">HK (HKMA)</span><span class="fd-v" style="color:var(--teal)">Window open ✓</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="EU (MiCA)" data-zh="欧盟(MiCA)">EU (MiCA)</span><span class="fd-v" style="color:var(--teal)">Enforced ✓</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="SG (MAS)" data-zh="新加坡(MAS)">SG (MAS)</span><span class="fd-v" style="color:var(--teal)">Framework active</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-regulatory-factor" style="width:80%"></div></div>
-            <div class="fd-verdict" id="fd-verdict-regulatory-factor" style="color:var(--teal)" data-en="Confidence: HIGH — multiple frameworks active" data-zh="置信度：高 — 多框架已激活">Confidence: HIGH — multiple frameworks active</div>
+            <div class="fd-name cst">DEMAND SIGNAL</div>
+            <div class="fd-row"><span class="fd-k">Payment cos</span><span class="fd-v" id="fd-dem-payment" style="color:var(--amb)">WATCH</span></div>
+            <div class="fd-row"><span class="fd-k">Inst. holders</span><span class="fd-v" style="color:var(--amb)">WATCH</span></div>
+            <div class="fd-row"><span class="fd-k">Corp treasury</span><span class="fd-v" style="color:var(--tf)">Insufficient</span></div>
+            <div class="fd-row"><span class="fd-k">Corridor cost</span><span class="fd-v" style="color:var(--tf)">Pending API</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill low" id="fd-fill-demand-signal" style="width:50%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-demand-signal" style="color:var(--amb)">Confidence: LOW</div>
           </div>
           <div class="fd-col">
-            <div class="fd-name tim" data-en="TIMING / WINDOW" data-zh="时机/窗口">TIMING / WINDOW</div>
-            <div class="fd-row"><span class="fd-k" data-en="Optimal entry" data-zh="最佳入场">Optimal entry</span><span class="fd-v" style="color:var(--teal)">Now → Q3 2026</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Competitor ETA" data-zh="竞品到达时间">Competitor ETA</span><span class="fd-v" style="color:var(--amb)">6–12 months</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Reg tailwind" data-zh="监管顺风">Reg tailwind</span><span class="fd-v" style="color:var(--teal)">Active — GENIUS, HKMA</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Market momentum" data-zh="市场动能">Market momentum</span><span class="fd-v" style="color:var(--teal)">ATH supply, growing</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-timing-factor" style="width:65%"></div></div>
-            <div class="fd-verdict" id="fd-verdict-timing-factor" style="color:var(--amb)" data-en="Confidence: MED — window closing fast" data-zh="置信度：中 — 窗口快速关闭">Confidence: MED — window closing fast</div>
+            <div class="fd-name cmp">COMPETITIVE PRESSURE</div>
+            <div class="fd-row"><span class="fd-k">BVNK→Mastercard</span><span class="fd-v" style="color:var(--rb)">HIGH — Global</span></div>
+            <div class="fd-row"><span class="fd-k">HashKey</span><span class="fd-v" style="color:var(--rb)">HIGH — Asia</span></div>
+            <div class="fd-row"><span class="fd-k">Circle / Ripple</span><span class="fd-v" style="color:var(--amb)">MED — no HK lic</span></div>
+            <div class="fd-row"><span class="fd-k">Stripe</span><span class="fd-v" style="color:var(--amb)">MED — B2C focus</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill med" id="fd-fill-competitive-pressure" style="width:55%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-competitive-pressure" style="color:var(--amb)">Window: 8 months</div>
           </div>
           <div class="fd-col">
-            <div class="fd-name eq" data-en="EVIDENCE QUALITY" data-zh="证据质量">EVIDENCE QUALITY</div>
-            <div class="fd-row"><span class="fd-k" data-en="Market data" data-zh="市场数据">Market data</span><span class="fd-v" style="color:var(--teal)">Live · DefiLlama</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Customer data" data-zh="客户数据">Customer data</span><span class="fd-v" style="color:var(--tf)">1 proxy signal</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Competitor data" data-zh="竞品数据">Competitor data</span><span class="fd-v" style="color:var(--amb)">News · Earnings</span></div>
-            <div class="fd-row"><span class="fd-k" data-en="Overall quality" data-zh="总体质量">Overall quality</span><span class="fd-v" style="color:var(--amb)">MEDIUM</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-evidence-quality-factor" style="width:45%"></div></div>
-            <div class="fd-verdict" id="fd-verdict-evidence-quality-factor" style="color:var(--amb)" data-en="Improve via customer interviews" data-zh="通过客户访谈提升证据质量">Improve via customer interviews</div>
+            <div class="fd-name tim">WINDOW VELOCITY</div>
+            <div class="fd-row"><span class="fd-k">Competitor speed</span><span class="fd-v" style="color:var(--rb)">Accelerating</span></div>
+            <div class="fd-row"><span class="fd-k">Reg velocity</span><span class="fd-v" style="color:var(--teal)">2 frameworks/30d</span></div>
+            <div class="fd-row"><span class="fd-k">Entry window</span><span class="fd-v" style="color:var(--amb)">Now → Q3 2026</span></div>
+            <div class="fd-row"><span class="fd-k">Delay cost</span><span class="fd-v" style="color:var(--rb)">BVNK scales Q4 26</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill med" id="fd-fill-window-velocity" style="width:60%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-window-velocity" style="color:var(--amb)">Urgency: HIGH</div>
+          </div>
+          <div class="fd-col">
+            <div class="fd-name" style="color:var(--blue)">YIELD ECONOMICS</div>
+            <div class="fd-row"><span class="fd-k">T-bill 3M</span><span class="fd-v" style="color:var(--teal)">~4.25%</span></div>
+            <div class="fd-row"><span class="fd-k">DeFi avg APY</span><span class="fd-v" style="color:var(--amb)">4–8%</span></div>
+            <div class="fd-row"><span class="fd-k">USDGO target</span><span class="fd-v" style="color:var(--teal)">>4.5%</span></div>
+            <div class="fd-row"><span class="fd-k">GENIUS Act</span><span class="fd-v" style="color:var(--teal)">Yield legal ✓</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill med" id="fd-fill-yield-economics" style="width:55%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-yield-economics" style="color:var(--amb)">Viable — rate-dependent</div>
           </div>
         </div>
       </div>

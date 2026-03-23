@@ -26,7 +26,8 @@
         "title": "Mastercard’s BVNK acquisition shows stablecoins are catching on - CFO Brew",
         "source": "CFO Brew",
         "impact": "HIGH"
-      }
+      },
+      "region": "Global"
     },
     {
       "id": "circle",
@@ -43,7 +44,8 @@
         "title": "Circle Internet Group: The Crystallization of the Institutional Pivot and the Trillion-Dollar Stable",
         "source": "TradingKey",
         "impact": "MED"
-      }
+      },
+      "region": "US/EU"
     },
     {
       "id": "bitgo",
@@ -60,6 +62,61 @@
         "title": "Rho X Becomes First Onchain Venue on BitGo’s Go Network - Markets Media",
         "source": "Markets Media",
         "impact": "MED"
+      },
+      "region": "US/Global"
+    },
+    {
+      "id": "hashkey",
+      "name": "HashKey Group",
+      "type": "exchange",
+      "region": "Asia",
+      "threat_level": "HIGH",
+      "known_gaps": [
+        "Building own stablecoin product — direct HK overlap with OSL",
+        "Has SFC license same as OSL — reduces OSL's licensing moat",
+        "Less global reach outside HK/Asia"
+      ],
+      "latest_event": {
+        "date": "2026-03-01",
+        "title": "HashKey Exchange expands institutional stablecoin services",
+        "source": "CoinDesk",
+        "impact": "HIGH"
+      }
+    },
+    {
+      "id": "ripple-rlusd",
+      "name": "Ripple (RLUSD)",
+      "type": "issuer",
+      "region": "Global",
+      "threat_level": "MED",
+      "known_gaps": [
+        "No institutional yield product",
+        "Limited Asian B2B coverage",
+        "RLUSD still gaining adoption"
+      ],
+      "latest_event": {
+        "date": "2026-03-15",
+        "title": "Ripple RLUSD gains institutional traction in cross-border settlements",
+        "source": "The Block",
+        "impact": "MED"
+      }
+    },
+    {
+      "id": "stripe-stablecoin",
+      "name": "Stripe (stablecoin infrastructure)",
+      "type": "infrastructure",
+      "region": "Global",
+      "threat_level": "MED",
+      "known_gaps": [
+        "B2C focus, not institutional B2B",
+        "No yield product",
+        "Not regulated in Asia"
+      ],
+      "latest_event": {
+        "date": "2026-03-10",
+        "title": "Stripe expands stablecoin payment rails to 100+ countries",
+        "source": "TechCrunch",
+        "impact": "MED"
       }
     }
   ],
@@ -68,5 +125,13 @@
     "Institutional yield via USDGO",
     "HK regulatory moat (HKMA)",
     "B2B stablecoin clearing network (StableHub)"
+  ],
+  "methodology_note": "Global competitor map: Western (BVNK/Circle/BitGo) + Asian (HashKey/Ripple) + Infra (Stripe). OSL's differentiation: SFC-licensed in HK, existing institutional client base, multi-FX settlement capability, yield product.",
+  "osl_key_differentiators": [
+    "Only SFC Type 1+7 licensed institutional digital asset platform in HK with stablecoin intent",
+    "Existing warm channel — institutional OTC, custody, exchange clients",
+    "Multi-FX settlement: USD+HKD+CNH+SGD in single product",
+    "Asian B2B focus: Western competitors lack deep Asia network",
+    "GENIUS Act + HKMA frameworks now legally viable for yield distribution"
   ]
 }
