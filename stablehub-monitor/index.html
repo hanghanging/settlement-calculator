@@ -58,6 +58,52 @@ nav{flex:1;padding:5px 0}
 #main{position:fixed;top:26px;left:172px;right:0;bottom:0;overflow-y:auto;overflow-x:hidden}
 .pg{display:none;padding:10px;animation:fi .2s ease}.pg.active{display:block}
 
+/* ── CHANGE 4: professional fallback states ── */
+.data-pending{font-size:9px;color:var(--tf);font-style:italic;padding:8px 0;text-align:center}
+.data-stale{font-size:8px;color:var(--tf);padding:3px 6px;background:var(--p3);border:1px solid var(--bd2);display:inline-block;margin-bottom:4px}
+.data-unavail{font-size:9px;color:var(--tf);padding:8px;background:var(--p3);border:1px dashed var(--bd2);text-align:center}
+
+/* ── CHANGE 1: P0 Verdict Cards ── */
+.verdict-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
+.vc{background:var(--p1);border:1px solid var(--bd);border-top:2px solid transparent;padding:8px 10px}
+.vc.go{border-top-color:var(--teal)}.vc.watch{border-top-color:var(--amb)}.vc.nd{border-top-color:var(--tf)}.vc.overall{border-top-color:var(--blue)}
+.vc-theme{font-size:7px;font-weight:700;letter-spacing:.18em;color:var(--tf);margin-bottom:4px}
+.vc-status{font-size:13px;font-weight:700;margin-bottom:3px}
+.vc-status.go{color:var(--teal)}.vc-status.watch{color:var(--amb)}.vc-status.nd{color:var(--tf)}.vc-status.blue{color:var(--blue)}
+.vc-row{display:flex;justify-content:space-between;font-size:8px;color:var(--td);margin-bottom:2px}
+.vc-row span:last-child{color:var(--t)}
+.vc-take{font-size:8px;color:var(--t);margin-top:5px;padding-top:5px;border-top:1px solid var(--bd);line-height:1.4}
+
+/* ── CHANGE 2: Customer Pain structured fields ── */
+.cst-fields{background:var(--p3);border:1px solid var(--bd2);padding:6px 7px;margin-top:6px}
+.cf-h{font-size:7px;font-weight:700;letter-spacing:.15em;color:var(--tf);margin-bottom:5px;border-bottom:1px solid var(--bd);padding-bottom:3px}
+.cf-row{display:flex;justify-content:space-between;align-items:flex-start;padding:3px 0;border-bottom:1px solid var(--p2)}
+.cf-row:last-child{border-bottom:none}
+.cf-k{font-size:8px;color:var(--td);flex:0 0 40%}
+.cf-v{font-size:8px;color:var(--tf);flex:1;text-align:right}
+.cf-v.needed{color:var(--tf);font-style:italic}
+
+/* ── CHANGE 3: Factor Decomposition Board ── */
+.fdb{background:var(--p1);border:1px solid var(--bd);margin-bottom:8px;overflow:hidden}
+.fdb-head{display:flex;align-items:center;padding:6px 10px;border-bottom:1px solid var(--bd);cursor:pointer;gap:8px}
+.fdb-title{font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--td)}
+.fdb-toggle{margin-left:auto;font-size:8px;color:var(--tf)}
+.fdb-body{display:none;grid-template-columns:repeat(3,1fr);gap:0}
+#fdb.open .fdb-body{display:grid}
+#fdb.open .fdb-toggle::after{content:'▲'}
+.fdb-toggle::after{content:'▼';margin-left:3px}
+.fd-col{padding:8px 10px;border-right:1px solid var(--bd)}
+.fd-col:last-child{border-right:none}
+.fd-name{font-size:7px;font-weight:700;letter-spacing:.15em;margin-bottom:6px}
+.fd-name.mkt{color:var(--blue)}.fd-name.cst{color:var(--teal)}.fd-name.cmp{color:var(--amb)}.fd-name.reg{color:#9B59B6}.fd-name.tim{color:var(--rb)}.fd-name.eq{color:var(--td)}
+.fd-row{display:flex;justify-content:space-between;font-size:8px;padding:2px 0;border-bottom:1px solid var(--p3)}
+.fd-row:last-child{border-bottom:none}
+.fd-k{color:var(--td)}.fd-v{font-weight:600}
+.fd-conf{height:3px;background:var(--bd);margin-top:5px}
+.fd-conf-fill{height:3px}
+.fd-conf-fill.high{background:var(--teal)}.fd-conf-fill.med{background:var(--amb)}.fd-conf-fill.low{background:var(--tf)}
+.fd-verdict{font-size:8px;margin-top:4px;font-weight:600}
+
 /* ── KPI STRIP ── */
 .kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
 .kpi{background:var(--p1);border:1px solid var(--bd);border-top:2px solid var(--blue);padding:10px 12px}
@@ -281,6 +327,42 @@ tr:last-child td{border-bottom:none}
     </div>
   </div>
 
+  <!-- CHANGE 1: P0 Verdict Cards -->
+  <div class="verdict-strip">
+    <div class="vc go">
+      <div class="vc-theme" data-en="MARKET SIZE VERDICT" data-zh="市场规模判断">MARKET SIZE VERDICT</div>
+      <div class="vc-status go" data-en="▲ GO" data-zh="▲ 进行">▲ GO</div>
+      <div class="vc-row"><span data-en="Evidence" data-zh="证据">Evidence</span><span>6 signals</span></div>
+      <div class="vc-row"><span data-en="Confidence" data-zh="置信度">Confidence</span><span style="color:var(--teal)">HIGH</span></div>
+      <div class="vc-row"><span data-en="Last updated" data-zh="最后更新">Last updated</span><span>Mar 23</span></div>
+      <div class="vc-take" data-en="TAM >$315B confirmed. 16.6% addressable base for institutional alternatives." data-zh="TAM >$315B 已确认，16.6%可寻址基础供机构替代品进入。">TAM >$315B confirmed. 16.6% addressable base for institutional alternatives.</div>
+    </div>
+    <div class="vc nd">
+      <div class="vc-theme" data-en="CUSTOMER PAIN VERDICT" data-zh="客户痛点判断">CUSTOMER PAIN VERDICT</div>
+      <div class="vc-status nd" data-en="░ NO DATA" data-zh="░ 数据不足">░ NO DATA</div>
+      <div class="vc-row"><span data-en="Evidence" data-zh="证据">Evidence</span><span>1 signal</span></div>
+      <div class="vc-row"><span data-en="Confidence" data-zh="置信度">Confidence</span><span style="color:var(--tf)">LOW</span></div>
+      <div class="vc-row"><span data-en="Interviews" data-zh="访谈">Interviews</span><span>0 / 50</span></div>
+      <div class="vc-take" data-en="Cannot confirm PMF. 30+ structured interviews required before Go/No-Go." data-zh="无法确认PMF，Go/No-Go决策前需要30+次结构化访谈。">Cannot confirm PMF. 30+ structured interviews required before Go/No-Go.</div>
+    </div>
+    <div class="vc watch">
+      <div class="vc-theme" data-en="COMPETITIVE GAP VERDICT" data-zh="竞品缺口判断">COMPETITIVE GAP VERDICT</div>
+      <div class="vc-status watch" data-en="⚠ ACCELERATE" data-zh="⚠ 加速">⚠ ACCELERATE</div>
+      <div class="vc-row"><span data-en="Evidence" data-zh="证据">Evidence</span><span>4 signals</span></div>
+      <div class="vc-row"><span data-en="Confidence" data-zh="置信度">Confidence</span><span style="color:var(--amb)">MED</span></div>
+      <div class="vc-row"><span data-en="Window" data-zh="竞争窗口">Window</span><span style="color:var(--amb)">6–12 mo</span></div>
+      <div class="vc-take" data-en="Gap exists but Mastercard/BVNK compresses window. B2B pipeline velocity is the counter." data-zh="缺口存在，Mastercard/BVNK压缩窗口，B2B管道速度是反制手段。">Gap exists but Mastercard/BVNK compresses window. B2B pipeline velocity is the counter.</div>
+    </div>
+    <div class="vc overall">
+      <div class="vc-theme" data-en="OVERALL P0 SIGNAL" data-zh="P0总体信号">OVERALL P0 SIGNAL</div>
+      <div class="vc-status blue" data-en="→ CONDITIONAL GO" data-zh="→ 条件性进行">→ CONDITIONAL GO</div>
+      <div class="vc-row"><span data-en="T1 Market" data-zh="T1市场">T1 Market</span><span style="color:var(--teal)">GO</span></div>
+      <div class="vc-row"><span data-en="T2 Customer" data-zh="T2客户">T2 Customer</span><span style="color:var(--tf)">NO DATA</span></div>
+      <div class="vc-row"><span data-en="T3 Competitor" data-zh="T3竞品">T3 Competitor</span><span style="color:var(--amb)">WATCH</span></div>
+      <div class="vc-take" data-en="Market confirmed. Competitor window closing. Customer Pain is the blocking unknown." data-zh="市场已确认，竞争窗口关闭中，客户痛点是阻塞未知项。">Market confirmed. Competitor window closing. Customer Pain is the blocking unknown.</div>
+    </div>
+  </div>
+
   <!-- P0 Research Tracker (from v4 — new) -->
   <div id="p0track" onclick="toggleP0()">
     <div class="p0t-head">
@@ -315,6 +397,71 @@ tr:last-child td{border-bottom:none}
 
     <!-- LEFT -->
     <div>
+      <!-- CHANGE 3: Factor Decomposition Board -->
+      <div id="fdb" onclick="toggleFDB()">
+        <div class="fdb-head">
+          <span class="fdb-title" data-en="FACTOR DECOMPOSITION BOARD" data-zh="因子分解面板">FACTOR DECOMPOSITION BOARD</span>
+          <span style="font-size:8px;color:var(--td)" data-en="6 factors · evidence & confidence — click to expand" data-zh="6个因子 · 证据与置信度 — 点击展开">6 factors · evidence & confidence — click to expand</span>
+          <span class="fdb-toggle"></span>
+        </div>
+        <div class="fdb-body" id="fdb-body">
+          <div class="fd-col">
+            <div class="fd-name mkt" data-en="MARKET FACTOR" data-zh="市场因子">MARKET FACTOR</div>
+            <div class="fd-row"><span class="fd-k" data-en="TAM size" data-zh="TAM规模">TAM size</span><span class="fd-v" style="color:var(--teal)">$315.4B ✓</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Growth rate" data-zh="增速">Growth rate</span><span class="fd-v" style="color:var(--teal)">+2.1% 7D ✓</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Addressable" data-zh="可寻址">Addressable</span><span class="fd-v" style="color:var(--teal)">~$52B (16.6%)</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Yield demand" data-zh="收益需求">Yield demand</span><span class="fd-v" style="color:var(--amb)">Inferred</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill high" style="width:78%"></div></div>
+            <div class="fd-verdict" style="color:var(--teal)" data-en="Confidence: HIGH" data-zh="置信度：高">Confidence: HIGH</div>
+          </div>
+          <div class="fd-col">
+            <div class="fd-name cst" data-en="CUSTOMER FACTOR" data-zh="客户因子">CUSTOMER FACTOR</div>
+            <div class="fd-row"><span class="fd-k" data-en="Pain validated" data-zh="痛点验证">Pain validated</span><span class="fd-v" style="color:var(--tf)">No data</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="WTP confirmed" data-zh="付费意愿确认">WTP confirmed</span><span class="fd-v" style="color:var(--tf)">No data</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Interviews done" data-zh="已完成访谈">Interviews done</span><span class="fd-v" style="color:var(--tf)">0 / 50</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Referral signal" data-zh="推荐信号">Referral signal</span><span class="fd-v" style="color:var(--tf)">No data</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill low" style="width:12%"></div></div>
+            <div class="fd-verdict" style="color:var(--tf)" data-en="Confidence: LOW — interviews needed" data-zh="置信度：低 — 需要访谈">Confidence: LOW — interviews needed</div>
+          </div>
+          <div class="fd-col">
+            <div class="fd-name cmp" data-en="COMPETITOR FACTOR" data-zh="竞品因子">COMPETITOR FACTOR</div>
+            <div class="fd-row"><span class="fd-k" data-en="Gap identified" data-zh="缺口已识别">Gap identified</span><span class="fd-v" style="color:var(--teal)">Yes (multi-FX, yield)</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Window size" data-zh="窗口大小">Window size</span><span class="fd-v" style="color:var(--amb)">6–12 months</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Main threat" data-zh="主要威胁">Main threat</span><span class="fd-v" style="color:var(--rb)">Mastercard/BVNK</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Differentiation" data-zh="差异化">Differentiation</span><span class="fd-v" style="color:var(--teal)">Multi-FX + Asia + yield</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill med" style="width:55%"></div></div>
+            <div class="fd-verdict" style="color:var(--amb)" data-en="Confidence: MED — window compressing" data-zh="置信度：中 — 窗口收窄">Confidence: MED — window compressing</div>
+          </div>
+          <div class="fd-col">
+            <div class="fd-name reg" data-en="REGULATORY FACTOR" data-zh="监管因子">REGULATORY FACTOR</div>
+            <div class="fd-row"><span class="fd-k" data-en="US (GENIUS)" data-zh="美国(GENIUS)">US (GENIUS)</span><span class="fd-v" style="color:var(--teal)">Breakthrough ✓</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="HK (HKMA)" data-zh="香港(HKMA)">HK (HKMA)</span><span class="fd-v" style="color:var(--teal)">Window open ✓</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="EU (MiCA)" data-zh="欧盟(MiCA)">EU (MiCA)</span><span class="fd-v" style="color:var(--teal)">Enforced ✓</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="SG (MAS)" data-zh="新加坡(MAS)">SG (MAS)</span><span class="fd-v" style="color:var(--teal)">Framework active</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill high" style="width:80%"></div></div>
+            <div class="fd-verdict" style="color:var(--teal)" data-en="Confidence: HIGH — multiple frameworks active" data-zh="置信度：高 — 多框架已激活">Confidence: HIGH — multiple frameworks active</div>
+          </div>
+          <div class="fd-col">
+            <div class="fd-name tim" data-en="TIMING / WINDOW" data-zh="时机/窗口">TIMING / WINDOW</div>
+            <div class="fd-row"><span class="fd-k" data-en="Optimal entry" data-zh="最佳入场">Optimal entry</span><span class="fd-v" style="color:var(--teal)">Now → Q3 2026</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Competitor ETA" data-zh="竞品到达时间">Competitor ETA</span><span class="fd-v" style="color:var(--amb)">6–12 months</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Reg tailwind" data-zh="监管顺风">Reg tailwind</span><span class="fd-v" style="color:var(--teal)">Active — GENIUS, HKMA</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Market momentum" data-zh="市场动能">Market momentum</span><span class="fd-v" style="color:var(--teal)">ATH supply, growing</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill med" style="width:65%"></div></div>
+            <div class="fd-verdict" style="color:var(--amb)" data-en="Confidence: MED — window closing fast" data-zh="置信度：中 — 窗口快速关闭">Confidence: MED — window closing fast</div>
+          </div>
+          <div class="fd-col">
+            <div class="fd-name eq" data-en="EVIDENCE QUALITY" data-zh="证据质量">EVIDENCE QUALITY</div>
+            <div class="fd-row"><span class="fd-k" data-en="Market data" data-zh="市场数据">Market data</span><span class="fd-v" style="color:var(--teal)">Live · DefiLlama</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Customer data" data-zh="客户数据">Customer data</span><span class="fd-v" style="color:var(--tf)">1 proxy signal</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Competitor data" data-zh="竞品数据">Competitor data</span><span class="fd-v" style="color:var(--amb)">News · Earnings</span></div>
+            <div class="fd-row"><span class="fd-k" data-en="Overall quality" data-zh="总体质量">Overall quality</span><span class="fd-v" style="color:var(--amb)">MEDIUM</span></div>
+            <div class="fd-conf"><div class="fd-conf-fill med" style="width:45%"></div></div>
+            <div class="fd-verdict" style="color:var(--amb)" data-en="Improve via customer interviews" data-zh="通过客户访谈提升证据质量">Improve via customer interviews</div>
+          </div>
+        </div>
+      </div>
+
       <!-- AI Executive Summary (from v3 — kept) -->
       <div class="ai-sum">
         <div class="ai-sum-h" data-en="◈ AI EXECUTIVE SUMMARY — MARCH 23, 2026" data-zh="◈ AI 高管摘要 — 2026年3月23日">◈ AI EXECUTIVE SUMMARY — MARCH 23, 2026</div>
@@ -336,7 +483,7 @@ tr:last-child td{border-bottom:none}
             <div class="sbar-lbl"><span id="s-usdt">USDT 58.4%</span><span id="s-usdc">USDC 25.0%</span><span style="color:var(--teal)" id="s-oth">Other 16.6%</span></div>
             <div class="sbar-wrap"><div class="sbar-usdt" id="b-usdt" style="width:58.4%"></div><div class="sbar-usdc" id="b-usdc" style="width:25%"></div><div class="sbar-oth" id="b-oth" style="width:16.6%"></div></div>
             <div style="margin-top:6px;font-size:7px;color:var(--tf);letter-spacing:.1em" data-en="YIELD BENCHMARKS" data-zh="收益基准">YIELD BENCHMARKS</div>
-            <div id="tvl-p0" style="margin-top:3px;font-size:9px;color:var(--tf)">Loading...</div>
+            <div id="tvl-p0" style="margin-top:3px;font-size:9px;color:var(--tf)">Fetching cached snapshot…</div>
           </div>
           <div class="p0-col-foot go" data-en="▲ GO — TAM confirmed" data-zh="▲ 进行 — TAM已确认">▲ GO — TAM confirmed</div>
         </div>
@@ -358,6 +505,16 @@ tr:last-child td{border-bottom:none}
               <div class="int-h" data-en="PMF INTERVIEWS: 0 / 50" data-zh="PMF访谈：0 / 50">PMF INTERVIEWS: 0 / 50</div>
               <div class="int-track"><div class="int-fill" style="width:0%"></div></div>
               <div style="font-size:8px;color:var(--tf)" data-en="Need 30+ before Go/No-Go" data-zh="需要30+才能判断">Need 30+ before Go/No-Go</div>
+            </div>
+            <!-- CHANGE 2: Structured Customer Pain fields -->
+            <div class="cst-fields">
+              <div class="cf-h" data-en="STRUCTURED PMF FIELDS" data-zh="结构化PMF字段">STRUCTURED PMF FIELDS</div>
+              <div class="cf-row"><span class="cf-k" data-en="Target accounts" data-zh="目标账户">Target accounts</span><span class="cf-v needed" data-en="Airwallex, PingPong, Xtransfer, 连连..." data-zh="Airwallex, PingPong, Xtransfer, 连连...">Airwallex, PingPong, Xtransfer, 连连...</span></div>
+              <div class="cf-row"><span class="cf-k" data-en="Top pain points" data-zh="主要痛点">Top pain points</span><span class="cf-v needed" data-en="To be validated via interviews" data-zh="待访谈验证">To be validated via interviews</span></div>
+              <div class="cf-row"><span class="cf-k" data-en="Willingness to pay" data-zh="付费意愿">Willingness to pay</span><span class="cf-v needed" data-en="Unknown — target 70%+" data-zh="未知 — 目标70%+">Unknown — target 70%+</span></div>
+              <div class="cf-row"><span class="cf-k" data-en="Integration readiness" data-zh="集成就绪度">Integration readiness</span><span class="cf-v needed" data-en="Unknown — API assessment needed" data-zh="未知 — 需要API评估">Unknown — API assessment needed</span></div>
+              <div class="cf-row"><span class="cf-k" data-en="Early adopter watchlist" data-zh="早期采用者观察">Early adopter watchlist</span><span class="cf-v needed" data-en="Airwallex (post-Series F)" data-zh="Airwallex (F轮后)">Airwallex (post-Series F)</span></div>
+              <div class="cf-row"><span class="cf-k" data-en="Interview summary" data-zh="访谈摘要">Interview summary</span><span class="cf-v needed" data-en="0 completed · 0 scheduled" data-zh="0已完成 · 0已计划">0 completed · 0 scheduled</span></div>
             </div>
           </div>
           <div class="p0-col-foot nd" data-en="░ INSUFFICIENT — interviews required" data-zh="░ 数据不足 — 需要访谈">░ INSUFFICIENT — interviews required</div>
@@ -446,7 +603,7 @@ tr:last-child td{border-bottom:none}
         <div class="rp-b">
           <table>
             <thead><tr><th>ASSET</th><th>PRICE</th><th>DEV</th><th>MCAP</th><th></th></tr></thead>
-            <tbody id="mkt-tbody"><tr><td colspan="5" style="color:var(--tf);text-align:center;padding:12px">Loading...</td></tr></tbody>
+            <tbody id="mkt-tbody"><tr><td colspan="5" style="color:var(--tf);text-align:center;padding:12px">Fetching cached snapshot…</td></tr></tbody>
           </table>
           <div class="src-note" data-en="SOURCE: DefiLlama · 60s refresh" data-zh="来源：DefiLlama · 60秒刷新">SOURCE: DefiLlama · 60s refresh</div>
         </div>
@@ -456,7 +613,7 @@ tr:last-child td{border-bottom:none}
         <div class="rp-b">
           <table>
             <thead><tr><th>PROTOCOL</th><th>TVL</th><th>30D</th></tr></thead>
-            <tbody id="tvl-tbody"><tr><td colspan="3" style="color:var(--tf);text-align:center;padding:10px">Loading...</td></tr></tbody>
+            <tbody id="tvl-tbody"><tr><td colspan="3" style="color:var(--tf);text-align:center;padding:10px">Fetching cached snapshot…</td></tr></tbody>
           </table>
           <div class="src-note" data-en="SOURCE: DefiLlama" data-zh="来源：DefiLlama">SOURCE: DefiLlama</div>
         </div>
@@ -483,7 +640,7 @@ tr:last-child td{border-bottom:none}
     <div class="rp-b">
       <table>
         <thead><tr><th>ASSET</th><th>PRICE</th><th>DEV%</th><th>STATUS</th><th>MCAP</th><th>SHARE</th><th>UPDATED</th></tr></thead>
-        <tbody id="ph-tbody"><tr><td colspan="7" style="color:var(--tf);text-align:center;padding:20px" data-en="Loading live data..." data-zh="加载实时数据中...">Loading live data...</td></tr></tbody>
+        <tbody id="ph-tbody"><tr><td colspan="7" style="color:var(--tf);text-align:center;padding:20px" data-en="Fetching cached snapshot…" data-zh="获取缓存快照…">Fetching cached snapshot…</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -507,7 +664,7 @@ tr:last-child td{border-bottom:none}
       <div class="rp-b">
         <table>
           <thead><tr><th>PROTOCOL</th><th>TVL</th><th>30D</th><th>CATEGORY</th><th>SIGNAL</th></tr></thead>
-          <tbody id="wk-tvl"><tr><td colspan="5" style="color:var(--tf);text-align:center;padding:14px">Loading...</td></tr></tbody>
+          <tbody id="wk-tvl"><tr><td colspan="5" style="color:var(--tf);text-align:center;padding:14px">Fetching cached snapshot…</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -553,6 +710,7 @@ function gp(n,el){
   el.classList.add('active');
 }
 function toggleP0(){document.getElementById('p0track').classList.toggle('open');}
+function toggleFDB(){document.getElementById('fdb').classList.toggle('open');}
 let lang='en';
 function setLang(l){
   lang=l;
