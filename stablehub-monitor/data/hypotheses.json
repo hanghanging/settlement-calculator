@@ -1,0 +1,68 @@
+{
+  "hypotheses": [
+    {
+      "id": "market-size-h1",
+      "theme": "market",
+      "text": "The global stablecoin TAM is large enough (>$200B) and growing fast enough to support institutional product development",
+      "text_zh": "全球稳定币TAM足够大(>$200B)且增速足够快，支持机构产品开发",
+      "status": "GO",
+      "confidence": "HIGH",
+      "evidence_count": 6,
+      "supporting_count": 6,
+      "disconfirming_count": 0,
+      "supporting_pct": 1.0,
+      "go_criteria": {
+        "tam_b": 200,
+        "growth_7d_pct_min": 0,
+        "addressable_b_min": 30
+      },
+      "last_updated": "2026-03-23T14:07:00Z",
+      "data_freshness": "LIVE"
+    },
+    {
+      "id": "usdgo-yield-h1",
+      "theme": "market",
+      "text": "US legal framework will permit institutional stablecoin yield distribution to holders",
+      "text_zh": "美国法律框架将允许机构稳定币向持有者分配收益",
+      "status": "GO",
+      "confidence": "HIGH",
+      "evidence_count": 2,
+      "supporting_count": 2,
+      "disconfirming_count": 0,
+      "supporting_pct": 1.0,
+      "last_updated": "2026-03-20T00:00:00Z",
+      "data_freshness": "MANUAL"
+    },
+    {
+      "id": "payment-pain-h1",
+      "theme": "customer",
+      "text": "Cross-border payment companies experience >2% settlement cost pain and would pay to reduce it",
+      "text_zh": "跨境支付公司承受>2%的结算成本痛点，且愿意付费解决",
+      "status": "INSUFFICIENT",
+      "confidence": "LOW",
+      "evidence_count": 1,
+      "supporting_count": 1,
+      "disconfirming_count": 0,
+      "supporting_pct": null,
+      "interview_count_completed": 0,
+      "interview_count_target": 20,
+      "last_updated": "2026-03-22T00:00:00Z",
+      "data_freshness": "MANUAL"
+    },
+    {
+      "id": "competitor-gap-h1",
+      "theme": "competitor",
+      "text": "No incumbent offers multi-FX settlement + institutional yield + Asian B2B coverage in one product",
+      "text_zh": "没有现有竞品在单一产品中同时提供多法币结算+机构收益+亚洲B2B覆盖",
+      "status": "WATCH",
+      "confidence": "MED",
+      "evidence_count": 4,
+      "supporting_count": 3,
+      "disconfirming_count": 0,
+      "supporting_pct": 0.75,
+      "competitive_window_months": 9,
+      "last_updated": "2026-03-17T00:00:00Z",
+      "data_freshness": "MANUAL"
+    }
+  ]
+}

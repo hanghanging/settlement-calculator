@@ -1,0 +1,147 @@
+{
+  "status": "INSUFFICIENT",
+  "confidence": "LOW",
+  "evidence_count": 1,
+  "last_updated": "2026-03-22T00:00:00Z",
+  "data_freshness": "MANUAL",
+  "overall_progress": {
+    "completed": 0,
+    "scheduled": 1,
+    "target": 50,
+    "go_threshold": 30,
+    "watch_threshold": 15
+  },
+  "blocker_statement": "Cannot confirm PMF. Theme 2 status will remain INSUFFICIENT until 30+ structured interviews are completed across at least 2 customer segments.",
+  "blocker_statement_zh": "无法确认PMF，Go/No-Go决策前需要30+次结构化访谈，覆盖至少2个客户细分。",
+  "segments": [
+    {
+      "id": "payment-companies",
+      "name": "Cross-border Payment Companies",
+      "name_zh": "跨境支付公司",
+      "pmf_status": "INSUFFICIENT",
+      "interview_progress": {
+        "completed": 0,
+        "scheduled": 1,
+        "target": 20
+      },
+      "target_accounts": [
+        {
+          "name": "Airwallex",
+          "priority": 1,
+          "status": "BD initiated",
+          "latest_signal": "Series F $120M · Mar 22"
+        },
+        {
+          "name": "PingPong",
+          "priority": 2,
+          "status": "Not contacted",
+          "latest_signal": null
+        },
+        {
+          "name": "Xtransfer",
+          "priority": 3,
+          "status": "Not contacted",
+          "latest_signal": null
+        },
+        {
+          "name": "连连支付",
+          "priority": 4,
+          "status": "Not contacted",
+          "latest_signal": null
+        }
+      ],
+      "structured_fields": {
+        "top_pain_points": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        },
+        "willingness_to_pay": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        },
+        "integration_readiness": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        },
+        "early_adopter_watchlist": {
+          "value": [
+            "Airwallex"
+          ],
+          "status": "PARTIAL"
+        },
+        "interview_summary": {
+          "value": "0 completed · 1 scheduled",
+          "status": "PARTIAL"
+        }
+      }
+    },
+    {
+      "id": "otc-merchants",
+      "name": "OTC Merchants",
+      "name_zh": "OTC商家",
+      "pmf_status": "INSUFFICIENT",
+      "interview_progress": {
+        "completed": 0,
+        "scheduled": 0,
+        "target": 15
+      },
+      "target_accounts": [],
+      "structured_fields": {
+        "top_pain_points": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        },
+        "willingness_to_pay": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        },
+        "integration_readiness": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        },
+        "early_adopter_watchlist": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        },
+        "interview_summary": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        }
+      }
+    },
+    {
+      "id": "institutional-holders",
+      "name": "Institutional Stablecoin Holders",
+      "name_zh": "机构持币方",
+      "pmf_status": "INSUFFICIENT",
+      "interview_progress": {
+        "completed": 0,
+        "scheduled": 0,
+        "target": 12
+      },
+      "target_accounts": [],
+      "structured_fields": {
+        "top_pain_points": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        },
+        "willingness_to_pay": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        },
+        "integration_readiness": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        },
+        "early_adopter_watchlist": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        },
+        "interview_summary": {
+          "value": null,
+          "status": "AWAITING_INPUT"
+        }
+      }
+    }
+  ]
+}

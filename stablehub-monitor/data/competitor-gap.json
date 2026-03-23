@@ -1,0 +1,72 @@
+{
+  "status": "WATCH",
+  "confidence": "MED",
+  "evidence_count": 4,
+  "last_updated": "2026-03-17T00:00:00Z",
+  "data_freshness": "MANUAL",
+  "competitive_window": {
+    "months_remaining": 9,
+    "confidence": "MED",
+    "rationale": "Mastercard/BVNK integration expected to reach scale by Q4 2026",
+    "last_assessed": "2026-03-17T00:00:00Z"
+  },
+  "competitors": [
+    {
+      "id": "bvnk-mastercard",
+      "name": "BVNK (Mastercard)",
+      "type": "infrastructure",
+      "threat_level": "HIGH",
+      "known_gaps": [
+        "No multi-FX settlement",
+        "No institutional yield product",
+        "No dedicated Asian B2B coverage"
+      ],
+      "latest_event": {
+        "date": "2026-03-17",
+        "title": "Acquired for $1.8B",
+        "source": "Reuters",
+        "impact": "HIGH"
+      }
+    },
+    {
+      "id": "circle",
+      "name": "Circle (USDC)",
+      "type": "issuer",
+      "threat_level": "MED",
+      "known_gaps": [
+        "No yield distribution (pre-GENIUS)",
+        "No multi-currency FX",
+        "Limited Asian B2B"
+      ],
+      "latest_event": {
+        "date": "2026-03-20",
+        "title": "GENIUS Act compliance review initiated",
+        "source": "Internal",
+        "impact": "MED"
+      }
+    },
+    {
+      "id": "bitgo",
+      "name": "BitGo",
+      "type": "infrastructure",
+      "threat_level": "MED",
+      "known_gaps": [
+        "No stablecoin yield product",
+        "No multi-stablecoin swap",
+        "No Asian B2B focus"
+      ],
+      "latest_event": {
+        "date": "2026-03-23",
+        "title": "Q1 2026: institutional AUM +34% YoY",
+        "source": "CoinDesk",
+        "impact": "MED"
+      }
+    }
+  ],
+  "osl_differentiation": [
+    "Multi-currency FX settlement (USD/EUR/AUD/GBP + Asian corridors)",
+    "Institutional yield via USDGO",
+    "HK regulatory moat (HKMA)",
+    "B2B stablecoin clearing network (StableHub)"
+  ]
+}

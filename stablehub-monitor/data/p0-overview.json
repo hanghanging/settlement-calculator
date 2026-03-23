@@ -1,0 +1,92 @@
+{
+  "generated_at": "2026-03-23T22:00:00Z",
+  "data_freshness": {
+    "market": {
+      "status": "LIVE",
+      "last_updated": "2026-03-23T22:00:00Z",
+      "note": "Fetches live from DefiLlama"
+    },
+    "customer": {
+      "status": "MANUAL",
+      "last_updated": "2026-03-22T00:00:00Z",
+      "note": "Human researcher input"
+    },
+    "competitor": {
+      "status": "MANUAL",
+      "last_updated": "2026-03-17T00:00:00Z",
+      "note": "News monitoring"
+    }
+  },
+  "verdict_cards": {
+    "market_size": {
+      "status": "GO",
+      "evidence_count": 6,
+      "confidence": "HIGH",
+      "interviews_completed": null,
+      "interviews_target": null,
+      "window_months": null,
+      "last_updated": "2026-03-23T14:07:00Z",
+      "one_line": "TAM >$315B confirmed. 16.6% addressable base for institutional alternatives.",
+      "one_line_zh": "TAM >$315B 已确认，16.6%可寻址基础供机构替代品进入。"
+    },
+    "customer_pain": {
+      "status": "INSUFFICIENT",
+      "evidence_count": 1,
+      "confidence": "LOW",
+      "interviews_completed": 0,
+      "interviews_target": 50,
+      "window_months": null,
+      "last_updated": "2026-03-22T00:00:00Z",
+      "one_line": "Cannot confirm PMF. 30+ structured interviews required before Go/No-Go.",
+      "one_line_zh": "无法确认PMF，Go/No-Go决策前需要30+次结构化访谈。"
+    },
+    "competitive_gap": {
+      "status": "WATCH",
+      "evidence_count": 4,
+      "confidence": "MED",
+      "interviews_completed": null,
+      "interviews_target": null,
+      "window_months": 9,
+      "last_updated": "2026-03-17T00:00:00Z",
+      "one_line": "Gap exists but Mastercard/BVNK compresses window. B2B pipeline velocity is the counter.",
+      "one_line_zh": "缺口存在，Mastercard/BVNK压缩窗口，B2B管道速度是反制手段。"
+    },
+    "overall": {
+      "status": "CONDITIONAL_GO",
+      "evidence_count": 11,
+      "confidence": "MED",
+      "interviews_completed": null,
+      "interviews_target": null,
+      "window_months": null,
+      "last_updated": "2026-03-23T22:00:00Z",
+      "one_line": "Market confirmed. Competitor window closing. Customer Pain is the blocking unknown.",
+      "one_line_zh": "市场已确认，竞争窗口关闭中，客户痛点是阻塞未知项。"
+    }
+  },
+  "research_progress": {
+    "market": {
+      "pct": 78,
+      "verdict": "▲ GO",
+      "verdict_zh": "▲ 进行",
+      "color": "teal",
+      "signals": 6,
+      "against": 0
+    },
+    "customer": {
+      "pct": 12,
+      "verdict": "░ INSUFFICIENT",
+      "verdict_zh": "░ 数据不足",
+      "color": "tf",
+      "signals": 1,
+      "against": 0
+    },
+    "competitor": {
+      "pct": 55,
+      "verdict": "⚠ ACCELERATE",
+      "verdict_zh": "⚠ 加速",
+      "color": "amb",
+      "signals": 4,
+      "against": 0
+    }
+  }
+}

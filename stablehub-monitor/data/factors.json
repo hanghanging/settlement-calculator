@@ -1,0 +1,228 @@
+{
+  "factors": [
+    {
+      "id": "market-factor",
+      "name": "Market",
+      "name_zh": "市场",
+      "status": "GO",
+      "confidence": "HIGH",
+      "confidence_pct": 78,
+      "data_points": [
+        {
+          "label": "Total supply",
+          "label_zh": "总供应",
+          "value": "$315.4B",
+          "direction": "CONFIRMING",
+          "source": "defillama",
+          "is_live": true
+        },
+        {
+          "label": "7D growth",
+          "label_zh": "7天增长",
+          "value": "+2.1%",
+          "direction": "CONFIRMING",
+          "source": "defillama",
+          "is_live": true
+        },
+        {
+          "label": "USDGO addressable",
+          "label_zh": "USDGO可寻址",
+          "value": "~$52B",
+          "direction": "CONFIRMING",
+          "source": "computed",
+          "is_live": true
+        }
+      ],
+      "evidence_count": 6,
+      "last_updated": "2026-03-23T14:07:00Z"
+    },
+    {
+      "id": "customer-factor",
+      "name": "Customer",
+      "name_zh": "客户",
+      "status": "INSUFFICIENT",
+      "confidence": "LOW",
+      "confidence_pct": 12,
+      "data_points": [
+        {
+          "label": "Interviews completed",
+          "label_zh": "已完成访谈",
+          "value": "0 / 50",
+          "direction": "NEUTRAL",
+          "source": "manual",
+          "is_live": false
+        },
+        {
+          "label": "WTP confirmed",
+          "label_zh": "付费意愿确认",
+          "value": "Unknown",
+          "direction": "NEUTRAL",
+          "source": "manual",
+          "is_live": false
+        },
+        {
+          "label": "Pain validated",
+          "label_zh": "痛点验证",
+          "value": "No data",
+          "direction": "NEUTRAL",
+          "source": "manual",
+          "is_live": false
+        }
+      ],
+      "evidence_count": 1,
+      "last_updated": "2026-03-22T00:00:00Z"
+    },
+    {
+      "id": "competitor-factor",
+      "name": "Competitor",
+      "name_zh": "竞品",
+      "status": "WATCH",
+      "confidence": "MED",
+      "confidence_pct": 55,
+      "data_points": [
+        {
+          "label": "Gap identified",
+          "label_zh": "缺口已识别",
+          "value": "Multi-FX, yield, Asia",
+          "direction": "CONFIRMING",
+          "source": "manual",
+          "is_live": false
+        },
+        {
+          "label": "Window remaining",
+          "label_zh": "窗口剩余",
+          "value": "6-12 months",
+          "direction": "WATCH",
+          "source": "manual",
+          "is_live": false
+        },
+        {
+          "label": "Main threat",
+          "label_zh": "主要威胁",
+          "value": "Mastercard/BVNK",
+          "direction": "WATCH",
+          "source": "manual",
+          "is_live": false
+        }
+      ],
+      "evidence_count": 4,
+      "last_updated": "2026-03-17T00:00:00Z"
+    },
+    {
+      "id": "regulatory-factor",
+      "name": "Regulatory",
+      "name_zh": "监管",
+      "status": "GO",
+      "confidence": "HIGH",
+      "confidence_pct": 80,
+      "data_points": [
+        {
+          "label": "US GENIUS Act",
+          "label_zh": "美国GENIUS法",
+          "value": "Breakthrough",
+          "direction": "CONFIRMING",
+          "source": "manual",
+          "is_live": false
+        },
+        {
+          "label": "HK HKMA",
+          "label_zh": "香港金管局",
+          "value": "Window open",
+          "direction": "CONFIRMING",
+          "source": "manual",
+          "is_live": false
+        },
+        {
+          "label": "EU MiCA",
+          "label_zh": "欧盟MiCA",
+          "value": "Enforced",
+          "direction": "CONFIRMING",
+          "source": "manual",
+          "is_live": false
+        },
+        {
+          "label": "SG MAS",
+          "label_zh": "新加坡MAS",
+          "value": "Active",
+          "direction": "CONFIRMING",
+          "source": "manual",
+          "is_live": false
+        }
+      ],
+      "evidence_count": 4,
+      "last_updated": "2026-03-20T00:00:00Z"
+    },
+    {
+      "id": "timing-factor",
+      "name": "Timing / Window",
+      "name_zh": "时机/窗口",
+      "status": "WATCH",
+      "confidence": "MED",
+      "confidence_pct": 65,
+      "data_points": [
+        {
+          "label": "Optimal entry",
+          "label_zh": "最佳入场",
+          "value": "Now → Q3 2026",
+          "direction": "CONFIRMING",
+          "source": "manual",
+          "is_live": false
+        },
+        {
+          "label": "Competitor ETA",
+          "label_zh": "竞品到达",
+          "value": "6-12 months",
+          "direction": "WATCH",
+          "source": "manual",
+          "is_live": false
+        },
+        {
+          "label": "Reg tailwind",
+          "label_zh": "监管顺风",
+          "value": "Active",
+          "direction": "CONFIRMING",
+          "source": "manual",
+          "is_live": false
+        }
+      ],
+      "evidence_count": 3,
+      "last_updated": "2026-03-17T00:00:00Z"
+    },
+    {
+      "id": "evidence-quality-factor",
+      "name": "Evidence Quality",
+      "name_zh": "证据质量",
+      "status": "WATCH",
+      "confidence": "MED",
+      "confidence_pct": 45,
+      "data_points": [
+        {
+          "label": "Market data",
+          "label_zh": "市场数据",
+          "value": "HIGH — live API",
+          "direction": "CONFIRMING",
+          "source": "automated",
+          "is_live": true
+        },
+        {
+          "label": "Customer data",
+          "label_zh": "客户数据",
+          "value": "LOW — 1 proxy signal",
+          "direction": "WATCH",
+          "source": "manual",
+          "is_live": false
+        },
+        {
+          "label": "Competitor data",
+          "label_zh": "竞品数据",
+          "value": "MED — news/earnings",
+          "direction": "NEUTRAL",
+          "source": "manual",
+          "is_live": false
+        }
+      ],
+      "evidence_count": 3,
+      "last_updated": "2026-03-23T14:07:00Z"
+    }
+  ]
+}

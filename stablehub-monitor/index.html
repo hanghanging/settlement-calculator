@@ -329,7 +329,7 @@ tr:last-child td{border-bottom:none}
 
   <!-- CHANGE 1: P0 Verdict Cards -->
   <div class="verdict-strip">
-    <div class="vc go">
+    <div class="vc go" id="vc-mkt">
       <div class="vc-theme" data-en="MARKET SIZE VERDICT" data-zh="市场规模判断">MARKET SIZE VERDICT</div>
       <div class="vc-status go" data-en="▲ GO" data-zh="▲ 进行">▲ GO</div>
       <div class="vc-row"><span data-en="Evidence" data-zh="证据">Evidence</span><span>6 signals</span></div>
@@ -337,7 +337,7 @@ tr:last-child td{border-bottom:none}
       <div class="vc-row"><span data-en="Last updated" data-zh="最后更新">Last updated</span><span>Mar 23</span></div>
       <div class="vc-take" data-en="TAM >$315B confirmed. 16.6% addressable base for institutional alternatives." data-zh="TAM >$315B 已确认，16.6%可寻址基础供机构替代品进入。">TAM >$315B confirmed. 16.6% addressable base for institutional alternatives.</div>
     </div>
-    <div class="vc nd">
+    <div class="vc nd" id="vc-cst">
       <div class="vc-theme" data-en="CUSTOMER PAIN VERDICT" data-zh="客户痛点判断">CUSTOMER PAIN VERDICT</div>
       <div class="vc-status nd" data-en="░ NO DATA" data-zh="░ 数据不足">░ NO DATA</div>
       <div class="vc-row"><span data-en="Evidence" data-zh="证据">Evidence</span><span>1 signal</span></div>
@@ -345,7 +345,7 @@ tr:last-child td{border-bottom:none}
       <div class="vc-row"><span data-en="Interviews" data-zh="访谈">Interviews</span><span>0 / 50</span></div>
       <div class="vc-take" data-en="Cannot confirm PMF. 30+ structured interviews required before Go/No-Go." data-zh="无法确认PMF，Go/No-Go决策前需要30+次结构化访谈。">Cannot confirm PMF. 30+ structured interviews required before Go/No-Go.</div>
     </div>
-    <div class="vc watch">
+    <div class="vc watch" id="vc-cmp">
       <div class="vc-theme" data-en="COMPETITIVE GAP VERDICT" data-zh="竞品缺口判断">COMPETITIVE GAP VERDICT</div>
       <div class="vc-status watch" data-en="⚠ ACCELERATE" data-zh="⚠ 加速">⚠ ACCELERATE</div>
       <div class="vc-row"><span data-en="Evidence" data-zh="证据">Evidence</span><span>4 signals</span></div>
@@ -353,7 +353,7 @@ tr:last-child td{border-bottom:none}
       <div class="vc-row"><span data-en="Window" data-zh="竞争窗口">Window</span><span style="color:var(--amb)">6–12 mo</span></div>
       <div class="vc-take" data-en="Gap exists but Mastercard/BVNK compresses window. B2B pipeline velocity is the counter." data-zh="缺口存在，Mastercard/BVNK压缩窗口，B2B管道速度是反制手段。">Gap exists but Mastercard/BVNK compresses window. B2B pipeline velocity is the counter.</div>
     </div>
-    <div class="vc overall">
+    <div class="vc overall" id="vc-ovr">
       <div class="vc-theme" data-en="OVERALL P0 SIGNAL" data-zh="P0总体信号">OVERALL P0 SIGNAL</div>
       <div class="vc-status blue" data-en="→ CONDITIONAL GO" data-zh="→ 条件性进行">→ CONDITIONAL GO</div>
       <div class="vc-row"><span data-en="T1 Market" data-zh="T1市场">T1 Market</span><span style="color:var(--teal)">GO</span></div>
@@ -373,21 +373,21 @@ tr:last-child td{border-bottom:none}
     <div class="p0t-body" id="p0-body">
       <div class="p0t-col">
         <div class="p0t-theme mkt" data-en="MARKET SIZE" data-zh="市场规模">MARKET SIZE</div>
-        <div class="p0t-bar"><div class="p0t-fill mkt" style="width:78%"></div></div>
-        <div style="font-size:8px;color:var(--td)" data-en="6 signals confirming · 0 against" data-zh="6条支持 · 0条反对">6 signals confirming · 0 against</div>
-        <div class="p0t-verdict" style="color:var(--teal)" data-en="▲ GO — TAM >$200B confirmed" data-zh="▲ 进行 — TAM >$200B 已确认">▲ GO — TAM >$200B confirmed</div>
+        <div class="p0t-bar"><div class="p0t-fill mkt" id="p0t-bar-market" style="width:78%"></div></div>
+        <div style="font-size:8px;color:var(--td)" id="p0t-sig-market">6 signals confirming · 0 against</div>
+        <div class="p0t-verdict" id="p0t-verdict-market" style="color:var(--teal)">▲ GO — TAM >$200B confirmed</div>
       </div>
       <div class="p0t-col">
         <div class="p0t-theme cst" data-en="CUSTOMER PAIN" data-zh="客户痛点">CUSTOMER PAIN</div>
-        <div class="p0t-bar"><div class="p0t-fill cst" style="width:12%"></div></div>
-        <div style="font-size:8px;color:var(--td)" data-en="1 signal · 0 / 50 interviews" data-zh="1条信号 · 0 / 50次访谈">1 signal · 0 / 50 interviews</div>
-        <div class="p0t-verdict" style="color:var(--tf)" data-en="░ INSUFFICIENT — PMF interviews needed" data-zh="░ 数据不足 — 需要PMF访谈">░ INSUFFICIENT — PMF interviews needed</div>
+        <div class="p0t-bar"><div class="p0t-fill cst" id="p0t-bar-customer" style="width:12%"></div></div>
+        <div style="font-size:8px;color:var(--td)" id="p0t-sig-customer">1 signal · 0 / 50 interviews</div>
+        <div class="p0t-verdict" id="p0t-verdict-customer" style="color:var(--tf)">░ INSUFFICIENT — PMF interviews needed</div>
       </div>
       <div class="p0t-col">
         <div class="p0t-theme cmp" data-en="COMPETITIVE GAP" data-zh="竞品缺口">COMPETITIVE GAP</div>
-        <div class="p0t-bar"><div class="p0t-fill cmp" style="width:55%"></div></div>
-        <div style="font-size:8px;color:var(--td)" data-en="4 signals · window compressing" data-zh="4条信号 · 窗口收窄">4 signals · window compressing</div>
-        <div class="p0t-verdict" style="color:var(--amb)" data-en="⚠ ACCELERATE — 6-12 mo window" data-zh="⚠ 加速 — 6-12个月窗口">⚠ ACCELERATE — 6-12 mo window</div>
+        <div class="p0t-bar"><div class="p0t-fill cmp" id="p0t-bar-competitor" style="width:55%"></div></div>
+        <div style="font-size:8px;color:var(--td)" id="p0t-sig-competitor">4 signals · window compressing</div>
+        <div class="p0t-verdict" id="p0t-verdict-competitor" style="color:var(--amb)">⚠ ACCELERATE — 6-12 mo window</div>
       </div>
     </div>
   </div>
@@ -411,8 +411,8 @@ tr:last-child td{border-bottom:none}
             <div class="fd-row"><span class="fd-k" data-en="Growth rate" data-zh="增速">Growth rate</span><span class="fd-v" style="color:var(--teal)">+2.1% 7D ✓</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Addressable" data-zh="可寻址">Addressable</span><span class="fd-v" style="color:var(--teal)">~$52B (16.6%)</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Yield demand" data-zh="收益需求">Yield demand</span><span class="fd-v" style="color:var(--amb)">Inferred</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill high" style="width:78%"></div></div>
-            <div class="fd-verdict" style="color:var(--teal)" data-en="Confidence: HIGH" data-zh="置信度：高">Confidence: HIGH</div>
+            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-market-factor" high" style="width:78%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-market-factor" style="color:var(--teal)" data-en="Confidence: HIGH" data-zh="置信度：高">Confidence: HIGH</div>
           </div>
           <div class="fd-col">
             <div class="fd-name cst" data-en="CUSTOMER FACTOR" data-zh="客户因子">CUSTOMER FACTOR</div>
@@ -420,8 +420,8 @@ tr:last-child td{border-bottom:none}
             <div class="fd-row"><span class="fd-k" data-en="WTP confirmed" data-zh="付费意愿确认">WTP confirmed</span><span class="fd-v" style="color:var(--tf)">No data</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Interviews done" data-zh="已完成访谈">Interviews done</span><span class="fd-v" style="color:var(--tf)">0 / 50</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Referral signal" data-zh="推荐信号">Referral signal</span><span class="fd-v" style="color:var(--tf)">No data</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill low" style="width:12%"></div></div>
-            <div class="fd-verdict" style="color:var(--tf)" data-en="Confidence: LOW — interviews needed" data-zh="置信度：低 — 需要访谈">Confidence: LOW — interviews needed</div>
+            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-customer-factor" low" style="width:12%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-customer-factor" style="color:var(--tf)" data-en="Confidence: LOW — interviews needed" data-zh="置信度：低 — 需要访谈">Confidence: LOW — interviews needed</div>
           </div>
           <div class="fd-col">
             <div class="fd-name cmp" data-en="COMPETITOR FACTOR" data-zh="竞品因子">COMPETITOR FACTOR</div>
@@ -429,8 +429,8 @@ tr:last-child td{border-bottom:none}
             <div class="fd-row"><span class="fd-k" data-en="Window size" data-zh="窗口大小">Window size</span><span class="fd-v" style="color:var(--amb)">6–12 months</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Main threat" data-zh="主要威胁">Main threat</span><span class="fd-v" style="color:var(--rb)">Mastercard/BVNK</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Differentiation" data-zh="差异化">Differentiation</span><span class="fd-v" style="color:var(--teal)">Multi-FX + Asia + yield</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill med" style="width:55%"></div></div>
-            <div class="fd-verdict" style="color:var(--amb)" data-en="Confidence: MED — window compressing" data-zh="置信度：中 — 窗口收窄">Confidence: MED — window compressing</div>
+            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-competitor-factor" med" style="width:55%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-competitor-factor" style="color:var(--amb)" data-en="Confidence: MED — window compressing" data-zh="置信度：中 — 窗口收窄">Confidence: MED — window compressing</div>
           </div>
           <div class="fd-col">
             <div class="fd-name reg" data-en="REGULATORY FACTOR" data-zh="监管因子">REGULATORY FACTOR</div>
@@ -438,8 +438,8 @@ tr:last-child td{border-bottom:none}
             <div class="fd-row"><span class="fd-k" data-en="HK (HKMA)" data-zh="香港(HKMA)">HK (HKMA)</span><span class="fd-v" style="color:var(--teal)">Window open ✓</span></div>
             <div class="fd-row"><span class="fd-k" data-en="EU (MiCA)" data-zh="欧盟(MiCA)">EU (MiCA)</span><span class="fd-v" style="color:var(--teal)">Enforced ✓</span></div>
             <div class="fd-row"><span class="fd-k" data-en="SG (MAS)" data-zh="新加坡(MAS)">SG (MAS)</span><span class="fd-v" style="color:var(--teal)">Framework active</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill high" style="width:80%"></div></div>
-            <div class="fd-verdict" style="color:var(--teal)" data-en="Confidence: HIGH — multiple frameworks active" data-zh="置信度：高 — 多框架已激活">Confidence: HIGH — multiple frameworks active</div>
+            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-regulatory-factor" high" style="width:80%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-regulatory-factor" style="color:var(--teal)" data-en="Confidence: HIGH — multiple frameworks active" data-zh="置信度：高 — 多框架已激活">Confidence: HIGH — multiple frameworks active</div>
           </div>
           <div class="fd-col">
             <div class="fd-name tim" data-en="TIMING / WINDOW" data-zh="时机/窗口">TIMING / WINDOW</div>
@@ -447,8 +447,8 @@ tr:last-child td{border-bottom:none}
             <div class="fd-row"><span class="fd-k" data-en="Competitor ETA" data-zh="竞品到达时间">Competitor ETA</span><span class="fd-v" style="color:var(--amb)">6–12 months</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Reg tailwind" data-zh="监管顺风">Reg tailwind</span><span class="fd-v" style="color:var(--teal)">Active — GENIUS, HKMA</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Market momentum" data-zh="市场动能">Market momentum</span><span class="fd-v" style="color:var(--teal)">ATH supply, growing</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill med" style="width:65%"></div></div>
-            <div class="fd-verdict" style="color:var(--amb)" data-en="Confidence: MED — window closing fast" data-zh="置信度：中 — 窗口快速关闭">Confidence: MED — window closing fast</div>
+            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-timing-factor" med" style="width:65%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-timing-factor" style="color:var(--amb)" data-en="Confidence: MED — window closing fast" data-zh="置信度：中 — 窗口快速关闭">Confidence: MED — window closing fast</div>
           </div>
           <div class="fd-col">
             <div class="fd-name eq" data-en="EVIDENCE QUALITY" data-zh="证据质量">EVIDENCE QUALITY</div>
@@ -456,8 +456,8 @@ tr:last-child td{border-bottom:none}
             <div class="fd-row"><span class="fd-k" data-en="Customer data" data-zh="客户数据">Customer data</span><span class="fd-v" style="color:var(--tf)">1 proxy signal</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Competitor data" data-zh="竞品数据">Competitor data</span><span class="fd-v" style="color:var(--amb)">News · Earnings</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Overall quality" data-zh="总体质量">Overall quality</span><span class="fd-v" style="color:var(--amb)">MEDIUM</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill med" style="width:45%"></div></div>
-            <div class="fd-verdict" style="color:var(--amb)" data-en="Improve via customer interviews" data-zh="通过客户访谈提升证据质量">Improve via customer interviews</div>
+            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-evidence-quality-factor" med" style="width:45%"></div></div>
+            <div class="fd-verdict" id="fd-verdict-evidence-quality-factor" style="color:var(--amb)" data-en="Improve via customer interviews" data-zh="通过客户访谈提升证据质量">Improve via customer interviews</div>
           </div>
         </div>
       </div>
@@ -465,6 +465,7 @@ tr:last-child td{border-bottom:none}
       <!-- AI Executive Summary (from v3 — kept) -->
       <div class="ai-sum">
         <div class="ai-sum-h" data-en="◈ AI EXECUTIVE SUMMARY — MARCH 23, 2026" data-zh="◈ AI 高管摘要 — 2026年3月23日">◈ AI EXECUTIVE SUMMARY — MARCH 23, 2026</div>
+        <div id="exec-summary-body">
         <div class="ai-sum-p" data-en="Stablecoin total supply reached <span class='hl'>$315.4B ATH</span>. USDC maintained <span class='hl-t'>25% market share</span> vs USDT 58.4%, leaving a <span class='hl-t'>16.6% addressable base</span> for institutional alternatives like USDGO." data-zh="稳定币总供应量创历史新高 <span class='hl'>$315.4B</span>。USDC 维持 <span class='hl-t'>25%市场份额</span>，对比 USDT 58.4%，留下了 <span class='hl-t'>16.6%可寻址基础</span> 供 USDGO 等机构替代品进入。">Stablecoin total supply reached <span class="hl">$315.4B ATH</span>. USDC maintained <span class="hl-t">25% market share</span> vs USDT 58.4%, leaving a <span class="hl-t">16.6% addressable base</span> for institutional alternatives like USDGO.</div>
         <div class="ai-sum-p"><span class="hl-t" data-en="STRATEGIC PRIORITY:" data-zh="战略优先项：">STRATEGIC PRIORITY:</span> <span data-en="US GENIUS Act breakthrough unlocks USDGO yield distribution compliance. HKMA registration window is live. Mastercard/BVNK acquisition compresses StableHub competitive window to 6-12 months — accelerate B2B pipeline." data-zh="美国 GENIUS Act 突破解锁 USDGO 收益分配合规路径。HKMA 注册窗口已开放。Mastercard/BVNK 收购将 StableHub 竞争窗口压缩至6-12个月——加速 B2B 管道。">US GENIUS Act breakthrough unlocks USDGO yield distribution compliance. HKMA registration window is live. Mastercard/BVNK acquisition compresses StableHub competitive window to 6-12 months — accelerate B2B pipeline.</span></div>
         <div class="ai-sum-p"><span class="hl-a" data-en="P0 GAP:" data-zh="P0 缺口：">P0 GAP:</span> <span data-en="Customer Pain (Theme 2) has only 1 weak signal. Cannot confirm PMF without 30+ structured interviews. This is the research priority before any product decision." data-zh="客户痛点(主题2)仅有1条弱信号，无法在30+结构化访谈前确认PMF，这是任何产品决策前的研究优先项。">Customer Pain (Theme 2) has only 1 weak signal. Cannot confirm PMF without 30+ structured interviews. This is the research priority before any product decision.</span></div>
@@ -502,19 +503,19 @@ tr:last-child td{border-bottom:none}
             <div style="font-size:8px;font-weight:700;letter-spacing:.12em;color:var(--td);border-bottom:1px solid var(--bd);padding-bottom:3px;margin:5px 0 3px" data-en="INST. HOLDERS" data-zh="持币机构">INST. HOLDERS</div>
             <div class="insuf" data-en="No signals yet" data-zh="暂无信号">No signals yet</div>
             <div class="int-bar">
-              <div class="int-h" data-en="PMF INTERVIEWS: 0 / 50" data-zh="PMF访谈：0 / 50">PMF INTERVIEWS: 0 / 50</div>
-              <div class="int-track"><div class="int-fill" style="width:0%"></div></div>
+              <div class="int-h" id="int-label" data-en="PMF INTERVIEWS: 0 / 50" data-zh="PMF访谈：0 / 50">PMF INTERVIEWS: 0 / 50</div>
+              <div class="int-track"><div class="int-fill" id="int-fill-bar" style="width:0%"></div></div>
               <div style="font-size:8px;color:var(--tf)" data-en="Need 30+ before Go/No-Go" data-zh="需要30+才能判断">Need 30+ before Go/No-Go</div>
             </div>
             <!-- CHANGE 2: Structured Customer Pain fields -->
             <div class="cst-fields">
               <div class="cf-h" data-en="STRUCTURED PMF FIELDS" data-zh="结构化PMF字段">STRUCTURED PMF FIELDS</div>
-              <div class="cf-row"><span class="cf-k" data-en="Target accounts" data-zh="目标账户">Target accounts</span><span class="cf-v needed" data-en="Airwallex, PingPong, Xtransfer, 连连..." data-zh="Airwallex, PingPong, Xtransfer, 连连...">Airwallex, PingPong, Xtransfer, 连连...</span></div>
-              <div class="cf-row"><span class="cf-k" data-en="Top pain points" data-zh="主要痛点">Top pain points</span><span class="cf-v needed" data-en="To be validated via interviews" data-zh="待访谈验证">To be validated via interviews</span></div>
-              <div class="cf-row"><span class="cf-k" data-en="Willingness to pay" data-zh="付费意愿">Willingness to pay</span><span class="cf-v needed" data-en="Unknown — target 70%+" data-zh="未知 — 目标70%+">Unknown — target 70%+</span></div>
-              <div class="cf-row"><span class="cf-k" data-en="Integration readiness" data-zh="集成就绪度">Integration readiness</span><span class="cf-v needed" data-en="Unknown — API assessment needed" data-zh="未知 — 需要API评估">Unknown — API assessment needed</span></div>
-              <div class="cf-row"><span class="cf-k" data-en="Early adopter watchlist" data-zh="早期采用者观察">Early adopter watchlist</span><span class="cf-v needed" data-en="Airwallex (post-Series F)" data-zh="Airwallex (F轮后)">Airwallex (post-Series F)</span></div>
-              <div class="cf-row"><span class="cf-k" data-en="Interview summary" data-zh="访谈摘要">Interview summary</span><span class="cf-v needed" data-en="0 completed · 0 scheduled" data-zh="0已完成 · 0已计划">0 completed · 0 scheduled</span></div>
+              <div class="cf-row"><span class="cf-k" data-en="Target accounts" data-zh="目标账户">Target accounts</span><span class="cf-v needed" id="cf-accounts" data-en="Airwallex, PingPong, Xtransfer, 连连..." data-zh="Airwallex, PingPong, Xtransfer, 连连...">Airwallex, PingPong, Xtransfer, 连连...</span></div>
+              <div class="cf-row"><span class="cf-k" data-en="Top pain points" data-zh="主要痛点">Top pain points</span><span class="cf-v needed" id="cf-pain" data-en="To be validated via interviews" data-zh="待访谈验证">To be validated via interviews</span></div>
+              <div class="cf-row"><span class="cf-k" data-en="Willingness to pay" data-zh="付费意愿">Willingness to pay</span><span class="cf-v needed" id="cf-wtp" data-en="Unknown — target 70%+" data-zh="未知 — 目标70%+">Unknown — target 70%+</span></div>
+              <div class="cf-row"><span class="cf-k" data-en="Integration readiness" data-zh="集成就绪度">Integration readiness</span><span class="cf-v needed" id="cf-integ" data-en="Unknown — API assessment needed" data-zh="未知 — 需要API评估">Unknown — API assessment needed</span></div>
+              <div class="cf-row"><span class="cf-k" data-en="Early adopter watchlist" data-zh="早期采用者观察">Early adopter watchlist</span><span class="cf-v needed" id="cf-early" data-en="Airwallex (post-Series F)" data-zh="Airwallex (F轮后)">Airwallex (post-Series F)</span></div>
+              <div class="cf-row"><span class="cf-k" data-en="Interview summary" data-zh="访谈摘要">Interview summary</span><span class="cf-v needed" id="cf-intsumm" data-en="0 completed · 0 scheduled" data-zh="0已完成 · 0已计划">0 completed · 0 scheduled</span></div>
             </div>
           </div>
           <div class="p0-col-foot nd" data-en="░ INSUFFICIENT — interviews required" data-zh="░ 数据不足 — 需要访谈">░ INSUFFICIENT — interviews required</div>
@@ -549,44 +550,7 @@ tr:last-child td{border-bottom:none}
         <span class="sig-title" data-en="ACTIONABLE INTELLIGENCE" data-zh="可执行情报">ACTIONABLE INTELLIGENCE</span>
         <span style="font-size:8px;color:var(--tf);margin-left:auto" data-en="Signals tagged to P0 research themes" data-zh="信号已标注P0研究主题">Signals tagged to P0 research themes</span>
       </div>
-      <div class="sig-grid">
-        <div class="sc H">
-          <div class="sc-top"><span class="badge H">HIGH</span><span class="tag-theme mkt" data-en="MARKET" data-zh="市场">MARKET</span><span class="tag-f">F-REG</span><span class="sc-date">Mar 20</span></div>
-          <div class="sc-title" data-en="US GENIUS Act — stablecoin yield now legally permissible" data-zh="美国 GENIUS Act — 稳定币收益现已合法">US GENIUS Act — stablecoin yield now legally permissible</div>
-          <div class="sc-why" data-en="WHY: First explicit US legal permission for yield distribution to holders." data-zh="原因：美国法律首次明确允许向持有者分配收益。">WHY: First explicit US legal permission for yield distribution to holders.</div>
-          <div class="sc-imp" data-en="IMPACT: USDGO compliance path now navigable. Timeline may compress ~6 months." data-zh="影响：USDGO 合规路径现已可行，时间线可缩短约6个月。">IMPACT: USDGO compliance path now navigable. Timeline may compress ~6 months.</div>
-          <div class="sc-hyp" data-en="↳ P0 T1: US yield-bearing stablecoin TAM — CONFIRMING" data-zh="↳ P0 T1：美国生息稳定币TAM — 确认中">↳ P0 T1: US yield-bearing stablecoin TAM — CONFIRMING</div>
-          <div class="sc-ent">US Senate · Circle · USDGO · PayPal · Tether</div>
-          <div class="sc-act" data-en="▶ Legal review of GENIUS Act within 10 business days — blocks product launch" data-zh="▶ 10个工作日内完成法律审查 — 阻塞产品发布">▶ Legal review of GENIUS Act within 10 business days — blocks product launch</div>
-        </div>
-        <div class="sc H">
-          <div class="sc-top"><span class="badge H">HIGH</span><span class="tag-theme cmp" data-en="COMPETITOR" data-zh="竞品">COMPETITOR</span><span class="tag-f">F-COMP</span><span class="sc-date">Mar 17</span></div>
-          <div class="sc-title" data-en="Mastercard acquires BVNK $1.8B — TradFi enters stablecoin payment rails" data-zh="Mastercard 以18亿美元收购 BVNK — 传统金融进入稳定币支付通道">Mastercard acquires BVNK $1.8B — TradFi enters stablecoin payment rails</div>
-          <div class="sc-why" data-en="WHY: Infrastructure-level acquisition validates market. Large-scale competition now imminent." data-zh="原因：基础设施级收购验证了市场，大规模竞争即将到来。">WHY: Infrastructure-level acquisition validates market. Large-scale competition now imminent.</div>
-          <div class="sc-imp" data-en="IMPACT: StableHub competitive window 6-12 months. B2B pipeline must accelerate now." data-zh="影响：StableHub 竞争窗口6-12个月，B2B 管道必须立即加速。">IMPACT: StableHub competitive window 6-12 months. B2B pipeline must accelerate now.</div>
-          <div class="sc-hyp" data-en="↳ P0 T3: Differentiated payment infrastructure gap — CONFIRMING, WINDOW CLOSING" data-zh="↳ P0 T3：差异化支付基础设施缺口 — 确认中，窗口关闭中">↳ P0 T3: Differentiated payment infrastructure gap — CONFIRMING, WINDOW CLOSING</div>
-          <div class="sc-ent">Mastercard · BVNK · StableHub · Airwallex · PingPong · Xtransfer</div>
-          <div class="sc-act" data-en="▶ Map BVNK customer list. Initiate BD outreach this week." data-zh="▶ 梳理 BVNK 客户名单，本周启动 BD 接触。">▶ Map BVNK customer list. Initiate BD outreach this week.</div>
-        </div>
-        <div class="sc H">
-          <div class="sc-top"><span class="badge H">HIGH</span><span class="tag-theme mkt" data-en="MARKET" data-zh="市场">MARKET</span><span class="tag-f">F-REG</span><span class="sc-date">Mar 10</span></div>
-          <div class="sc-title" data-en="HKMA opens stablecoin issuer register — application window active" data-zh="金管局稳定币发行人注册开放 — 申请窗口已启动">HKMA opens stablecoin issuer register — application window active</div>
-          <div class="sc-why" data-en="WHY: First-mover HK license is a durable moat. OSL's HKMA relationship creates advantage late entrants can't replicate." data-zh="原因：先发香港牌照是持久护城河，OSL 的 HKMA 关系创造了后来者无法复制的优势。">WHY: First-mover HK license is a durable moat. OSL's HKMA relationship creates advantage late entrants can't replicate.</div>
-          <div class="sc-imp" data-en="IMPACT: Enables USDGO as fully compliant product for Asian institutional market." data-zh="影响：使 USDGO 成为亚洲机构市场的完全合规产品。">IMPACT: Enables USDGO as fully compliant product for Asian institutional market.</div>
-          <div class="sc-hyp" data-en="↳ P0 T1: HK institutional stablecoin entry point — CONFIRMING" data-zh="↳ P0 T1：香港机构稳定币入口 — 确认中">↳ P0 T1: HK institutional stablecoin entry point — CONFIRMING</div>
-          <div class="sc-ent">HKMA · OSL · USDGO · JD.com · RD Technologies</div>
-          <div class="sc-act" data-en="▶ Confirm HKMA sandbox engagement status this week. Assign owner if not started." data-zh="▶ 本周确认 HKMA 沙盒参与状态，如未启动则指定负责人。">▶ Confirm HKMA sandbox engagement status this week. Assign owner if not started.</div>
-        </div>
-        <div class="sc H">
-          <div class="sc-top"><span class="badge H">HIGH</span><span class="tag-theme cst" data-en="CUSTOMER" data-zh="客户">CUSTOMER</span><span class="tag-f">F-CUST</span><span class="sc-date">Mar 22</span></div>
-          <div class="sc-title" data-en="Airwallex $120M Series F — cross-border payment scale accelerating" data-zh="Airwallex 完成1.2亿美元F轮 — 跨境支付规模加速">Airwallex $120M Series F — cross-border payment scale accelerating</div>
-          <div class="sc-why" data-en="WHY: Airwallex is OSL's #1 B2B target. Fresh capital means they'll build or buy stablecoin rails — window to become preferred partner is now." data-zh="原因：Airwallex 是 OSL 最高优先级B2B目标，新融资意味着将自建或收购稳定币能力，成为其首选合作伙伴的窗口现在开放。">WHY: Airwallex is OSL's #1 B2B target. Fresh capital means they'll build or buy stablecoin rails — window to become preferred partner is now.</div>
-          <div class="sc-imp" data-en="IMPACT: Weak confirmation that payment companies have payable stablecoin pain — 1 data point, need 29 more." data-zh="影响：弱确认支付公司有可付费的稳定币痛点 — 1个数据点，还需要29个。">IMPACT: Weak confirmation that payment companies have payable stablecoin pain — 1 data point, need 29 more.</div>
-          <div class="sc-hyp" data-en="↳ P0 T2: Payment companies have payable pain — WEAK (1/50 interviews)" data-zh="↳ P0 T2：支付公司有可付费痛点 — 弱确认(1/50次访谈)">↳ P0 T2: Payment companies have payable pain — WEAK (1/50 interviews)</div>
-          <div class="sc-ent">Airwallex · StableHub · BizPay · PingPong · Xtransfer</div>
-          <div class="sc-act" data-en="▶ Initiate BD contact with Airwallex treasury. Frame as StableHub pilot — not a sales call." data-zh="▶ 与 Airwallex 财务团队启动 BD 接触，定位为 StableHub 试点而非销售对话。">▶ Initiate BD contact with Airwallex treasury. Frame as StableHub pilot — not a sales call.</div>
-        </div>
-      </div>
+      <div class="sig-grid" id="sig-cards-grid"><tr><td colspan="2" style="color:var(--tf);padding:12px;text-align:center">Fetching cached snapshot…</td></tr></div>
 
       <!-- AI Copilot (from v3 — kept) -->
       <div class="copilot">
@@ -699,9 +663,455 @@ tr:last-child td{border-bottom:none}
 </div><!-- /main -->
 
 <script>
-setInterval(()=>{
-  document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-GB',{timeZone:'Asia/Shanghai',hour:'2-digit',minute:'2-digit',second:'2-digit'})+' GMT+8';
-},1000);
+// ═══════════════════════════════════════════════════════════════
+// OSL StableHub Terminal — API-driven frontend v6
+// All status/verdict values come from API. Zero hardcoded in UI.
+// ═══════════════════════════════════════════════════════════════
+
+const BASE = './data';
+const CACHE = {};
+const CACHE_TTL = { live: 60000, manual: 3600000 };
+
+// ── Utilities ──
+function ts(isoStr) {
+  if (!isoStr) return '—';
+  try {
+    return new Date(isoStr).toLocaleString('en-GB', {
+      timeZone:'Asia/Shanghai', month:'short', day:'numeric',
+      hour:'2-digit', minute:'2-digit'
+    });
+  } catch { return isoStr; }
+}
+
+function freshnessLabel(status, lastUpdated) {
+  const t = ts(lastUpdated);
+  const labels = {
+    'LIVE': `Live · ${t}`,
+    'CACHED': `Cached snapshot · ${t}`,
+    'STALE': `Last updated ${t} · may be outdated`,
+    'MANUAL': `Last updated ${t}`,
+    'UNAVAILABLE': `Data temporarily unavailable · last known ${t}`,
+    'AWAITING_INPUT': 'Awaiting analyst input'
+  };
+  return labels[status] || `Updated ${t}`;
+}
+
+function statusColor(status) {
+  const m = {
+    'GO':'var(--teal)', 'CONDITIONAL_GO':'var(--blue)',
+    'WATCH':'var(--amb)', 'INSUFFICIENT':'var(--tf)',
+    'NO_GO':'var(--rb)', 'CRITICAL':'var(--rb)',
+    'HIGH':'var(--red)', 'MED':'var(--amb)', 'LOW':'var(--td)'
+  };
+  return m[status] || 'var(--t)';
+}
+
+function statusIcon(status) {
+  const m = {
+    'GO':'▲', 'CONDITIONAL_GO':'→', 'WATCH':'⚠',
+    'INSUFFICIENT':'░', 'NO_GO':'▼'
+  };
+  return m[status] || '·';
+}
+
+function safeField(val, fallbackStatus) {
+  if (val === null || val === undefined) {
+    if (fallbackStatus === 'AWAITING_INPUT') return '<span style="color:var(--tf);font-style:italic">Awaiting analyst input</span>';
+    if (fallbackStatus === 'PARTIAL') return '<span style="color:var(--amb)">Partial data</span>';
+    return '<span style="color:var(--tf)">—</span>';
+  }
+  return val;
+}
+
+async function fetchAPI(endpoint, type = 'manual') {
+  const cacheKey = endpoint;
+  const now = Date.now();
+  if (CACHE[cacheKey] && (now - CACHE[cacheKey].fetchedAt) < CACHE_TTL[type]) {
+    return { ...CACHE[cacheKey].data, _fromCache: true };
+  }
+  try {
+    const r = await fetch(`${BASE}/${endpoint}`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+    CACHE[cacheKey] = { data, fetchedAt: now };
+    return data;
+  } catch (e) {
+    if (CACHE[cacheKey]) {
+      return { ...CACHE[cacheKey].data, _stale: true };
+    }
+    return null;
+  }
+}
+
+// ── Clock ──
+setInterval(() => {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('en-GB', { timeZone:'Asia/Shanghai',
+      hour:'2-digit', minute:'2-digit', second:'2-digit' }) + ' GMT+8';
+}, 1000);
+
+// ── Navigation ──
+function gp(n, el) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(i => i.classList.remove('active'));
+  document.getElementById('page-' + n).classList.add('active');
+  el.classList.add('active');
+  if (n === 'hlth') renderHealth();
+  if (n === 'wk') renderWeekly();
+}
+function toggleP0() { document.getElementById('p0track').classList.toggle('open'); }
+function toggleFDB() { document.getElementById('fdb').classList.toggle('open'); }
+
+// ── Language ──
+let lang = 'en';
+function setLang(l) {
+  lang = l;
+  document.getElementById('btn-en').classList.toggle('active', l === 'en');
+  document.getElementById('btn-zh').classList.toggle('active', l === 'zh');
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const v = el.getAttribute('data-' + l);
+    if (v) el.innerHTML = v;
+  });
+}
+function t(en, zh) { return lang === 'zh' ? (zh || en) : en; }
+
+// ── Copilot ──
+function ask() {
+  const el = document.getElementById('ci');
+  const v = el.value.trim();
+  if (!v) return;
+  el.value = '[Analyzing: ' + v + ']';
+  setTimeout(() => { el.value = ''; }, 2500);
+}
+
+// ══════════════════════════════════════════════
+// SECTION A: P0 Overview — Verdict Cards + Research Progress
+// ══════════════════════════════════════════════
+async function renderP0Overview() {
+  const d = await fetchAPI('p0-overview.json', 'manual');
+  if (!d) return;
+
+  const vc = d.verdict_cards;
+  const keys = ['market_size','customer_pain','competitive_gap','overall'];
+  const elIds = ['vc-mkt','vc-cst','vc-cmp','vc-ovr'];
+
+  keys.forEach((k, i) => {
+    const card = vc[k];
+    if (!card) return;
+    const el = document.getElementById(elIds[i]);
+    if (!el) return;
+    const icon = statusIcon(card.status);
+    const color = statusColor(card.status);
+    el.querySelector('.vc-status').style.color = color;
+    el.querySelector('.vc-status').textContent = `${icon} ${card.status.replace('_',' ')}`;
+    el.querySelector('.vc-take').textContent = t(card.one_line, card.one_line_zh);
+    // evidence row
+    const rows = el.querySelectorAll('.vc-row span:last-child');
+    if (rows[0]) rows[0].textContent = card.evidence_count + ' signals';
+    if (rows[1]) { rows[1].textContent = card.confidence; rows[1].style.color = statusColor(card.confidence); }
+    if (card.interviews_completed !== null && rows[2]) rows[2].textContent = card.interviews_completed + ' / ' + card.interviews_target;
+    if (card.window_months !== null && rows[2]) rows[2].textContent = card.window_months + ' months';
+    const luEl = el.querySelector('.vc-lud');
+    if (luEl) luEl.textContent = ts(card.last_updated);
+  });
+
+  // Research progress bars (p0track)
+  const rp = d.research_progress;
+  ['market','customer','competitor'].forEach(theme => {
+    const p = rp[theme];
+    if (!p) return;
+    const prefix = theme === 'customer' ? 'cst' : theme === 'competitor' ? 'cmp' : 'mkt';
+    const barEl = document.getElementById(`p0t-bar-${theme}`);
+    if (barEl) barEl.style.width = p.pct + '%';
+    const verdEl = document.getElementById(`p0t-verdict-${theme}`);
+    if (verdEl) {
+      verdEl.textContent = t(p.verdict, p.verdict_zh);
+      verdEl.style.color = statusColor(p.color === 'teal' ? 'GO' : p.color === 'amb' ? 'WATCH' : 'INSUFFICIENT');
+    }
+    const sigEl = document.getElementById(`p0t-sig-${theme}`);
+    if (sigEl) sigEl.textContent = t(`${p.signals} signals confirming · ${p.against} against`, `${p.signals}条支持 · ${p.against}条反对`);
+  });
+}
+
+// ══════════════════════════════════════════════
+// SECTION B: Signals → Actionable Intelligence
+// ══════════════════════════════════════════════
+async function renderSignals() {
+  const d = await fetchAPI('signals.json', 'manual');
+  const actions = await fetchAPI('action-items.json', 'manual');
+  if (!d) return;
+
+  const actionMap = {};
+  if (actions) actions.items.forEach(a => { actionMap[a.id] = a; });
+
+  const highSigs = d.signals.filter(s => s.priority === 'HIGH').slice(0, 4);
+  const grid = document.getElementById('sig-cards-grid');
+  if (!grid) return;
+
+  grid.innerHTML = highSigs.map(s => {
+    const act = s.action_item_id ? actionMap[s.action_item_id] : null;
+    const actText = act ? t(act.detail, act.detail_zh) : null;
+    const themeClass = s.theme;
+    const themeLabel = t(
+      s.theme.charAt(0).toUpperCase() + s.theme.slice(1),
+      {market:'市场', customer:'客户', competitor:'竞品', regulatory:'监管'}[s.theme] || s.theme
+    );
+    const hyp = s.hypothesis_ids?.[0] || '';
+    const hypLabel = hyp ? t(`↳ P0 ${hyp} — ${s.hypothesis_direction}`, `↳ P0 ${hyp} — ${s.hypothesis_direction}`) : '';
+    return `
+      <div class="sc ${s.priority}">
+        <div class="sc-top">
+          <span class="badge ${s.priority}">${s.priority}</span>
+          <span class="tag-theme ${themeClass}">${themeLabel}</span>
+          <span class="tag-f">${s.factor_ids?.[0] || ''}</span>
+          <span class="sc-date">${s.date}</span>
+        </div>
+        <div class="sc-title">${t(s.title, s.title_zh)}</div>
+        <div class="sc-why"><strong style="color:var(--td)">${t('WHY:','原因：')}</strong> ${t(s.why_it_matters, s.why_it_matters_zh)}</div>
+        <div class="sc-imp"><strong>${t('IMPACT:','影响：')}</strong> ${t(s.business_impact, s.business_impact_zh)}</div>
+        ${hypLabel ? `<div class="sc-hyp">${hypLabel}</div>` : ''}
+        <div class="sc-ent">${t('ENTITIES:','相关方：')} ${(s.entities||[]).join(' · ')}</div>
+        ${actText ? `<div class="sc-act">▶ ${actText}</div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+// SECTION C: Executive Summary
+// ══════════════════════════════════════════════
+async function renderExecSummary() {
+  const d = await fetchAPI('executive-summary.json', 'manual');
+  if (!d) return;
+  const container = document.getElementById('exec-summary-body');
+  if (!container) return;
+  container.innerHTML = d.paragraphs.map(p =>
+    `<div class="ai-sum-p">${t(p.text, p.text_zh)}</div>`
+  ).join('');
+}
+
+// ══════════════════════════════════════════════
+// SECTION D: Customer Validation fields
+// ══════════════════════════════════════════════
+async function renderCustomerValidation() {
+  const d = await fetchAPI('customer-validation.json', 'manual');
+  if (!d) return;
+
+  // Interview progress bar
+  const prog = d.overall_progress;
+  const intFill = document.getElementById('int-fill-bar');
+  if (intFill) intFill.style.width = Math.round(prog.completed / prog.target * 100) + '%';
+  const intLabel = document.getElementById('int-label');
+  if (intLabel) intLabel.textContent = t(`PMF INTERVIEWS: ${prog.completed} / ${prog.target}`, `PMF访谈：${prog.completed} / ${prog.target}`);
+
+  // Segment 0 = payment companies — update structured fields
+  const seg = d.segments.find(s => s.id === 'payment-companies');
+  if (!seg) return;
+
+  const fieldMap = {
+    'cf-pain': seg.structured_fields.top_pain_points,
+    'cf-wtp': seg.structured_fields.willingness_to_pay,
+    'cf-integ': seg.structured_fields.integration_readiness,
+    'cf-early': seg.structured_fields.early_adopter_watchlist,
+    'cf-intsumm': seg.structured_fields.interview_summary
+  };
+
+  Object.entries(fieldMap).forEach(([id, field]) => {
+    const el = document.getElementById(id);
+    if (!el || !field) return;
+    if (field.value !== null && field.value !== undefined) {
+      const v = Array.isArray(field.value) ? field.value.join(', ') : field.value;
+      el.innerHTML = v;
+      el.className = 'cf-v';
+    } else {
+      el.innerHTML = safeField(null, field.status);
+      el.className = 'cf-v needed';
+    }
+  });
+
+  // Target accounts
+  const acctEl = document.getElementById('cf-accounts');
+  if (acctEl) {
+    acctEl.innerHTML = seg.target_accounts.map(a =>
+      `<span style="color:${a.status==='BD initiated'?'var(--teal)':'var(--tf)'}">${a.name}${a.latest_signal ? ` <span style="color:var(--tf)">(${a.latest_signal})</span>` : ''}</span>`
+    ).join(' · ');
+  }
+}
+
+// ══════════════════════════════════════════════
+// SECTION E: Factor Decomposition Board
+// ══════════════════════════════════════════════
+async function renderFactors() {
+  const d = await fetchAPI('factors.json', 'manual');
+  if (!d) return;
+  d.factors.forEach(f => {
+    const fillEl = document.getElementById(`fd-fill-${f.id}`);
+    if (fillEl) {
+      fillEl.style.width = f.confidence_pct + '%';
+      const cl = f.confidence_pct >= 70 ? 'high' : f.confidence_pct >= 40 ? 'med' : 'low';
+      fillEl.className = `fd-conf-fill ${cl}`;
+    }
+    const verdEl = document.getElementById(`fd-verdict-${f.id}`);
+    if (verdEl) {
+      verdEl.style.color = statusColor(f.status);
+      verdEl.textContent = t(`Confidence: ${f.confidence}`, `置信度：${f.confidence}`);
+    }
+  });
+}
+
+// ══════════════════════════════════════════════
+// SECTION F: Live Market Data (DefiLlama)
+// ══════════════════════════════════════════════
+async function loadMarket() {
+  const staleNote = document.getElementById('mkt-upd');
+  try {
+    const r = await fetch('https://stablecoins.llama.fi/stablecoins?includePrices=true');
+    const d = await r.json();
+    const all = d.peggedAssets || [];
+    const total = all.reduce((s, c) => s + (c.circulating?.peggedUSD || 0), 0);
+    const top = all.sort((a, b) => (b.circulating?.peggedUSD || 0) - (a.circulating?.peggedUSD || 0));
+    const top10 = top.slice(0, 10);
+    const usdt = top.find(c => c.symbol === 'USDT');
+    const usdc = top.find(c => c.symbol === 'USDC');
+    const usdt_s = usdt ? (usdt.circulating?.peggedUSD || 0) / total * 100 : 58.4;
+    const usdc_s = usdc ? (usdc.circulating?.peggedUSD || 0) / total * 100 : 25;
+    const oth_s = 100 - usdt_s - usdc_s;
+    const addr = total * oth_s / 100;
+    const now = new Date().toLocaleTimeString('en-GB', { timeZone:'Asia/Shanghai', hour:'2-digit', minute:'2-digit' });
+
+    // KPI + P0 market col
+    document.getElementById('kpi-mkt').textContent = '$' + (total / 1e9).toFixed(1) + 'B';
+    document.getElementById('p0-sup').textContent = '$' + (total / 1e9).toFixed(1) + 'B';
+    document.getElementById('p0-tam').textContent = '~$' + (addr / 1e9).toFixed(0) + 'B';
+    ['b-usdt','b-usdc','b-oth'].forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) el.style.width = [usdt_s, usdc_s, oth_s][i].toFixed(1) + '%';
+    });
+    ['s-usdt','s-usdc','s-oth'].forEach((id, i) => {
+      const el = document.getElementById(id);
+      const lbl = ['USDT ' + usdt_s.toFixed(1) + '%', 'USDC ' + usdc_s.toFixed(1) + '%', 'Other ' + oth_s.toFixed(1) + '%'][i];
+      if (el) el.textContent = lbl;
+    });
+
+    // Market snapshot table
+    let ok = 0, w = 0, a = 0;
+    const mkRows = top10.map(c => {
+      const m = c.circulating?.peggedUSD || 0, p = c.price || 1, dev = (p - 1) * 100, ad = Math.abs(dev);
+      if (ad < 0.1) ok++; else if (ad < 0.5) w++; else a++;
+      const cl = ad < 0.1 ? 'ok' : ad < 0.5 ? 'w' : 'r';
+      const ds = (dev >= 0 ? '+' : '') + dev.toFixed(3) + '%';
+      const dc = ad < 0.1 ? 'up' : ad < 0.5 ? 'neu' : 'dn';
+      return `<tr><td class="sym">${c.symbol}</td><td class="neu">$${p.toFixed(4)}</td><td class="${dc}">${ds}</td><td class="smcap">$${(m / 1e9).toFixed(1)}B</td><td><span class="sdot-s ${cl}"></span></td></tr>`;
+    });
+    document.getElementById('mkt-tbody').innerHTML = mkRows.join('');
+    if (staleNote) staleNote.textContent = now + ' GMT+8';
+
+    // Health page
+    document.getElementById('ph-tot').textContent = top10.length;
+    document.getElementById('ph-ok').textContent = ok;
+    document.getElementById('ph-w').textContent = w || '0';
+    document.getElementById('ph-a').textContent = a || '0';
+    document.getElementById('ph-time').textContent = now + ' GMT+8';
+    const pRows = top10.map(c => {
+      const m = c.circulating?.peggedUSD || 0, p = c.price || 1, dev = (p - 1) * 100, ad = Math.abs(dev);
+      const rc = ad < 0.1 ? 'hrow-ok' : ad < 0.5 ? 'hrow-w' : 'hrow-r';
+      const ds = (dev >= 0 ? '+' : '') + dev.toFixed(3) + '%';
+      const dc = ad < 0.1 ? 'up' : ad < 0.5 ? 'neu' : 'dn';
+      const st = ad < 0.1 ? `<span class="sdot-s ok"></span>HEALTHY` : ad < 0.5 ? `<span class="sdot-s w"></span>WATCH` : `<span class="sdot-s r blink"></span>ALERT`;
+      const sh = total ? (m / total * 100).toFixed(1) + '%' : '—';
+      return `<tr class="${rc}"><td class="sym" style="padding-left:8px">${c.symbol}</td><td>$${p.toFixed(6)}</td><td class="${dc}">${ds}</td><td>${st}</td><td class="smcap">$${(m / 1e9).toFixed(2)}B</td><td class="smcap">${sh}</td><td style="color:var(--tf);font-size:9px">${now}</td></tr>`;
+    });
+    document.getElementById('ph-tbody').innerHTML = pRows.join('');
+    if (a > 0) {
+      const b = document.getElementById('h-banner');
+      b.style.cssText = 'padding:7px 12px;margin-bottom:7px;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;border:1px solid var(--rb);background:rgba(204,51,51,.08);color:var(--rb)';
+      document.getElementById('hb-txt').textContent = a + ' ASSET(S) IN ALERT';
+    }
+
+    // Verdict card M0 status
+    const mstTxt = document.getElementById('mst-txt');
+    const mstDot = document.getElementById('mst-dot');
+    if (mstTxt) { mstTxt.textContent = a > 0 ? 'ALERT' : w > 0 ? 'WATCH' : 'NOMINAL'; mstTxt.className = a > 0 ? 'st-a' : w > 0 ? 'st-w' : 'st-ok'; }
+    if (mstDot) mstDot.className = `sdot ${a > 0 ? 'r' : w > 0 ? 'a' : 'ok'} blink`;
+    const m0al = document.getElementById('m0-al');
+    if (m0al) m0al.textContent = a + ' ALERT · ' + (w || 0) + ' WATCH';
+
+  } catch (e) {
+    const fallback = 'Last known data · network error';
+    if (staleNote) staleNote.textContent = fallback;
+    const tb = document.getElementById('mkt-tbody');
+    if (tb) tb.innerHTML = `<tr><td colspan="5" class="data-pending">Data temporarily unavailable · cached data may be shown</td></tr>`;
+  }
+}
+
+// ══════════════════════════════════════════════
+// SECTION G: TVL Data (DefiLlama)
+// ══════════════════════════════════════════════
+async function loadTVL() {
+  const protos = [
+    {s:'aave-v3',n:'Aave v3',c:'Lending'},{s:'compound-v3',n:'Compound v3',c:'Lending'},
+    {s:'curve-dex',n:'Curve',c:'DEX'},{s:'sky',n:'Sky/USDS',c:'Stablecoin'},
+    {s:'ethena',n:'Ethena',c:'Yield'},{s:'pendle',n:'Pendle',c:'Yield'}
+  ];
+  const rs = [];
+  for (const p of protos) {
+    try {
+      const r = await fetch(`https://api.llama.fi/protocol/${p.s}`);
+      const d = await r.json();
+      const arr = d.tvl || [];
+      const cur = arr[arr.length - 1]?.totalLiquidityUSD || 0;
+      const p30 = arr[arr.length - 31]?.totalLiquidityUSD || cur;
+      rs.push({ ...p, tvl: cur, chg: p30 ? (cur - p30) / p30 * 100 : 0 });
+    } catch {}
+  }
+  rs.sort((a, b) => b.tvl - a.tvl);
+  const mx = rs[0]?.tvl || 1;
+  const unavail = `<tr><td colspan="3" class="data-pending">Data temporarily unavailable</td></tr>`;
+
+  const tb = document.getElementById('tvl-tbody');
+  if (tb) tb.innerHTML = rs.length ? rs.map(p => {
+    const c = p.chg > 0 ? 'up' : 'dn';
+    const bw = Math.round(p.tvl / mx * 80);
+    return `<tr><td style="font-weight:600;color:var(--wht)">${p.n}</td><td>$${(p.tvl / 1e9).toFixed(1)}B<div class="tvl-bar-wrap"><div class="tvl-bar-fill" style="width:${bw}%"></div></div></td><td class="${c}">${p.chg > 0 ? '↑' : '↓'}${Math.abs(p.chg).toFixed(1)}%</td></tr>`;
+  }).join('') : unavail;
+
+  const p0el = document.getElementById('tvl-p0');
+  if (p0el) p0el.innerHTML = rs.slice(0, 3).map(p => {
+    const c = p.chg > 0 ? 'up' : 'dn';
+    return `<div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid var(--p3);font-size:9px"><span style="color:var(--wht);font-weight:600">${p.n}</span><span class="${c}">${p.chg > 0 ? '↑' : '↓'}${Math.abs(p.chg).toFixed(1)}%</span></div>`;
+  }).join('') || '<div class="data-pending">Fetching cached snapshot…</div>';
+
+  const wk = document.getElementById('wk-tvl');
+  if (wk) wk.innerHTML = rs.length ? rs.map(p => {
+    const c = p.chg > 0 ? 'up' : 'dn';
+    const sig = Math.abs(p.chg) > 10 ? (p.chg > 0 ? '<span style="font-size:7px;padding:1px 4px;border:1px solid var(--amb);color:var(--amb)">WATCH</span>' : '') : '—';
+    return `<tr><td style="font-weight:600;color:var(--wht)">${p.n}</td><td>$${(p.tvl / 1e9).toFixed(2)}B</td><td class="${c}">${p.chg > 0 ? '↑' : '↓'}${Math.abs(p.chg).toFixed(1)}%</td><td style="color:var(--td)">${p.c}</td><td>${sig}</td></tr>`;
+  }).join('') : unavail;
+}
+
+// ── Page-specific renders ──
+function renderHealth() { loadMarket(); }
+function renderWeekly() { loadTVL(); }
+
+// ── Init ──
+async function init() {
+  // Parallel load all static mock data + live data
+  await Promise.all([
+    renderP0Overview(),
+    renderSignals(),
+    renderExecSummary(),
+    renderCustomerValidation(),
+    renderFactors(),
+    loadMarket(),
+    loadTVL()
+  ]);
+}
+
+init();
+setInterval(loadMarket, 60000);
+setInterval(loadTVL, 120000);
+setInterval(renderP0Overview, 300000);
+</script>
+</body>
 
 function gp(n,el){
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));

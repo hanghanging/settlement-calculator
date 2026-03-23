@@ -1,0 +1,214 @@
+{
+  "signals": [
+    {
+      "id": "sig-genius-act-2026-03-20",
+      "priority": "HIGH",
+      "theme": "market",
+      "factor_ids": [
+        "regulatory-factor",
+        "market-factor"
+      ],
+      "title": "US GENIUS Act reaches Senate breakthrough on stablecoin yield",
+      "title_zh": "美国 GENIUS Act 稳定币收益立法在参议院取得突破",
+      "date": "2026-03-20",
+      "source": "The Block",
+      "hypothesis_ids": [
+        "usdgo-yield-h1"
+      ],
+      "hypothesis_direction": "CONFIRMING",
+      "why_it_matters": "First explicit US legal permission for yield distribution to holders. Removes #1 compliance blocker for USDGO.",
+      "why_it_matters_zh": "美国法律首次明确允许向持有者分配收益，消除 USDGO 最大合规阻碍。",
+      "business_impact": "USDGO yield product compliance path now navigable. Timeline may compress ~6 months.",
+      "business_impact_zh": "USDGO 收益产品合规路径现已可行，时间线可缩短约6个月。",
+      "entities": [
+        "US Senate",
+        "Circle",
+        "USDGO",
+        "PayPal",
+        "Tether"
+      ],
+      "action_item_id": "action-genius-legal-review",
+      "evidence_quality": "HIGH",
+      "data_freshness": "MANUAL"
+    },
+    {
+      "id": "sig-bvnk-mastercard-2026-03-17",
+      "priority": "HIGH",
+      "theme": "competitor",
+      "factor_ids": [
+        "competitor-factor",
+        "timing-factor"
+      ],
+      "title": "Mastercard acquires BVNK for $1.8B — TradFi enters stablecoin payment rails",
+      "title_zh": "Mastercard 以18亿美元收购 BVNK — 传统金融进入稳定币支付通道",
+      "date": "2026-03-17",
+      "source": "Reuters",
+      "hypothesis_ids": [
+        "competitor-gap-h1"
+      ],
+      "hypothesis_direction": "CONFIRMING",
+      "why_it_matters": "Infrastructure-level acquisition validates OSL StableHub's market. Large-scale competition now imminent.",
+      "why_it_matters_zh": "基础设施级收购验证了 OSL StableHub 目标市场，大规模竞争即将到来。",
+      "business_impact": "StableHub competitive window 6-12 months. B2B pipeline must accelerate immediately.",
+      "business_impact_zh": "StableHub 竞争窗口6-12个月，B2B 管道必须立即加速。",
+      "entities": [
+        "Mastercard",
+        "BVNK",
+        "StableHub",
+        "Airwallex",
+        "PingPong",
+        "Xtransfer"
+      ],
+      "action_item_id": "action-bvnk-bd",
+      "evidence_quality": "HIGH",
+      "data_freshness": "MANUAL"
+    },
+    {
+      "id": "sig-hkma-register-2026-03-10",
+      "priority": "HIGH",
+      "theme": "market",
+      "factor_ids": [
+        "regulatory-factor"
+      ],
+      "title": "HKMA opens stablecoin issuer register — application window active",
+      "title_zh": "金管局稳定币发行人注册开放 — 申请窗口已启动",
+      "date": "2026-03-10",
+      "source": "HKMA",
+      "hypothesis_ids": [
+        "usdgo-yield-h1",
+        "market-size-h1"
+      ],
+      "hypothesis_direction": "CONFIRMING",
+      "why_it_matters": "First-mover HK license is a durable moat. OSL's HKMA relationship creates advantage late entrants cannot replicate.",
+      "why_it_matters_zh": "先发香港牌照是持久护城河，OSL 的 HKMA 关系创造了后来者无法复制的优势。",
+      "business_impact": "Enables USDGO as fully compliant product for Asian institutional market.",
+      "business_impact_zh": "使 USDGO 成为亚洲机构市场的完全合规产品。",
+      "entities": [
+        "HKMA",
+        "OSL",
+        "USDGO",
+        "JD.com",
+        "RD Technologies"
+      ],
+      "action_item_id": "action-hkma-sandbox",
+      "evidence_quality": "HIGH",
+      "data_freshness": "MANUAL"
+    },
+    {
+      "id": "sig-airwallex-series-f-2026-03-22",
+      "priority": "HIGH",
+      "theme": "customer",
+      "factor_ids": [
+        "customer-factor"
+      ],
+      "title": "Airwallex closes $120M Series F — cross-border payment scale accelerating",
+      "title_zh": "Airwallex 完成1.2亿美元F轮 — 跨境支付规模加速",
+      "date": "2026-03-22",
+      "source": "TechCrunch",
+      "hypothesis_ids": [
+        "payment-pain-h1"
+      ],
+      "hypothesis_direction": "CONFIRMING",
+      "why_it_matters": "Airwallex is OSL's #1 B2B target. Fresh capital means they will build or buy stablecoin rails — window to become preferred partner is now.",
+      "why_it_matters_zh": "Airwallex 是 OSL 最高优先级B2B目标，新融资意味着将自建或收购稳定币能力，成为其首选合作伙伴的窗口现在开放。",
+      "business_impact": "Weak confirmation that payment companies have payable stablecoin pain — 1 data point, need 29 more.",
+      "business_impact_zh": "弱确认支付公司有可付费的稳定币痛点 — 1个数据点，还需要29个。",
+      "entities": [
+        "Airwallex",
+        "StableHub",
+        "BizPay",
+        "PingPong",
+        "Xtransfer"
+      ],
+      "action_item_id": "action-airwallex-bd",
+      "evidence_quality": "MED",
+      "data_freshness": "MANUAL"
+    },
+    {
+      "id": "sig-sky-usds-tvl-2026-03-23",
+      "priority": "MED",
+      "theme": "market",
+      "factor_ids": [
+        "market-factor"
+      ],
+      "title": "Sky/USDS TVL +29.1% in 30 days — fastest growing stablecoin protocol",
+      "title_zh": "Sky/USDS TVL 30天+29.1% — 增速最快稳定币协议",
+      "date": "2026-03-23",
+      "source": "DefiLlama",
+      "hypothesis_ids": [
+        "market-size-h1"
+      ],
+      "hypothesis_direction": "CONFIRMING",
+      "why_it_matters": "Sets benchmark for what institutional yield products can achieve at scale.",
+      "why_it_matters_zh": "为机构收益产品规模化吸引力树立基准。",
+      "business_impact": "USDGO must target comparable TVL growth trajectory post-launch.",
+      "business_impact_zh": "USDGO 发布后必须瞄准可比增长轨迹。",
+      "entities": [
+        "Sky Protocol",
+        "MakerDAO",
+        "USDS",
+        "Aave"
+      ],
+      "action_item_id": null,
+      "evidence_quality": "HIGH",
+      "data_freshness": "LIVE"
+    },
+    {
+      "id": "sig-bitgo-q1-2026-03-23",
+      "priority": "MED",
+      "theme": "competitor",
+      "factor_ids": [
+        "competitor-factor"
+      ],
+      "title": "BitGo Q1 2026: institutional AUM +34% YoY — custody market expanding",
+      "title_zh": "BitGo Q1 2026：机构AUM同比+34% — 托管市场扩张",
+      "date": "2026-03-23",
+      "source": "CoinDesk",
+      "hypothesis_ids": [
+        "competitor-gap-h1"
+      ],
+      "hypothesis_direction": "CONFIRMING",
+      "why_it_matters": "Institutional demand for digital asset custody outpacing market cap growth.",
+      "why_it_matters_zh": "机构数字资产托管需求增速超过市值增长。",
+      "business_impact": "StableHub custody-adjacent services have growing addressable base.",
+      "business_impact_zh": "StableHub 托管相关服务可寻址基础扩大。",
+      "entities": [
+        "BitGo",
+        "Fireblocks",
+        "Anchorage",
+        "StableHub"
+      ],
+      "action_item_id": null,
+      "evidence_quality": "MED",
+      "data_freshness": "MANUAL"
+    },
+    {
+      "id": "sig-ethena-tvl-decline-2026-03-23",
+      "priority": "LOW",
+      "theme": "market",
+      "factor_ids": [
+        "market-factor"
+      ],
+      "title": "Ethena sUSDe TVL -4.2% MoM — yield compression from funding rate decline",
+      "title_zh": "Ethena sUSDe TVL 月跌4.2% — 资金费率下降导致收益压缩",
+      "date": "2026-03-23",
+      "source": "DefiLlama",
+      "hypothesis_ids": [
+        "market-size-h1"
+      ],
+      "hypothesis_direction": "NEUTRAL",
+      "why_it_matters": "Ethena's yield model depends on funding rates; declining rates reduce appeal vs real-yield alternatives.",
+      "why_it_matters_zh": "Ethena 收益模型依赖资金费率，利率下降降低了相对于真实收益替代品的吸引力。",
+      "business_impact": "Reduces near-term competition pressure on USDGO yield targets.",
+      "business_impact_zh": "近期降低了 USDGO 收益目标的竞争压力。",
+      "entities": [
+        "Ethena",
+        "sUSDe",
+        "Pendle"
+      ],
+      "action_item_id": null,
+      "evidence_quality": "HIGH",
+      "data_freshness": "LIVE"
+    }
+  ]
+}

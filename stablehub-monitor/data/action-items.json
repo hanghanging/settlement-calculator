@@ -1,0 +1,62 @@
+{
+  "items": [
+    {
+      "id": "action-genius-legal-review",
+      "priority": "CRITICAL",
+      "signal_id": "sig-genius-act-2026-03-20",
+      "theme": "market",
+      "title": "Legal review of GENIUS Act text",
+      "title_zh": "完成 GENIUS Act 法律审查",
+      "detail": "Map USDGO yield structure against new compliance framework. Complete within 10 business days.",
+      "detail_zh": "对照新合规框架梳理 USDGO 收益结构，10个工作日内完成。",
+      "owner": null,
+      "due_date": "2026-04-07",
+      "status": "OPEN",
+      "blocks": [
+        "usdgo-product-launch"
+      ]
+    },
+    {
+      "id": "action-hkma-sandbox",
+      "priority": "HIGH",
+      "signal_id": "sig-hkma-register-2026-03-10",
+      "theme": "market",
+      "title": "Confirm HKMA sandbox engagement status",
+      "title_zh": "确认 HKMA 沙盒参与状态",
+      "detail": "Assign owner if not started. Registration window may be time-limited.",
+      "detail_zh": "如未启动则本周指定负责人，注册窗口可能有时限。",
+      "owner": null,
+      "due_date": "2026-03-28",
+      "status": "OPEN"
+    },
+    {
+      "id": "action-bvnk-bd",
+      "priority": "HIGH",
+      "signal_id": "sig-bvnk-mastercard-2026-03-17",
+      "theme": "competitor",
+      "title": "Identify top 10 BVNK customer targets",
+      "title_zh": "梳理前10个 BVNK 客户目标",
+      "detail": "Map companies currently on BVNK rails. Initiate BD outreach before Mastercard integration locks them in.",
+      "detail_zh": "梳理当前使用 BVNK 通道的公司，在 Mastercard 整合锁定前启动BD接触。",
+      "owner": null,
+      "due_date": "2026-03-31",
+      "status": "OPEN"
+    },
+    {
+      "id": "action-airwallex-bd",
+      "priority": "HIGH",
+      "signal_id": "sig-airwallex-series-f-2026-03-22",
+      "theme": "customer",
+      "title": "Initiate BD contact with Airwallex treasury",
+      "title_zh": "启动与 Airwallex 财务团队的 BD 接触",
+      "detail": "Frame as StableHub pilot, not a sales conversation. They now have capital to build or buy.",
+      "detail_zh": "定位为 StableHub 试点而非销售对话，他们现在有资金自建或收购。",
+      "owner": null,
+      "due_date": "2026-03-31",
+      "status": "OPEN",
+      "advances": [
+        "payment-pain-h1"
+      ]
+    }
+  ]
+}

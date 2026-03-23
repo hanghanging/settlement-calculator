@@ -1,0 +1,41 @@
+{
+  "id": "decision-20260323",
+  "generated_at": "2026-03-23T22:00:00Z",
+  "version": "v1",
+  "verdict": "CONDITIONAL_GO",
+  "verdict_rationale": "T1 Market=GO (HIGH) + T2 Customer=INSUFFICIENT (LOW) + T3 Competitor=WATCH (MED) → CONDITIONAL_GO",
+  "theme_verdicts": {
+    "market": {
+      "status": "GO",
+      "confidence": "HIGH",
+      "evidence_count": 6,
+      "last_updated": "2026-03-23T14:07:00Z"
+    },
+    "customer": {
+      "status": "INSUFFICIENT",
+      "confidence": "LOW",
+      "evidence_count": 1,
+      "interview_count": 0,
+      "last_updated": "2026-03-22T00:00:00Z"
+    },
+    "competitor": {
+      "status": "WATCH",
+      "confidence": "MED",
+      "evidence_count": 4,
+      "window_months": 9,
+      "last_updated": "2026-03-17T00:00:00Z"
+    }
+  },
+  "blocking_unknowns": [
+    "Customer pain not validated — 0/50 PMF interviews completed",
+    "Willingness to pay unconfirmed across all 3 customer segments"
+  ],
+  "proceed_conditions": [
+    "Complete 15+ PMF interviews (upgrades T2 to WATCH)",
+    "Confirm HKMA sandbox engagement",
+    "Legal review of GENIUS Act completed"
+  ],
+  "next_checkpoint": "2026-04-07",
+  "analyst_note": "Market and competitive signals are strong. The sole blocking factor is customer validation. Do not advance product investment decisions until Theme 2 reaches WATCH status (15+ interviews).",
+  "analyst_note_zh": "市场和竞品信号强劲，唯一阻塞因素是客户验证。在主题2达到WATCH状态(15+访谈)前，不建议推进产品投资决策。"
+}
