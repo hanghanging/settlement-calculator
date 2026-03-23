@@ -2,13 +2,13 @@
   "status": "WATCH",
   "confidence": "MED",
   "evidence_count": 4,
-  "last_updated": "2026-03-23T22:10:09.103380+00:00",
+  "last_updated": "2026-03-23T22:19:59.837351+00:00",
   "data_freshness": "LIVE",
   "competitive_window": {
     "months_remaining": 8,
     "confidence": "MED",
     "rationale": "Mastercard/BVNK integration expected to reach scale by Q4 2026",
-    "last_assessed": "2026-03-23T22:10:09.103380+00:00"
+    "last_assessed": "2026-03-23T22:19:59.837351+00:00"
   },
   "competitors": [
     {

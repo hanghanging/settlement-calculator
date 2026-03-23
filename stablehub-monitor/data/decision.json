@@ -1,6 +1,6 @@
 {
   "id": "decision-20260323",
-  "generated_at": "2026-03-23T22:10:09.103380+00:00",
+  "generated_at": "2026-03-23T22:19:59.837351+00:00",
   "version": "v1",
   "verdict": "CONDITIONAL_GO",
   "verdict_rationale": "T1 Market=GO (HIGH) + T2 Customer=INSUFFICIENT (LOW) + T3 Competitor=WATCH (MED) → CONDITIONAL_GO",
@@ -9,21 +9,21 @@
       "status": "GO",
       "confidence": "HIGH",
       "evidence_count": 6,
-      "last_updated": "2026-03-23T22:10:09.103380+00:00"
+      "last_updated": "2026-03-23T22:19:59.837351+00:00"
     },
     "customer": {
       "status": "INSUFFICIENT",
       "confidence": "LOW",
       "evidence_count": 1,
       "interview_count": 0,
-      "last_updated": "2026-03-23T22:10:09.103380+00:00"
+      "last_updated": "2026-03-23T22:19:59.837351+00:00"
     },
     "competitor": {
       "status": "WATCH",
       "confidence": "MED",
       "evidence_count": 4,
       "window_months": 9,
-      "last_updated": "2026-03-23T22:10:09.103380+00:00"
+      "last_updated": "2026-03-23T22:19:59.837351+00:00"
     }
   },
   "blocking_unknowns": [

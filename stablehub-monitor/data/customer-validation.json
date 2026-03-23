@@ -1,147 +1,116 @@
 {
-  "status": "INSUFFICIENT",
+  "generated_at": "2026-03-23T22:19:59.837351+00:00",
+  "data_freshness": "LIVE",
+  "status": "WATCH",
   "confidence": "LOW",
-  "evidence_count": 1,
-  "last_updated": "2026-03-22T00:00:00Z",
-  "data_freshness": "MANUAL",
-  "overall_progress": {
-    "completed": 0,
-    "scheduled": 1,
-    "target": 50,
-    "go_threshold": 30,
-    "watch_threshold": 15
-  },
-  "blocker_statement": "Cannot confirm PMF. Theme 2 status will remain INSUFFICIENT until 30+ structured interviews are completed across at least 2 customer segments.",
-  "blocker_statement_zh": "无法确认PMF，Go/No-Go决策前需要30+次结构化访谈，覆盖至少2个客户细分。",
+  "evidence_count": 3,
+  "methodology_note": "Interview-based PMF replaced by proxy signal inference from public news. Signals are auto-scraped from funding announcements, hiring signals, product launches, and adoption events.",
+  "methodology_note_zh": "PMF访谈已替换为代理信号推断（公开新闻自动抓取：融资公告、招聘信号、产品发布、采用事件）",
+  "demand_proxy_score": 50,
+  "demand_proxy_score_max": 100,
+  "demand_proxy_label": "MODERATE demand",
+  "demand_proxy_label_zh": "中等需求",
   "segments": [
     {
       "id": "payment-companies",
       "name": "Cross-border Payment Companies",
       "name_zh": "跨境支付公司",
-      "pmf_status": "INSUFFICIENT",
-      "interview_progress": {
-        "completed": 0,
-        "scheduled": 1,
-        "target": 20
+      "proxy_status": "WATCH",
+      "proxy_signals": [
+        {
+          "title": "Future of Stablecoin Payment Flows and Cross-Border Payments - Circle Internet Financial",
+          "date": "2026-03-23",
+          "source": "Circle Internet Financial",
+          "type": "product",
+          "company": "Future",
+          "segment_id": "payment-companies",
+          "why": "→ Industry activity confirms segment is evaluating stablecoin rails",
+          "score": 25
+        }
+      ],
+      "demand_indicators": {
+        "funding_rounds": [],
+        "hiring_signals": [],
+        "product_launches": [],
+        "adoption_events": []
       },
       "target_accounts": [
         {
           "name": "Airwallex",
           "priority": 1,
-          "status": "BD initiated",
-          "latest_signal": "Series F $120M · Mar 22"
+          "latest_signal": null
         },
         {
           "name": "PingPong",
           "priority": 2,
-          "status": "Not contacted",
           "latest_signal": null
         },
         {
           "name": "Xtransfer",
           "priority": 3,
-          "status": "Not contacted",
           "latest_signal": null
         },
         {
-          "name": "连连支付",
+          "name": "Nuvei",
           "priority": 4,
-          "status": "Not contacted",
+          "latest_signal": null
+        },
+        {
+          "name": "dLocal",
+          "priority": 5,
           "latest_signal": null
         }
-      ],
-      "structured_fields": {
-        "top_pain_points": {
-          "value": null,
-          "status": "AWAITING_INPUT"
-        },
-        "willingness_to_pay": {
-          "value": null,
-          "status": "AWAITING_INPUT"
-        },
-        "integration_readiness": {
-          "value": null,
-          "status": "AWAITING_INPUT"
-        },
-        "early_adopter_watchlist": {
-          "value": [
-            "Airwallex"
-          ],
-          "status": "PARTIAL"
-        },
-        "interview_summary": {
-          "value": "0 completed · 1 scheduled",
-          "status": "PARTIAL"
-        }
-      }
+      ]
     },
     {
       "id": "otc-merchants",
-      "name": "OTC Merchants",
-      "name_zh": "OTC商家",
-      "pmf_status": "INSUFFICIENT",
-      "interview_progress": {
-        "completed": 0,
-        "scheduled": 0,
-        "target": 15
+      "name": "OTC / B2B Merchants",
+      "name_zh": "OTC/B2B商家",
+      "proxy_status": "INSUFFICIENT",
+      "proxy_signals": [],
+      "demand_indicators": {
+        "funding_rounds": [],
+        "hiring_signals": [],
+        "product_launches": [],
+        "adoption_events": []
       },
-      "target_accounts": [],
-      "structured_fields": {
-        "top_pain_points": {
-          "value": null,
-          "status": "AWAITING_INPUT"
-        },
-        "willingness_to_pay": {
-          "value": null,
-          "status": "AWAITING_INPUT"
-        },
-        "integration_readiness": {
-          "value": null,
-          "status": "AWAITING_INPUT"
-        },
-        "early_adopter_watchlist": {
-          "value": null,
-          "status": "AWAITING_INPUT"
-        },
-        "interview_summary": {
-          "value": null,
-          "status": "AWAITING_INPUT"
-        }
-      }
+      "target_accounts": []
     },
     {
       "id": "institutional-holders",
       "name": "Institutional Stablecoin Holders",
-      "name_zh": "机构持币方",
-      "pmf_status": "INSUFFICIENT",
-      "interview_progress": {
-        "completed": 0,
-        "scheduled": 0,
-        "target": 12
-      },
-      "target_accounts": [],
-      "structured_fields": {
-        "top_pain_points": {
-          "value": null,
-          "status": "AWAITING_INPUT"
+      "name_zh": "机构稳定币持有者",
+      "proxy_status": "WATCH",
+      "proxy_signals": [
+        {
+          "title": "2026 Stablecoin Predictions: From Crypto Plumbing to Payments Infrastructure - FinTech Weekly",
+          "date": "2026-03-23",
+          "source": "FinTech Weekly",
+          "type": "product",
+          "company": "2026",
+          "segment_id": "institutional-holders",
+          "why": "→ Industry activity confirms segment is evaluating stablecoin rails",
+          "score": 25
         },
-        "willingness_to_pay": {
-          "value": null,
-          "status": "AWAITING_INPUT"
-        },
-        "integration_readiness": {
-          "value": null,
-          "status": "AWAITING_INPUT"
-        },
-        "early_adopter_watchlist": {
-          "value": null,
-          "status": "AWAITING_INPUT"
-        },
-        "interview_summary": {
-          "value": null,
-          "status": "AWAITING_INPUT"
+        {
+          "title": "The Future Of Business To Business Banking: Fintech 50 2026 - Forbes",
+          "date": "2026-03-23",
+          "source": "Forbes",
+          "type": "product",
+          "company": "The",
+          "segment_id": "institutional-holders",
+          "why": "→ Industry activity confirms segment is evaluating stablecoin rails",
+          "score": 0
         }
-      }
+      ],
+      "demand_indicators": {
+        "funding_rounds": [],
+        "hiring_signals": [],
+        "product_launches": [],
+        "adoption_events": []
+      },
+      "target_accounts": []
     }
-  ]
+  ],
+  "last_updated": "2026-03-23T22:19:59.837351+00:00"
 }

@@ -34,7 +34,7 @@
         }
       ],
       "evidence_count": 6,
-      "last_updated": "2026-03-23T22:10:09.103380+00:00"
+      "last_updated": "2026-03-23T22:19:59.837351+00:00"
     },
     {
       "id": "customer-factor",
@@ -42,7 +42,7 @@
       "name_zh": "客户",
       "status": "INSUFFICIENT",
       "confidence": "LOW",
-      "confidence_pct": 5,
+      "confidence_pct": 50,
       "data_points": [
         {
           "label": "Interviews completed",
@@ -70,7 +70,7 @@
         }
       ],
       "evidence_count": 1,
-      "last_updated": "2026-03-23T22:10:09.103380+00:00"
+      "last_updated": "2026-03-23T22:19:59.837351+00:00"
     },
     {
       "id": "competitor-factor",
@@ -106,7 +106,7 @@
         }
       ],
       "evidence_count": 4,
-      "last_updated": "2026-03-23T22:10:09.103380+00:00"
+      "last_updated": "2026-03-23T22:19:59.837351+00:00"
     },
     {
       "id": "regulatory-factor",
@@ -150,7 +150,7 @@
         }
       ],
       "evidence_count": 4,
-      "last_updated": "2026-03-23T22:10:09.103380+00:00"
+      "last_updated": "2026-03-23T22:19:59.837351+00:00"
     },
     {
       "id": "timing-factor",
@@ -186,7 +186,7 @@
         }
       ],
       "evidence_count": 3,
-      "last_updated": "2026-03-23T22:10:09.103380+00:00"
+      "last_updated": "2026-03-23T22:19:59.837351+00:00"
     },
     {
       "id": "evidence-quality-factor",

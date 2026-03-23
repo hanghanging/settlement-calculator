@@ -16,7 +16,7 @@
         "growth_7d_pct_min": 0,
         "addressable_b_min": 30
       },
-      "last_updated": "2026-03-23T22:10:09.103380+00:00",
+      "last_updated": "2026-03-23T22:19:59.837351+00:00",
       "data_freshness": "LIVE"
     },
     {
@@ -30,7 +30,7 @@
       "supporting_count": 2,
       "disconfirming_count": 0,
       "supporting_pct": 1.0,
-      "last_updated": "2026-03-23T22:10:09.103380+00:00",
+      "last_updated": "2026-03-23T22:19:59.837351+00:00",
       "data_freshness": "LIVE"
     },
     {
@@ -38,15 +38,15 @@
       "theme": "customer",
       "text": "Cross-border payment companies experience >2% settlement cost pain and would pay to reduce it",
       "text_zh": "跨境支付公司承受>2%的结算成本痛点，且愿意付费解决",
-      "status": "INSUFFICIENT",
+      "status": "WATCH",
       "confidence": "LOW",
-      "evidence_count": 1,
+      "evidence_count": 3,
       "supporting_count": 1,
       "disconfirming_count": 0,
       "supporting_pct": null,
       "interview_count_completed": 0,
       "interview_count_target": 20,
-      "last_updated": "2026-03-23T22:10:09.103380+00:00",
+      "last_updated": "2026-03-23T22:19:59.837351+00:00",
       "data_freshness": "MANUAL"
     },
     {
@@ -61,7 +61,7 @@
       "disconfirming_count": 0,
       "supporting_pct": 0.75,
       "competitive_window_months": 8,
-      "last_updated": "2026-03-23T22:10:09.103380+00:00",
+      "last_updated": "2026-03-23T22:19:59.837351+00:00",
       "data_freshness": "LIVE"
     }
   ]

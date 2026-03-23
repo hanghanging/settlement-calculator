@@ -526,16 +526,17 @@ def update_hypotheses(defillama, articles, existing, customer_validation):
             h["last_updated"] = NOW.isoformat()
 
         elif hid == "payment-pain-h1":
-            if interview_count == 0:
-                h["status"] = "INSUFFICIENT"
-                h["confidence"] = "LOW"
-            elif interview_count < 15:
+            proxy_score = customer_validation.get("demand_proxy_score", 0) if customer_validation else 0
+            if proxy_score >= 60:
+                h["status"] = "WATCH"
+                h["confidence"] = "MED"
+            elif proxy_score >= 25:
                 h["status"] = "WATCH"
                 h["confidence"] = "LOW"
             else:
-                h["status"] = "WATCH"
-                h["confidence"] = "MED"
-            h["interview_count_completed"] = interview_count
+                h["status"] = "INSUFFICIENT"
+                h["confidence"] = "LOW"
+            h["evidence_count"] = customer_validation.get("evidence_count", 0) if customer_validation else 0
             h["last_updated"] = NOW.isoformat()
 
         elif hid == "competitor-gap-h1":
@@ -597,7 +598,8 @@ def update_factors(defillama, articles, existing, customer_validation):
             factor["last_updated"] = NOW.isoformat()
 
         elif fid == "customer-factor":
-            factor["confidence_pct"] = max(5, min(40, interview_count * 2))
+            proxy_score = customer_validation.get("demand_proxy_score", 0) if customer_validation else 0
+            factor["confidence_pct"] = max(5, min(65, proxy_score))
             factor["last_updated"] = NOW.isoformat()
 
         elif fid == "competitor-factor":
@@ -701,8 +703,8 @@ def update_executive_summary(defillama, articles, existing, customer_validation)
     bvnk_found = any("bvnk" in t or "mastercard" in t for t in titles_lower)
 
     interview_count = 0
-    if customer_validation:
-        interview_count = customer_validation.get("overall_progress", {}).get("completed", 0)
+    proxy_score = customer_validation.get("demand_proxy_score", 0) if customer_validation else 0
+    evidence_count = customer_validation.get("evidence_count", 0) if customer_validation else 0
     interviews_target = 30
 
     # Para 1: Market numbers
@@ -793,6 +795,166 @@ def update_action_items(existing):
 
 # ─── Main ─────────────────────────────────────────────────────────────────────
 
+
+# ─── Step 3b: Update customer-validation.json (proxy signals) ────────────────
+
+# Queries specifically for customer demand proxy
+CUSTOMER_PROXY_QUERIES = [
+    ("Airwallex stablecoin crypto payment 2026", "payment-companies"),
+    ("PingPong Xtransfer stablecoin settlement", "payment-companies"),
+    ("cross-border payment stablecoin integration 2026", "payment-companies"),
+    ("fintech stablecoin yield B2B 2026", "institutional-holders"),
+    ("crypto OTC merchant stablecoin 2026", "otc-merchants"),
+]
+
+CUSTOMER_COMPANY_KEYWORDS = [
+    "airwallex", "pingpong", "xtransfer", "nuvei", "dlocal", "payoneer",
+    "wise", "revolut", "rapyd", "flywire", "thunes", "currencycloud",
+    "ripple payments", "stellar", "checkout.com", "adyen stablecoin"
+]
+
+SIGNAL_TYPES = {
+    "funding": ["raises", "series", "funding", "round", "million", "billion", "investment", "closes"],
+    "hiring": ["hires", "hire", "hiring", "recruits", "head of crypto", "stablecoin lead"],
+    "product": ["launches", "integrates", "announces", "partnership", "pilot", "deploys", "adds", "support"],
+    "adoption": ["adopts", "selects", "uses", "processes", "settles", "onboards"],
+}
+
+def classify_signal_type(title):
+    t = title.lower()
+    for sig_type, keywords in SIGNAL_TYPES.items():
+        if any(k in t for k in keywords):
+            return sig_type
+    return "product"
+
+def score_demand_signal(title, theme):
+    t = title.lower()
+    score = 0
+    # High value signals
+    if any(k in t for k in ["stablecoin", "usdc", "usdt", "crypto settlement"]): score += 15
+    if any(k in t for k in ["raises", "series", "funding", "$", "million", "billion"]): score += 20
+    if any(k in t for k in ["launches", "integrates", "partnership"]): score += 10
+    if any(k in t for k in ["payment", "settlement", "cross-border", "remittance"]): score += 10
+    if any(k in t for k in CUSTOMER_COMPANY_KEYWORDS): score += 20
+    return min(score, 50)
+
+def build_proxy_why(title, sig_type):
+    t = title.lower()
+    if sig_type == "funding":
+        return "→ Capital raised signals scale-up intent; stablecoin rails likely in scope"
+    if sig_type == "hiring":
+        return "→ Hiring for crypto/stablecoin roles = internal demand signal"
+    if "integrat" in t or "partner" in t:
+        return "→ Integration/partnership = active demand for stablecoin infrastructure"
+    if "launch" in t or "deploy" in t:
+        return "→ Product launch signals proven market demand in segment"
+    return "→ Industry activity confirms segment is evaluating stablecoin rails"
+
+def update_customer_validation(articles, existing):
+    """Replace interview tracking with proxy signal inference."""
+    print("\n[3b] Updating customer-validation.json (proxy signals)...")
+    if not existing:
+        print("  WARN: No existing customer-validation.json, skipping")
+        return None
+
+    # Collect customer-relevant articles from main scrape
+    customer_articles = [a for a in articles if a.get("theme") == "customer"]
+
+    # Also do targeted customer proxy queries
+    proxy_articles = []
+    for query, segment_id in CUSTOMER_PROXY_QUERIES:
+        try:
+            encoded = query.replace(" ", "+").replace(",", "")
+            url = f"https://news.google.com/rss/search?q={encoded}&hl=en-US&gl=US&ceid=US:en"
+            feed = feedparser.parse(url)
+            cutoff = NOW - timedelta(days=45)
+            for entry in feed.entries[:4]:
+                pub_date = parse_rss_date(entry)
+                if pub_date and pub_date < cutoff:
+                    continue
+                title = entry.get("title", "")
+                if len(title) < 10:
+                    continue
+                source = extract_source(entry)
+                sig_type = classify_signal_type(title)
+                # Extract company name from title
+                company = "Unknown"
+                for co in CUSTOMER_COMPANY_KEYWORDS:
+                    if co in title.lower():
+                        company = co.title()
+                        break
+                if company == "Unknown":
+                    # Try to get first word as company hint
+                    company = title.split()[0] if title else "Market"
+
+                proxy_articles.append({
+                    "title": title,
+                    "date": pub_date.strftime("%Y-%m-%d") if pub_date else NOW.strftime("%Y-%m-%d"),
+                    "source": source,
+                    "type": sig_type,
+                    "company": company,
+                    "segment_id": segment_id,
+                    "why": build_proxy_why(title, sig_type),
+                    "score": score_demand_signal(title, "customer"),
+                })
+            time.sleep(1)
+        except Exception as e:
+            print(f"  WARN: proxy query failed: {e}")
+
+    # Deduplicate by title hash
+    seen = set()
+    unique_proxy = []
+    for a in sorted(proxy_articles, key=lambda x: x.get("date",""), reverse=True):
+        h = hashlib.md5(a["title"].lower().encode()).hexdigest()[:8]
+        if h not in seen:
+            seen.add(h)
+            unique_proxy.append(a)
+
+    # Compute demand score: sum of individual signal scores, capped at 100
+    total_score = min(100, sum(a["score"] for a in unique_proxy[:8]))
+
+    # Determine status from score
+    if total_score >= 60:
+        status = "WATCH"
+        confidence = "MED"
+    elif total_score >= 25:
+        status = "WATCH"
+        confidence = "LOW"
+    else:
+        status = "INSUFFICIENT"
+        confidence = "LOW"
+
+    # Map proxy signals to segments
+    segments = existing.get("segments", [])
+    for seg in segments:
+        seg_id = seg["id"]
+        seg_signals = [a for a in unique_proxy if a.get("segment_id") == seg_id]
+        seg["proxy_signals"] = seg_signals[:4]
+        # Update target account latest_signal
+        for acct in seg.get("target_accounts", []):
+            co_lower = acct["name"].lower()
+            for a in seg_signals:
+                if co_lower in a["title"].lower():
+                    acct["latest_signal"] = f"{a['type'].upper()} · {a['date'][:7]}"
+                    break
+
+    # Update overall fields
+    existing["generated_at"] = NOW.isoformat()
+    existing["data_freshness"] = "LIVE"
+    existing["status"] = status
+    existing["confidence"] = confidence
+    existing["evidence_count"] = len(unique_proxy)
+    existing["demand_proxy_score"] = total_score
+    existing["demand_proxy_score_max"] = 100
+    existing["demand_proxy_label"] = "STRONG demand" if total_score >= 60 else ("MODERATE demand" if total_score >= 25 else "Weak demand signals")
+    existing["demand_proxy_label_zh"] = "强需求" if total_score >= 60 else ("中等需求" if total_score >= 25 else "需求信号弱")
+    existing["last_updated"] = NOW.isoformat()
+
+    save_json("customer-validation.json", existing)
+    print(f"  Proxy articles: {len(unique_proxy)}, Demand score: {total_score}, Status: {status}")
+    return existing
+
+
 def main():
     start_time = time.time()
     print("=" * 60)
@@ -819,6 +981,9 @@ def main():
 
     # Step 3: Update competitor gap
     competitor = update_competitor_gap(articles, existing_competitor)
+
+    # Step 3b: Customer demand proxy signals
+    customer_validation = update_customer_validation(articles, customer_validation)
 
     # Step 4: Fetch DefiLlama
     defillama = fetch_defillama()
