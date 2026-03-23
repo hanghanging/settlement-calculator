@@ -27,11 +27,11 @@
     }
   },
   "blocking_unknowns": [
-    "Customer pain not validated — 0/50 PMF interviews completed",
-    "Willingness to pay unconfirmed across all 3 customer segments"
+    "Customer demand signal weak — proxy score 50/100, insufficient for Go decision",
+    "Willingness to pay unconfirmed — no direct customer engagement recorded"
   ],
   "proceed_conditions": [
-    "Complete 15+ PMF interviews (upgrades T2 to WATCH)",
+    "Customer proxy score reaches 60+ (upgrades T2 to WATCH/MED)",
     "Confirm HKMA sandbox engagement",
     "Legal review of GENIUS Act completed"
   ],
