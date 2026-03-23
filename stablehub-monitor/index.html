@@ -242,6 +242,20 @@ tr:last-child td{border-bottom:none}
 .recs{background:var(--p2);border:1px solid var(--bd);border-left:3px solid var(--teal);padding:10px 12px;margin-top:6px}
 .recs-h{font-size:8px;font-weight:700;letter-spacing:.2em;color:var(--teal);margin-bottom:7px}
 .rec{font-size:10px;color:var(--td);margin-bottom:5px;padding-left:8px;border-left:1px solid var(--bd2);line-height:1.5}
+
+/* ── DECISION PAGE ── */
+.dec-theme{background:var(--p1);border:1px solid var(--bd);border-top:2px solid transparent;padding:8px 10px}
+.dec-theme.go{border-top-color:var(--teal)}.dec-theme.watch{border-top-color:var(--amb)}.dec-theme.insuf{border-top-color:var(--tf)}
+.dec-theme-n{font-size:7px;font-weight:700;letter-spacing:.18em;color:var(--tf);margin-bottom:4px}
+.dec-theme-v{font-size:14px;font-weight:700;margin-bottom:3px}
+.dec-item{font-size:10px;color:var(--td);padding:4px 0 4px 10px;border-left:2px solid var(--bd2);margin-bottom:4px;line-height:1.5}
+/* ── COMPETITOR PAGE ── */
+.cmp2-card{background:var(--p1);border:1px solid var(--bd);border-left:3px solid transparent;padding:8px 10px}
+.cmp2-card.high-t{border-left-color:var(--rb)}.cmp2-card.med-t{border-left-color:var(--amb)}
+.cmp2-name{font-size:12px;font-weight:700;color:var(--wht);margin-bottom:2px}
+.cmp2-type{font-size:7px;padding:1px 5px;border:1px solid var(--bd2);color:var(--td);margin-right:4px}
+.cmp2-event{background:var(--p3);border:1px solid var(--bd2);padding:4px 6px;margin:5px 0;font-size:9px}
+.cmp2-gap-item{font-size:9px;color:var(--teal);padding:1px 0}
 </style>
 </head>
 <body>
@@ -290,10 +304,13 @@ tr:last-child td{border-bottom:none}
     <div class="ni" onclick="gp('hlth',this)"><span class="ni-n">02</span><span data-en="HEALTH MONITOR" data-zh="健康监控">HEALTH MONITOR</span></div>
     <div class="nl">REPORTS</div>
     <div class="ni" onclick="gp('wk',this)"><span class="ni-n">03</span><span data-en="WEEKLY BRIEF" data-zh="周报">WEEKLY BRIEF</span></div>
+    <div class="nl">ANALYSIS</div>
+    <div class="ni" onclick="gp('dec',this)"><span class="ni-n">04</span><span data-en="DECISION SNAPSHOT" data-zh="决策快照">DECISION SNAPSHOT</span></div>
+    <div class="ni" onclick="gp('cmp2',this)"><span class="ni-n">05</span><span data-en="COMPETITOR MAP" data-zh="竞品图谱">COMPETITOR MAP</span></div>
   </nav>
   <div class="sb-ft">
     <div class="sb-ds"><span class="dot g"></span><span>DefiLlama · Live</span></div>
-    <div style="font-size:7px;color:var(--tf);margin-top:2px">v5.0 · OSL Research · Mar 2026</div>
+    <div style="font-size:7px;color:var(--tf);margin-top:2px">v8.0 · OSL Research · Mar 2026</div>
   </div>
 </div>
 
@@ -411,7 +428,7 @@ tr:last-child td{border-bottom:none}
             <div class="fd-row"><span class="fd-k" data-en="Growth rate" data-zh="增速">Growth rate</span><span class="fd-v" style="color:var(--teal)">+2.1% 7D ✓</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Addressable" data-zh="可寻址">Addressable</span><span class="fd-v" style="color:var(--teal)">~$52B (16.6%)</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Yield demand" data-zh="收益需求">Yield demand</span><span class="fd-v" style="color:var(--amb)">Inferred</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-market-factor" high" style="width:78%"></div></div>
+            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-market-factor" style="width:78%"></div></div>
             <div class="fd-verdict" id="fd-verdict-market-factor" style="color:var(--teal)" data-en="Confidence: HIGH" data-zh="置信度：高">Confidence: HIGH</div>
           </div>
           <div class="fd-col">
@@ -420,7 +437,7 @@ tr:last-child td{border-bottom:none}
             <div class="fd-row"><span class="fd-k" data-en="WTP confirmed" data-zh="付费意愿确认">WTP confirmed</span><span class="fd-v" style="color:var(--tf)">No data</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Interviews done" data-zh="已完成访谈">Interviews done</span><span class="fd-v" style="color:var(--tf)">0 / 50</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Referral signal" data-zh="推荐信号">Referral signal</span><span class="fd-v" style="color:var(--tf)">No data</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-customer-factor" low" style="width:12%"></div></div>
+            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-customer-factor" style="width:12%"></div></div>
             <div class="fd-verdict" id="fd-verdict-customer-factor" style="color:var(--tf)" data-en="Confidence: LOW — interviews needed" data-zh="置信度：低 — 需要访谈">Confidence: LOW — interviews needed</div>
           </div>
           <div class="fd-col">
@@ -429,7 +446,7 @@ tr:last-child td{border-bottom:none}
             <div class="fd-row"><span class="fd-k" data-en="Window size" data-zh="窗口大小">Window size</span><span class="fd-v" style="color:var(--amb)">6–12 months</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Main threat" data-zh="主要威胁">Main threat</span><span class="fd-v" style="color:var(--rb)">Mastercard/BVNK</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Differentiation" data-zh="差异化">Differentiation</span><span class="fd-v" style="color:var(--teal)">Multi-FX + Asia + yield</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-competitor-factor" med" style="width:55%"></div></div>
+            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-competitor-factor" style="width:55%"></div></div>
             <div class="fd-verdict" id="fd-verdict-competitor-factor" style="color:var(--amb)" data-en="Confidence: MED — window compressing" data-zh="置信度：中 — 窗口收窄">Confidence: MED — window compressing</div>
           </div>
           <div class="fd-col">
@@ -438,7 +455,7 @@ tr:last-child td{border-bottom:none}
             <div class="fd-row"><span class="fd-k" data-en="HK (HKMA)" data-zh="香港(HKMA)">HK (HKMA)</span><span class="fd-v" style="color:var(--teal)">Window open ✓</span></div>
             <div class="fd-row"><span class="fd-k" data-en="EU (MiCA)" data-zh="欧盟(MiCA)">EU (MiCA)</span><span class="fd-v" style="color:var(--teal)">Enforced ✓</span></div>
             <div class="fd-row"><span class="fd-k" data-en="SG (MAS)" data-zh="新加坡(MAS)">SG (MAS)</span><span class="fd-v" style="color:var(--teal)">Framework active</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-regulatory-factor" high" style="width:80%"></div></div>
+            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-regulatory-factor" style="width:80%"></div></div>
             <div class="fd-verdict" id="fd-verdict-regulatory-factor" style="color:var(--teal)" data-en="Confidence: HIGH — multiple frameworks active" data-zh="置信度：高 — 多框架已激活">Confidence: HIGH — multiple frameworks active</div>
           </div>
           <div class="fd-col">
@@ -447,7 +464,7 @@ tr:last-child td{border-bottom:none}
             <div class="fd-row"><span class="fd-k" data-en="Competitor ETA" data-zh="竞品到达时间">Competitor ETA</span><span class="fd-v" style="color:var(--amb)">6–12 months</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Reg tailwind" data-zh="监管顺风">Reg tailwind</span><span class="fd-v" style="color:var(--teal)">Active — GENIUS, HKMA</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Market momentum" data-zh="市场动能">Market momentum</span><span class="fd-v" style="color:var(--teal)">ATH supply, growing</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-timing-factor" med" style="width:65%"></div></div>
+            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-timing-factor" style="width:65%"></div></div>
             <div class="fd-verdict" id="fd-verdict-timing-factor" style="color:var(--amb)" data-en="Confidence: MED — window closing fast" data-zh="置信度：中 — 窗口快速关闭">Confidence: MED — window closing fast</div>
           </div>
           <div class="fd-col">
@@ -456,7 +473,7 @@ tr:last-child td{border-bottom:none}
             <div class="fd-row"><span class="fd-k" data-en="Customer data" data-zh="客户数据">Customer data</span><span class="fd-v" style="color:var(--tf)">1 proxy signal</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Competitor data" data-zh="竞品数据">Competitor data</span><span class="fd-v" style="color:var(--amb)">News · Earnings</span></div>
             <div class="fd-row"><span class="fd-k" data-en="Overall quality" data-zh="总体质量">Overall quality</span><span class="fd-v" style="color:var(--amb)">MEDIUM</span></div>
-            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-evidence-quality-factor" med" style="width:45%"></div></div>
+            <div class="fd-conf"><div class="fd-conf-fill" id="fd-fill-evidence-quality-factor" style="width:45%"></div></div>
             <div class="fd-verdict" id="fd-verdict-evidence-quality-factor" style="color:var(--amb)" data-en="Improve via customer interviews" data-zh="通过客户访谈提升证据质量">Improve via customer interviews</div>
           </div>
         </div>
@@ -660,6 +677,57 @@ tr:last-child td{border-bottom:none}
   </div>
 </div>
 
+<!-- ═════════ DECISION SNAPSHOT ═════════ -->
+<div class="pg" id="page-dec">
+  <div style="margin-bottom:8px">
+    <div style="font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--td);margin-bottom:4px">DECISION SNAPSHOT — P0 GO / NO-GO</div>
+    <div style="padding:10px 14px;border:2px solid var(--blue);background:rgba(21,102,232,.07);display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <div style="font-size:22px;font-weight:700;color:var(--blue)" id="dec-verdict">→ CONDITIONAL GO</div>
+      <div style="font-size:9px;color:var(--td);line-height:1.6;max-width:500px" id="dec-rationale">Loading…</div>
+      <div style="margin-left:auto;text-align:right"><div style="font-size:7px;color:var(--tf)">NEXT CHECKPOINT</div><div style="font-size:12px;color:var(--amb)" id="dec-checkpoint">—</div></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px" id="dec-themes"></div>
+  <div style="background:var(--p1);border:1px solid var(--bd);padding:10px 12px;margin-bottom:6px">
+    <div style="font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--rb);margin-bottom:8px">⚠ BLOCKING UNKNOWNS</div>
+    <div id="dec-blocking"></div>
+  </div>
+  <div style="background:var(--p1);border:1px solid var(--bd);border-left:3px solid var(--teal);padding:10px 12px">
+    <div style="font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--teal);margin-bottom:8px">✓ PROCEED CONDITIONS</div>
+    <div id="dec-proceed"></div>
+  </div>
+  <div style="background:var(--p2);border:1px solid var(--bd);border-left:3px solid var(--blue);padding:10px 12px;margin-top:6px">
+    <div style="font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--blue);margin-bottom:6px">◈ ANALYST NOTE</div>
+    <div style="font-size:10px;color:var(--td);line-height:1.7" id="dec-note">—</div>
+  </div>
+</div>
+
+<!-- ═════════ COMPETITOR MAP ═════════ -->
+<div class="pg" id="page-cmp2">
+  <div style="margin-bottom:8px">
+    <div style="font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--td);margin-bottom:4px">COMPETITOR MAP — STABLEHUB LANDSCAPE</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px">
+    <div style="background:var(--p1);border:1px solid var(--bd);padding:8px 10px">
+      <div style="font-size:7px;color:var(--tf);letter-spacing:.15em;margin-bottom:4px">OVERALL STATUS</div>
+      <div style="font-size:16px;font-weight:700;color:var(--amb)" id="cmp2-status">WATCH</div>
+    </div>
+    <div style="background:var(--p1);border:1px solid var(--bd);padding:8px 10px">
+      <div style="font-size:7px;color:var(--tf);letter-spacing:.15em;margin-bottom:4px">COMPETITIVE WINDOW</div>
+      <div style="font-size:16px;font-weight:700;color:var(--amb)" id="cmp2-window">—</div>
+    </div>
+    <div style="background:var(--p1);border:1px solid var(--bd);padding:8px 10px">
+      <div style="font-size:7px;color:var(--tf);letter-spacing:.15em;margin-bottom:4px">CONFIDENCE</div>
+      <div style="font-size:16px;font-weight:700;color:var(--amb)" id="cmp2-conf">—</div>
+    </div>
+  </div>
+  <div id="cmp2-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px"></div>
+  <div style="background:var(--p2);border:1px solid var(--bd);border-left:3px solid var(--amb);padding:10px 12px">
+    <div style="font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--amb);margin-bottom:6px">◈ WINDOW ASSESSMENT</div>
+    <div style="font-size:10px;color:var(--td);line-height:1.7" id="cmp2-rationale">—</div>
+  </div>
+</div>
+
 </div><!-- /main -->
 
 <script>
@@ -758,6 +826,8 @@ function gp(n, el) {
   el.classList.add('active');
   if (n === 'hlth') renderHealth();
   if (n === 'wk') renderWeekly();
+  if (n === 'dec') renderDecision();
+  if (n === 'cmp2') renderCompetitor();
 }
 function toggleP0() { document.getElementById('p0track').classList.toggle('open'); }
 function toggleFDB() { document.getElementById('fdb').classList.toggle('open'); }
@@ -1092,6 +1162,101 @@ async function loadTVL() {
 function renderHealth() { loadMarket(); }
 function renderWeekly() { loadTVL(); }
 
+
+// ════════════════════════════════════════
+// SECTION H: Decision Snapshot
+// ════════════════════════════════════════
+async function renderDecision() {
+  const d = await fetchAPI('decision.json', 'manual');
+  if (!d) return;
+
+  const icon = { 'CONDITIONAL_GO':'→', 'GO':'▲', 'NO_GO':'▼', 'WATCH':'⚠' };
+  const verdEl = document.getElementById('dec-verdict');
+  if (verdEl) {
+    verdEl.textContent = (icon[d.verdict] || '·') + ' ' + d.verdict.replace(/_/g, ' ');
+    verdEl.style.color = statusColor(d.verdict);
+  }
+  const ratEl = document.getElementById('dec-rationale');
+  if (ratEl) ratEl.textContent = t(d.verdict_rationale, d.verdict_rationale);
+
+  const ckEl = document.getElementById('dec-checkpoint');
+  if (ckEl && d.next_checkpoint) ckEl.textContent = ts(d.next_checkpoint);
+
+  const grid = document.getElementById('dec-themes');
+  if (grid && d.theme_verdicts) {
+    grid.innerHTML = Object.entries(d.theme_verdicts).map(([k, v]) => {
+      const cls = v.status === 'GO' ? 'go' : v.status === 'WATCH' ? 'watch' : 'insuf';
+      const ic = { 'GO':'▲', 'WATCH':'⚠', 'INSUFFICIENT':'░', 'NO_GO':'▼' }[v.status] || '·';
+      return `<div class="dec-theme ${cls}">
+        <div class="dec-theme-n">${k.toUpperCase()}</div>
+        <div class="dec-theme-v" style="color:${statusColor(v.status)}">${ic} ${v.status}</div>
+        <div style="font-size:8px;color:var(--td)">${v.evidence_count} signals · ${v.confidence}</div>
+        ${v.interview_count !== undefined ? `<div style="font-size:8px;color:var(--tf)">Interviews: ${v.interview_count} done</div>` : ''}
+        ${v.window_months !== undefined ? `<div style="font-size:8px;color:var(--amb)">Window: ${v.window_months} months</div>` : ''}
+        <div style="font-size:8px;color:var(--tf);margin-top:3px">${ts(v.last_updated)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  const blk = document.getElementById('dec-blocking');
+  if (blk && d.blocking_unknowns)
+    blk.innerHTML = d.blocking_unknowns.map(u =>
+      `<div class="dec-item"><span style="color:var(--rb)">▪</span> ${u}</div>`
+    ).join('');
+
+  const pro = document.getElementById('dec-proceed');
+  if (pro && d.proceed_conditions)
+    pro.innerHTML = d.proceed_conditions.map((c, i) =>
+      `<div class="dec-item"><span style="color:var(--teal)">${i+1}.</span> ${c}</div>`
+    ).join('');
+
+  const note = document.getElementById('dec-note');
+  if (note) note.textContent = t(d.analyst_note, d.analyst_note_zh);
+}
+
+// ════════════════════════════════════════
+// SECTION I: Competitor Map
+// ════════════════════════════════════════
+async function renderCompetitor() {
+  const d = await fetchAPI('competitor-gap.json', 'manual');
+  if (!d) return;
+
+  const stEl = document.getElementById('cmp2-status');
+  if (stEl) { stEl.textContent = d.status; stEl.style.color = statusColor(d.status); }
+
+  const winEl = document.getElementById('cmp2-window');
+  if (winEl && d.competitive_window) {
+    winEl.textContent = d.competitive_window.months_remaining + ' MONTHS';
+    winEl.style.color = statusColor(d.competitive_window.confidence);
+  }
+
+  const confEl = document.getElementById('cmp2-conf');
+  if (confEl) { confEl.textContent = d.confidence; confEl.style.color = statusColor(d.confidence); }
+
+  const ratEl = document.getElementById('cmp2-rationale');
+  if (ratEl && d.competitive_window) ratEl.textContent = d.competitive_window.rationale;
+
+  const grid = document.getElementById('cmp2-grid');
+  if (grid && d.competitors) {
+    grid.innerHTML = d.competitors.map(c => {
+      const cls = c.threat_level === 'HIGH' ? 'high-t' : 'med-t';
+      const gaps = (c.known_gaps || []).map(g => `<div class="cmp2-gap-item">✓ ${g}</div>`).join('');
+      const ev = c.latest_event;
+      const evHtml = ev ? `<div class="cmp2-event"><span style="color:var(--amb)">${ev.date}</span> · <strong style="color:var(--wht)">${ev.title}</strong><br><span style="color:var(--tf)">${ev.source} · Impact: </span><span style="color:${statusColor(ev.impact)}">${ev.impact}</span></div>` : '';
+      return `<div class="cmp2-card ${cls}">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+          <span class="cmp2-name">${c.name}</span>
+          <span class="thr${c.threat_level === 'MED' ? ' m' : ''}">${c.threat_level}</span>
+        </div>
+        <span class="cmp2-type">${c.type.toUpperCase()}</span>
+        ${evHtml}
+        <div style="margin-top:5px;font-size:7px;color:var(--tf);letter-spacing:.1em;margin-bottom:3px">OUR GAPS VS THEM</div>
+        ${gaps}
+      </div>`;
+    }).join('');
+  }
+}
+
 // ── Init ──
 async function init() {
   // Parallel load all static mock data + live data
@@ -1111,132 +1276,8 @@ setInterval(loadMarket, 60000);
 setInterval(loadTVL, 120000);
 setInterval(renderP0Overview, 300000);
 </script>
-</body>
 
-function gp(n,el){
-  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));
-  document.getElementById('page-'+n).classList.add('active');
-  el.classList.add('active');
-}
-function toggleP0(){document.getElementById('p0track').classList.toggle('open');}
-function toggleFDB(){document.getElementById('fdb').classList.toggle('open');}
-let lang='en';
-function setLang(l){
-  lang=l;
-  document.getElementById('btn-en').classList.toggle('active',l==='en');
-  document.getElementById('btn-zh').classList.toggle('active',l==='zh');
-  document.querySelectorAll('[data-en]').forEach(el=>{const v=el.getAttribute('data-'+l);if(v)el.innerHTML=v;});
-}
-function ask(){
-  const v=document.getElementById('ci').value.trim();
-  if(!v)return;
-  const el=document.getElementById('ci');
-  el.value='[Analyzing: '+v+']';
-  setTimeout(()=>{el.value='';},2500);
-}
+</div><!-- /main2 -->
 
-async function loadMarket(){
-  try{
-    const r=await fetch('https://stablecoins.llama.fi/stablecoins?includePrices=true');
-    const d=await r.json();
-    const all=d.peggedAssets||[];
-    const total=all.reduce((s,c)=>s+(c.circulating?.peggedUSD||0),0);
-    const top=all.sort((a,b)=>(b.circulating?.peggedUSD||0)-(a.circulating?.peggedUSD||0));
-    const top10=top.slice(0,10);
-    const usdt=top.find(c=>c.symbol==='USDT'),usdc=top.find(c=>c.symbol==='USDC');
-    const usdt_s=usdt?(usdt.circulating?.peggedUSD||0)/total*100:58.4;
-    const usdc_s=usdc?(usdc.circulating?.peggedUSD||0)/total*100:25;
-    const oth_s=100-usdt_s-usdc_s;
-    const addr=total*oth_s/100;
-    const now=new Date().toLocaleTimeString('en-GB',{timeZone:'Asia/Shanghai',hour:'2-digit',minute:'2-digit'});
-    // KPI
-    document.getElementById('kpi-mkt').textContent='$'+(total/1e9).toFixed(1)+'B';
-    // P0 market
-    document.getElementById('p0-sup').textContent='$'+(total/1e9).toFixed(1)+'B';
-    document.getElementById('p0-tam').textContent='~$'+(addr/1e9).toFixed(0)+'B';
-    ['b-usdt','b-usdc','b-oth'].forEach((id,i)=>{
-      document.getElementById(id).style.width=[usdt_s,usdc_s,oth_s][i].toFixed(1)+'%';
-    });
-    document.getElementById('s-usdt').textContent='USDT '+usdt_s.toFixed(1)+'%';
-    document.getElementById('s-usdc').textContent='USDC '+usdc_s.toFixed(1)+'%';
-    document.getElementById('s-oth').textContent='Other '+oth_s.toFixed(1)+'%';
-    // Market snapshot table
-    let ok=0,w=0,a=0;
-    const mkRows=top10.map(c=>{
-      const m=c.circulating?.peggedUSD||0,p=c.price||1,dev=(p-1)*100,ad=Math.abs(dev);
-      if(ad<0.1)ok++;else if(ad<0.5)w++;else a++;
-      const cl=ad<0.1?'ok':ad<0.5?'w':'r';
-      const ds=(dev>=0?'+':'')+dev.toFixed(3)+'%';
-      const dc=ad<0.1?'up':ad<0.5?'neu dn':'dn';
-      return `<tr><td class="sym">${c.symbol}</td><td class="neu">$${p.toFixed(4)}</td><td class="${dc}">${ds}</td><td class="smcap">$${(m/1e9).toFixed(1)}B</td><td><span class="sdot-s ${cl}"></span></td></tr>`;
-    });
-    document.getElementById('mkt-tbody').innerHTML=mkRows.join('');
-    document.getElementById('mkt-upd').textContent=now;
-    // Health
-    document.getElementById('ph-tot').textContent=top10.length;
-    document.getElementById('ph-ok').textContent=ok;
-    document.getElementById('ph-w').textContent=w||'0';
-    document.getElementById('ph-a').textContent=a||'0';
-    document.getElementById('ph-time').textContent=now+' GMT+8';
-    const pRows=top10.map(c=>{
-      const m=c.circulating?.peggedUSD||0,p=c.price||1,dev=(p-1)*100,ad=Math.abs(dev);
-      const rc=ad<0.1?'hrow-ok':ad<0.5?'hrow-w':'hrow-r';
-      const ds=(dev>=0?'+':'')+dev.toFixed(3)+'%';
-      const dc=ad<0.1?'up':ad<0.5?'neu':'dn';
-      const st=ad<0.1?`<span class="sdot-s ok"></span>HEALTHY`:ad<0.5?`<span class="sdot-s w"></span>WATCH`:`<span class="sdot-s r blink"></span>ALERT`;
-      const sh=total?(m/total*100).toFixed(1)+'%':'—';
-      return `<tr class="${rc}"><td class="sym" style="padding-left:8px">${c.symbol}</td><td>$${p.toFixed(6)}</td><td class="${dc}">${ds}</td><td>${st}</td><td class="smcap">$${(m/1e9).toFixed(2)}B</td><td class="smcap">${sh}</td><td style="color:var(--tf);font-size:9px">${now}</td></tr>`;
-    });
-    document.getElementById('ph-tbody').innerHTML=pRows.join('');
-    if(a>0){
-      const b=document.getElementById('h-banner');
-      b.style.cssText='padding:7px 12px;margin-bottom:7px;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;border:1px solid var(--rb);background:rgba(204,51,51,.08);color:var(--rb)';
-      document.getElementById('hb-txt').textContent=a+' ASSET(S) IN ALERT';
-    }
-  }catch(e){}
-}
-
-async function loadTVL(){
-  const protos=[{s:'aave-v3',n:'Aave v3',c:'Lending'},{s:'compound-v3',n:'Compound v3',c:'Lending'},{s:'curve-dex',n:'Curve',c:'DEX'},{s:'sky',n:'Sky/USDS',c:'Stablecoin'},{s:'ethena',n:'Ethena',c:'Yield'},{s:'pendle',n:'Pendle',c:'Yield'}];
-  const rs=[];
-  for(const p of protos){
-    try{
-      const r=await fetch(`https://api.llama.fi/protocol/${p.s}`);
-      const d=await r.json();
-      const arr=d.tvl||[];
-      const cur=arr[arr.length-1]?.totalLiquidityUSD||0;
-      const p30=arr[arr.length-31]?.totalLiquidityUSD||cur;
-      rs.push({...p,tvl:cur,chg:p30?(cur-p30)/p30*100:0});
-    }catch{}
-  }
-  rs.sort((a,b)=>b.tvl-a.tvl);
-  const mx=rs[0]?.tvl||1;
-  // Right panel (compact)
-  const tb=document.getElementById('tvl-tbody');
-  if(tb) tb.innerHTML=rs.map(p=>{
-    const c=p.chg>0?'up':'dn';
-    const bw=Math.round(p.tvl/mx*80);
-    return `<tr><td style="font-weight:600;color:var(--wht)">${p.name}</td><td>$${(p.tvl/1e9).toFixed(1)}B<div class="tvl-bar-wrap"><div class="tvl-bar-fill" style="width:${bw}%"></div></div></td><td class="${c}">${p.chg>0?'↑':'↓'}${Math.abs(p.chg).toFixed(1)}%</td></tr>`;
-  }).join('');
-  // P0 market col (top 3)
-  const top3=rs.slice(0,3);
-  const p0el=document.getElementById('tvl-p0');
-  if(p0el) p0el.innerHTML=top3.map(p=>{
-    const c=p.chg>0?'up':'dn';
-    return `<div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid var(--p3);font-size:9px"><span style="color:var(--wht);font-weight:600">${p.name}</span><span class="${c}">${p.chg>0?'↑':'↓'}${Math.abs(p.chg).toFixed(1)}%</span></div>`;
-  }).join('');
-  // Weekly TVL
-  const wk=document.getElementById('wk-tvl');
-  if(wk) wk.innerHTML=rs.map(p=>{
-    const c=p.chg>0?'up':'dn';
-    const sig=Math.abs(p.chg)>10?(p.chg>0?'<span style="font-size:7px;padding:1px 4px;border:1px solid var(--amb);color:var(--amb)">WATCH</span>':''):'—';
-    return `<tr><td style="font-weight:600;color:var(--wht)">${p.name}</td><td>$${(p.tvl/1e9).toFixed(2)}B</td><td class="${c}">${p.chg>0?'↑':'↓'}${Math.abs(p.chg).toFixed(1)}%</td><td style="color:var(--td)">${p.c}</td><td>${sig}</td></tr>`;
-  }).join('');
-}
-
-loadMarket();loadTVL();
-setInterval(loadMarket,60000);setInterval(loadTVL,120000);
-</script>
 </body>
 </html>
