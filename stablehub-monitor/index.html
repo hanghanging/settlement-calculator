@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OSL StableHub — P0 Command Center</title>
+<title>OSL StableHub Terminal</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;border-radius:0!important;margin:0;padding:0}
@@ -15,170 +15,194 @@
   --teal:#00BF99;--tlg:rgba(0,191,153,.12);
   --amb:#E8A020;--alg:rgba(232,160,32,.1);
   --red:#CC3333;--rlg:rgba(204,51,51,.1);--rb:#FF4444;
-  --grn:#00AA44;--glg:rgba(0,170,68,.12);
-  --wht:#FFFFFF;
+  --grn:#00AA44;--wht:#FFFFFF;
 }
 html,body{background:var(--bg);color:var(--t);font-family:'IBM Plex Mono','Courier New',monospace;font-size:12px;line-height:1.5;height:100%;overflow:hidden}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-@keyframes fadein{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fi{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
 .blink{animation:blink 1.2s step-end infinite}
-.fi{animation:fadein .25s ease}
 
-/* TOPBAR — MODULE 0 */
-#m0{position:fixed;top:0;left:0;right:0;height:26px;background:#050710;border-bottom:1px solid var(--bd);display:flex;align-items:center;z-index:200;font-size:10px}
-.m0-brand{padding:0 10px;color:var(--blue);font-weight:700;letter-spacing:.06em;white-space:nowrap;border-right:1px solid var(--bd)}
-.m0-status{padding:0 10px;display:flex;align-items:center;gap:6px;border-right:1px solid var(--bd);white-space:nowrap}
-.sdot{width:5px;height:5px;border-radius:50%!important;display:inline-block}
-.sdot.ok{background:var(--grn)}.sdot.w{background:var(--amb)}.sdot.a{background:var(--rb)}
-.st-ok{color:var(--teal);font-weight:600}.st-w{color:var(--amb);font-weight:600}.st-a{color:var(--rb);font-weight:600}
-.m0-supply{padding:0 10px;color:var(--wht);font-weight:600;border-right:1px solid var(--bd);white-space:nowrap}
-.m0-chg{padding:0 8px;border-right:1px solid var(--bd);white-space:nowrap}
-.m0-alerts{padding:0 8px;border-right:1px solid var(--bd);white-space:nowrap;font-size:9px;color:var(--td)}
+/* ── TOPBAR ── */
+#topbar{position:fixed;top:0;left:0;right:0;height:26px;background:#050710;border-bottom:1px solid var(--bd);display:flex;align-items:center;z-index:200;font-size:10px}
+.tb-brand{padding:0 10px;color:var(--blue);font-weight:700;letter-spacing:.06em;white-space:nowrap;border-right:1px solid var(--bd)}
 #ticker-wrap{flex:1;overflow:hidden}
 #ticker-inner{display:inline-flex;align-items:center;animation:ticker 55s linear infinite;height:26px;white-space:nowrap}
-.tk{padding:0 12px;display:flex;align-items:center;gap:4px;border-right:1px solid var(--bd);height:100%;font-size:10px}
-.tk-s{color:var(--wht);font-weight:600}.tk-p{color:var(--td)}.up{color:var(--teal)}.dn{color:var(--red)}.neu{color:var(--td)}
-.m0-right{padding:0 10px;display:flex;align-items:center;gap:8px;border-left:1px solid var(--bd);white-space:nowrap}
-#clk{color:var(--amb);font-size:10px}
+.tk{padding:0 12px;display:flex;align-items:center;gap:4px;border-right:1px solid var(--bd);height:100%}
+.tk-s{color:var(--wht);font-weight:600;font-size:10px}.tk-p{color:var(--td);font-size:10px}
+.up{color:var(--teal)}.dn{color:var(--red)}.neu{color:var(--td)}
+.tb-right{display:flex;align-items:center;border-left:1px solid var(--bd)}
 .lbtn{height:26px;padding:0 8px;background:transparent;color:var(--td);border:none;border-right:1px solid var(--bd);cursor:pointer;font-family:inherit;font-size:9px;letter-spacing:.08em}
 .lbtn:hover{background:var(--p1);color:var(--t)}.lbtn.active{background:var(--blg);color:var(--wht)}
+#clock{padding:0 10px;color:var(--amb);font-size:10px;border-right:1px solid var(--bd)}
+.live-row{padding:0 8px;display:flex;align-items:center;gap:5px;font-size:9px;color:var(--td)}
+.dot{width:5px;height:5px;border-radius:50%!important;display:inline-block}
+.dot.g{background:var(--grn)}.dot.a{background:var(--amb)}.dot.r{background:var(--rb)}
 
-/* SIDEBAR */
+/* ── SIDEBAR ── */
 #sb{position:fixed;top:26px;left:0;bottom:0;width:172px;background:#050710;border-right:1px solid var(--bd);display:flex;flex-direction:column;z-index:100}
 .sb-logo{padding:10px 12px;border-bottom:1px solid var(--bd)}
 .sb-osl{display:inline-block;background:var(--blue);color:#fff;font-weight:700;font-size:9px;padding:1px 5px;margin-bottom:3px}
 .sb-name{font-size:10px;font-weight:600;color:var(--wht)}
-.sb-sub{font-size:8px;color:var(--tf);letter-spacing:.1em;margin-top:1px}
+.sb-sub{font-size:7px;color:var(--tf);letter-spacing:.12em;margin-top:1px}
 nav{flex:1;padding:5px 0}
 .nl{padding:5px 10px 2px;font-size:7px;color:var(--tf);letter-spacing:.18em}
-.ni{display:flex;align-items:center;gap:6px;padding:6px 10px;color:var(--td);cursor:pointer;border-left:2px solid transparent;font-size:10px}
+.ni{display:flex;align-items:center;gap:6px;padding:7px 10px;color:var(--td);cursor:pointer;border-left:2px solid transparent;font-size:10px}
 .ni:hover{background:var(--p1);color:var(--t)}.ni.active{border-left-color:var(--blue);background:var(--p2);color:var(--wht)}
 .ni-n{color:var(--blue);font-size:8px;width:12px;flex-shrink:0}
 .ni-b{margin-left:auto;font-size:7px;padding:1px 4px;background:var(--rlg);color:var(--rb)}
 .sb-ft{padding:7px 10px;border-top:1px solid var(--bd)}
 .sb-ds{display:flex;align-items:center;gap:4px;font-size:8px;color:var(--tf)}
 
-/* MAIN */
+/* ── MAIN ── */
 #main{position:fixed;top:26px;left:172px;right:0;bottom:0;overflow-y:auto;overflow-x:hidden}
-.pg{display:none;padding:8px;animation:fadein .2s ease}.pg.active{display:block}
+.pg{display:none;padding:10px;animation:fi .2s ease}.pg.active{display:block}
 
-/* MODULE 1 — P0 RESEARCH PROGRESS */
-#m1{background:var(--p1);border:1px solid var(--bd);padding:7px 10px;margin-bottom:7px;cursor:pointer}
-.m1-h{display:flex;align-items:center;gap:8px;margin-bottom:0}
-.m1-title{font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--td)}
-.m1-items{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
-.m1-item{background:var(--p2);border:1px solid var(--bd);padding:7px 8px}
-.m1-theme{font-size:8px;font-weight:700;letter-spacing:.15em;margin-bottom:5px}
-.m1-theme.mkt{color:var(--blue)}.m1-theme.cst{color:var(--teal)}.m1-theme.cmp{color:var(--amb)}
-.m1-bar-wrap{height:4px;background:var(--bd);margin-bottom:4px}
-.m1-bar{height:4px}
-.m1-bar.mkt{background:var(--blue)}.m1-bar.cst{background:var(--teal)}.m1-bar.cmp{background:var(--amb)}
-.m1-stats{display:flex;justify-content:space-between;font-size:9px}
-.m1-verdict{font-size:9px;margin-top:4px;font-weight:600}
-.m1-toggle{margin-left:auto;font-size:8px;color:var(--tf)}
-#m1-body{display:none}
-#m1.open #m1-body{display:grid}
-#m1.open .m1-toggle::after{content:'▲'}
-.m1-toggle::after{content:'▼';margin-left:4px}
+/* ── KPI STRIP ── */
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
+.kpi{background:var(--p1);border:1px solid var(--bd);border-top:2px solid var(--blue);padding:10px 12px}
+.kpi.teal{border-top-color:var(--teal)}.kpi.amb{border-top-color:var(--amb)}.kpi.red{border-top-color:var(--red)}
+.kpi-lbl{font-size:8px;color:var(--tf);letter-spacing:.15em;margin-bottom:5px}
+.kpi-val{font-size:20px;font-weight:700;color:var(--wht);margin-bottom:3px}
+.kpi-sub{font-size:9px}
 
-/* MODULE 2 — THREE-COLUMN */
-.m2-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:7px}
-.m2-col{display:flex;flex-direction:column;gap:0;border:1px solid var(--bd)}
-.m2-head{padding:6px 8px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
-.m2-label{font-size:8px;font-weight:700;letter-spacing:.2em}
-.m2-label.mkt{color:var(--blue)}.m2-label.cst{color:var(--teal)}.m2-label.cmp{color:var(--amb)}
-.m2-q{font-size:8px;color:var(--tf);font-style:italic;padding:5px 8px;border-bottom:1px solid var(--bd);background:var(--p2)}
-.m2-body{padding:7px 8px;flex:1;background:var(--p1)}
-.m2-foot{padding:5px 8px;border-top:1px solid var(--bd);background:var(--p2)}
-.verdict{font-size:9px;font-weight:700;display:flex;align-items:center;gap:5px}
-.verdict.go{color:var(--teal)}.verdict.watch{color:var(--amb)}.verdict.nodata{color:var(--tf)}
+/* ── P0 TRACKER ── */
+#p0track{background:var(--p1);border:1px solid var(--bd);margin-bottom:8px;overflow:hidden}
+.p0t-head{display:flex;align-items:center;padding:6px 10px;border-bottom:1px solid var(--bd);cursor:pointer;gap:8px}
+.p0t-title{font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--td)}
+.p0t-toggle{margin-left:auto;font-size:8px;color:var(--tf)}
+.p0t-body{display:none;grid-template-columns:repeat(3,1fr);gap:0}
+#p0track.open .p0t-body{display:grid}
+#p0track.open .p0t-toggle::after{content:'▲'}
+.p0t-toggle::after{content:'▼';margin-left:3px}
+.p0t-col{padding:8px 10px;border-right:1px solid var(--bd)}
+.p0t-col:last-child{border-right:none}
+.p0t-theme{font-size:8px;font-weight:700;letter-spacing:.15em;margin-bottom:5px}
+.p0t-theme.mkt{color:var(--blue)}.p0t-theme.cst{color:var(--teal)}.p0t-theme.cmp{color:var(--amb)}
+.p0t-bar{height:3px;background:var(--bd);margin-bottom:4px}
+.p0t-fill{height:3px}.p0t-fill.mkt{background:var(--blue)}.p0t-fill.cst{background:var(--teal)}.p0t-fill.cmp{background:var(--amb)}
+.p0t-verdict{font-size:9px;font-weight:600;margin-top:3px}
 
-/* MARKET DATA */
-.kv-row{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px solid var(--bd)}
-.kv-row:last-child{border-bottom:none}
-.kv-k{font-size:9px;color:var(--td)}
-.kv-v{font-size:11px;font-weight:700;color:var(--wht)}
-.kv-sub{font-size:9px;color:var(--td)}
-.kv-v.up{color:var(--teal)}.kv-v.dn{color:var(--red)}.kv-v.amb{color:var(--amb)}
+/* ── TWO-COL ── */
+.two-col{display:grid;grid-template-columns:63% 37%;gap:8px;margin-bottom:8px}
 
-/* SHARE BAR */
-.share-bar{margin:6px 0}
-.share-bar-track{height:6px;background:var(--bd);display:flex;overflow:hidden}
-.share-seg-usdt{height:6px;background:#888866}
-.share-seg-usdc{height:6px;background:var(--blue)}
-.share-seg-other{height:6px;background:var(--bd3)}
-.share-labels{display:flex;justify-content:space-between;margin-top:3px;font-size:8px;color:var(--td)}
+/* ── AI SUMMARY ── */
+.ai-sum{background:var(--p2);border:1px solid var(--bd);border-left:3px solid var(--blue);padding:10px 12px;margin-bottom:6px}
+.ai-sum-h{font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--blue);margin-bottom:8px}
+.ai-sum-p{font-size:10px;color:var(--td);line-height:1.7;margin-bottom:5px}
+.ai-sum-p:last-child{margin-bottom:0}
+.hl{color:var(--wht);font-weight:600}.hl-t{color:var(--teal)}.hl-a{color:var(--amb)}.hl-r{color:var(--rb)}
 
-/* TVL mini */
-.tvl-row{display:flex;align-items:center;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--bd)}
-.tvl-row:last-child{border-bottom:none}
-.tvl-name{font-size:10px;font-weight:600;color:var(--wht)}
-.tvl-val{font-size:10px;color:var(--td)}
-.tvl-chg{font-size:9px;font-weight:600}
-.tvl-bar-w{flex:1;height:2px;background:var(--bd);margin:0 6px}
-.tvl-bar-f{height:2px;background:var(--blue)}
+/* ── P0 THREE-COL ── */
+.p0-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:6px}
+.p0-col{border:1px solid var(--bd);display:flex;flex-direction:column}
+.p0-col-h{padding:5px 7px;border-bottom:1px solid var(--bd);background:var(--p2);display:flex;align-items:center;justify-content:space-between}
+.p0-col-label{font-size:7px;font-weight:700;letter-spacing:.2em}
+.p0-col-label.mkt{color:var(--blue)}.p0-col-label.cst{color:var(--teal)}.p0-col-label.cmp{color:var(--amb)}
+.p0-col-body{padding:6px 7px;flex:1;background:var(--p1);font-size:9px}
+.p0-col-foot{padding:4px 7px;border-top:1px solid var(--bd);background:var(--p2);font-size:8px;font-weight:600}
+.p0-col-foot.go{color:var(--teal)}.p0-col-foot.watch{color:var(--amb)}.p0-col-foot.nd{color:var(--tf)}
+.kv{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid var(--p3)}
+.kv:last-child{border-bottom:none}
+.kv-k{color:var(--td);font-size:9px}.kv-v{font-weight:700;color:var(--wht);font-size:10px}
+.kv-v.up{color:var(--teal)}.kv-v.amb{color:var(--amb)}
+/* share bar */
+.sbar-wrap{display:flex;height:5px;margin:5px 0}
+.sbar-usdt{background:#887755}.sbar-usdc{background:var(--blue)}.sbar-oth{background:var(--bd3)}
+.sbar-lbl{display:flex;justify-content:space-between;font-size:7px;color:var(--td);margin-bottom:4px}
+/* customer */
+.cst-sig{background:var(--p2);border-left:2px solid var(--teal);padding:4px 6px;margin-bottom:4px}
+.cst-co{font-size:10px;font-weight:700;color:var(--wht);margin-bottom:1px}
+.cst-why{font-size:9px;color:var(--teal)}
+.insuf{font-size:8px;color:var(--tf);border:1px dashed var(--bd2);padding:5px 6px;text-align:center;margin-top:4px}
+/* interview bar */
+.int-bar{background:var(--p3);border:1px solid var(--bd2);padding:5px 6px;margin-top:5px}
+.int-h{font-size:7px;color:var(--tf);letter-spacing:.12em;margin-bottom:4px}
+.int-track{height:3px;background:var(--bd);margin-bottom:3px}
+.int-fill{height:3px;background:var(--teal)}
+/* competitor */
+.cmp-sig{background:var(--p2);border-left:2px solid var(--amb);padding:4px 6px;margin-bottom:4px}
+.cmp-name{font-size:10px;font-weight:700;color:var(--wht);margin-bottom:1px}
+.cmp-gap{font-size:9px;color:var(--amb)}
+.thr{font-size:7px;padding:1px 4px;font-weight:700;letter-spacing:.08em;border:1px solid var(--red);background:var(--rlg);color:var(--rb)}
+.thr.m{border-color:var(--amb);background:var(--alg);color:var(--amb)}
+.win-box{background:var(--p3);border:1px solid var(--bd2);padding:5px 6px;margin-top:5px}
+.win-lbl{font-size:7px;color:var(--tf);letter-spacing:.12em;margin-bottom:2px}
+.win-val{font-size:14px;font-weight:700;color:var(--amb)}
+.win-note{font-size:8px;color:var(--td);margin-top:2px}
 
-/* CUSTOMER signals */
-.cst-sub{font-size:8px;font-weight:700;letter-spacing:.15em;color:var(--td);padding:4px 0;border-bottom:1px solid var(--bd);margin-bottom:5px;display:flex;align-items:center;gap:6px}
-.cst-sub .tg{font-size:7px;padding:1px 4px;border:1px solid var(--bd2);color:var(--tf)}
-.cust-sig{background:var(--p2);border-left:2px solid var(--teal);padding:5px 7px;margin-bottom:4px}
-.cust-co{font-size:10px;font-weight:700;color:var(--wht)}
-.cust-ev{font-size:9px;color:var(--td);margin-bottom:2px}
-.cust-why{font-size:9px;color:var(--teal)}
-.cust-nodata{padding:12px 0;text-align:center;color:var(--tf);font-size:9px}
-.insuf{font-size:9px;padding:5px 7px;background:var(--p3);border:1px dashed var(--bd2);color:var(--tf);text-align:center;margin:4px 0}
-
-/* COMPETITOR */
-.comp-sig{background:var(--p2);border-left:2px solid var(--amb);padding:5px 7px;margin-bottom:4px}
-.comp-name{font-size:10px;font-weight:700;color:var(--wht)}
-.comp-ev{font-size:9px;color:var(--td);margin-bottom:2px}
-.comp-gap{font-size:9px;color:var(--amb)}
-.comp-threat{font-size:7px;padding:1px 4px;font-weight:700;letter-spacing:.08em;margin-left:auto}
-.comp-threat.H{background:var(--rlg);color:var(--rb);border:1px solid var(--red)}
-.comp-threat.M{background:var(--alg);color:var(--amb);border:1px solid var(--amb)}
-.comp-win{background:var(--p3);border:1px solid var(--bd2);padding:6px 8px;margin-top:4px}
-.comp-win-lbl{font-size:7px;color:var(--tf);letter-spacing:.15em;margin-bottom:3px}
-.comp-win-val{font-size:13px;font-weight:700;color:var(--amb)}
-.comp-win-note{font-size:9px;color:var(--td);margin-top:2px}
-
-/* MODULE 3 — ACTION SIGNALS */
-#m3{margin-bottom:6px}
-.m3-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.m3-title{font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--td)}
+/* ── ACTIONABLE SIGNALS ── */
+.sig-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.sig-title{font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--td)}
 .sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
-.sig-card{background:var(--p1);border:1px solid var(--bd);border-left:3px solid transparent;padding:8px 9px}
-.sig-card.H{border-left-color:var(--red)}.sig-card.M{border-left-color:var(--amb)}
-.sig-top{display:flex;align-items:center;gap:5px;margin-bottom:4px}
-.sbadge{font-size:7px;font-weight:700;padding:1px 5px;letter-spacing:.1em;flex-shrink:0}
-.sbadge.H{background:var(--red);color:#fff}.sbadge.M{background:var(--amb);color:#000}
-.s-theme{font-size:7px;padding:1px 5px;border:1px solid var(--bd2);font-weight:700}
-.s-theme.mkt{color:var(--blue);border-color:var(--blue)}.s-theme.cst{color:var(--teal);border-color:var(--teal)}.s-theme.cmp{color:var(--amb);border-color:var(--amb)}
-.sfactor{font-size:7px;color:var(--tf);padding:1px 4px;border:1px solid var(--bd2)}
-.sdate{font-size:8px;color:var(--tf);margin-left:auto}
-.stitle{font-size:11px;font-weight:600;color:var(--wht);margin-bottom:3px;line-height:1.3}
-.swhy{font-size:9px;color:var(--td);margin-bottom:2px}
-.simp{font-size:9px;color:var(--amb);margin-bottom:2px}
-.shyp{font-size:8px;color:var(--tf);margin-bottom:3px;padding:2px 5px;background:var(--p2);border-left:2px solid var(--bd3)}
-.sent{font-size:8px;color:var(--tf);margin-bottom:3px}
-.sact{font-size:9px;color:var(--teal);padding-top:4px;border-top:1px solid var(--bd)}
+.sc{background:var(--p1);border:1px solid var(--bd);border-left:3px solid transparent;padding:8px 9px}
+.sc.H{border-left-color:var(--red)}.sc.M{border-left-color:var(--amb)}
+.sc-top{display:flex;align-items:center;gap:5px;margin-bottom:4px}
+.badge{font-size:7px;font-weight:700;padding:1px 5px;letter-spacing:.1em;flex-shrink:0}
+.badge.H{background:var(--red);color:#fff}.badge.M{background:var(--amb);color:#000}
+.tag-theme{font-size:7px;padding:1px 5px;border:1px solid;font-weight:700}
+.tag-theme.mkt{color:var(--blue);border-color:var(--blue)}
+.tag-theme.cst{color:var(--teal);border-color:var(--teal)}
+.tag-theme.cmp{color:var(--amb);border-color:var(--amb)}
+.tag-f{font-size:7px;color:var(--tf);padding:1px 4px;border:1px solid var(--bd2)}
+.sc-date{font-size:8px;color:var(--tf);margin-left:auto}
+.sc-title{font-size:11px;font-weight:600;color:var(--wht);margin-bottom:3px;line-height:1.3}
+.sc-why{font-size:9px;color:var(--td);margin-bottom:2px}
+.sc-imp{font-size:9px;color:var(--amb);margin-bottom:2px}
+.sc-hyp{font-size:8px;color:var(--tf);padding:2px 5px;background:var(--p2);border-left:2px solid var(--bd3);margin-bottom:3px}
+.sc-ent{font-size:8px;color:var(--tf);margin-bottom:3px}
+.sc-act{font-size:9px;color:var(--teal);padding-top:4px;border-top:1px solid var(--bd)}
 
-/* pane elements */
-.sec{font-size:8px;color:var(--tf);margin-top:5px;border-top:1px solid var(--bd);padding-top:4px}
+/* ── RIGHT PANELS ── */
+.rpane{background:var(--p1);border:1px solid var(--bd);margin-bottom:6px}
+.rp-h{display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border-bottom:1px solid var(--bd);background:var(--p2)}
+.rp-t{font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--td)}
+.rp-m{font-size:8px;color:var(--tf)}
+.rp-b{padding:7px 8px}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:4px 5px;font-size:8px;color:var(--tf);letter-spacing:.15em;border-bottom:1px solid var(--bd);font-weight:500;white-space:nowrap}
+td{padding:5px;font-size:10px;border-bottom:1px solid var(--p3);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+.sym{font-weight:700;color:var(--wht)}.smcap{color:var(--td)}
+.sdot-s{width:5px;height:5px;border-radius:50%!important;display:inline-block;margin-right:2px}
+.sdot-s.ok{background:var(--grn)}.sdot-s.w{background:var(--amb)}.sdot-s.r{background:var(--rb)}
+.tvl-bar-wrap{height:2px;background:var(--bd);margin-top:3px}
+.tvl-bar-fill{height:2px;background:var(--blue)}
+.src-note{font-size:8px;color:var(--tf);border-top:1px solid var(--bd);padding-top:4px;margin-top:3px}
+
+/* ── AI COPILOT ── */
+.copilot{display:flex;gap:5px;padding:6px;background:var(--p2);border:1px solid var(--bd);border-top:1px solid var(--blg);margin-top:6px}
+.c-lbl{font-size:9px;color:var(--blue);display:flex;align-items:center;white-space:nowrap;padding-right:8px;border-right:1px solid var(--bd)}
+.c-inp{flex:1;background:transparent;border:1px solid var(--bd2);color:var(--t);padding:5px 8px;font-family:inherit;font-size:10px;outline:none}
+.c-inp:focus{border-color:var(--blue)}.c-inp::placeholder{color:var(--tf)}
+.c-btn{padding:5px 12px;background:var(--blue);color:#fff;border:none;cursor:pointer;font-family:inherit;font-size:10px}
+.c-btn:hover{background:#1A7AFF}
+
+/* ── HEALTH & WEEKLY pages ── */
+.hstat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px}
+.hstat{background:var(--p1);border:1px solid var(--bd);padding:8px 10px}
+.hstat-n{font-size:18px;font-weight:700;margin-bottom:1px}.hstat-l{font-size:8px;color:var(--tf);letter-spacing:.1em}
+.hs-ok{color:var(--teal)}.hs-w{color:var(--amb)}.hs-r{color:var(--rb)}.hs-wh{color:var(--wht)}
+.hrow-ok td{border-left:2px solid var(--grn)}.hrow-w td{border-left:2px solid var(--amb)}.hrow-r td{border-left:2px solid var(--rb)}
+.wmets{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
+.wm{background:var(--p1);border:1px solid var(--bd);border-top:2px solid var(--teal);padding:8px}
+.wm-v{font-size:16px;font-weight:700;color:var(--wht);margin-bottom:1px}.wm-l{font-size:8px;color:var(--tf);letter-spacing:.1em}
+.wsecs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.ws{background:var(--p1);border:1px solid var(--bd);padding:10px}
+.wsh{font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--td);border-bottom:1px solid var(--bd);padding-bottom:5px;margin-bottom:7px}
+.wi{display:flex;gap:5px;align-items:flex-start;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid var(--bd)}
+.wi:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.wi-t{font-size:10px;color:var(--t);line-height:1.35}
+.recs{background:var(--p2);border:1px solid var(--bd);border-left:3px solid var(--teal);padding:10px 12px;margin-top:6px}
+.recs-h{font-size:8px;font-weight:700;letter-spacing:.2em;color:var(--teal);margin-bottom:7px}
+.rec{font-size:10px;color:var(--td);margin-bottom:5px;padding-left:8px;border-left:1px solid var(--bd2);line-height:1.5}
 </style>
 </head>
 <body>
 
-<!-- MODULE 0: SYSTEM STATUS BAR -->
-<div id="m0">
-  <div class="m0-brand">OSL · P0</div>
-  <div class="m0-status">
-    <span class="sdot ok blink" id="mst-dot"></span>
-    <span id="mst-txt" class="st-ok">NOMINAL</span>
-  </div>
-  <div class="m0-supply"><span id="m0-sup">$315.4B</span></div>
-  <div class="m0-chg up" id="m0-chg">+2.1% 7D</div>
-  <div class="m0-alerts" id="m0-al">0 ALERT · 0 WATCH</div>
+<!-- TOPBAR: ticker + clock + lang -->
+<div id="topbar">
+  <div class="tb-brand">OSL</div>
   <div id="ticker-wrap">
     <div id="ticker-inner">
       <div class="tk"><span class="tk-s">USDT</span><span class="tk-p">0.9996</span><span class="dn">▼0.041%</span></div>
@@ -199,11 +223,11 @@ nav{flex:1;padding:5px 0}
       <div class="tk"><span class="tk-s">USDG</span><span class="tk-p">0.9999</span><span class="dn">▼0.003%</span></div>
     </div>
   </div>
-  <div class="m0-right">
+  <div class="tb-right">
     <button class="lbtn active" id="btn-en" onclick="setLang('en')">EN</button>
     <button class="lbtn" id="btn-zh" onclick="setLang('zh')">中文</button>
-    <span id="clk">--:--:--</span>
-    <span class="sdot ok blink"></span>
+    <div id="clock" class="clock">--:--:--</div>
+    <div class="live-row"><span class="dot g blink"></span><span>LIVE</span></div>
   </div>
 </div>
 
@@ -212,335 +236,402 @@ nav{flex:1;padding:5px 0}
   <div class="sb-logo">
     <div><span class="sb-osl">OSL</span></div>
     <div class="sb-name">StableHub Terminal</div>
-    <div class="sb-sub">P0 RESEARCH MONITOR</div>
+    <div class="sb-sub">INSTITUTIONAL INTELLIGENCE</div>
   </div>
   <nav>
     <div class="nl">MONITOR</div>
-    <div class="ni active" onclick="gp('cmd',this)"><span class="ni-n">01</span><span data-en="COMMAND CENTER" data-zh="指挥中心">COMMAND CENTER</span><span class="ni-b" id="hc">3</span></div>
-    <div class="ni" onclick="gp('sigs',this)"><span class="ni-n">02</span><span data-en="SIGNAL FEED" data-zh="信号流">SIGNAL FEED</span></div>
-    <div class="ni" onclick="gp('hlth',this)"><span class="ni-n">03</span><span data-en="PEG MONITOR" data-zh="锚定监控">PEG MONITOR</span></div>
+    <div class="ni active" onclick="gp('cmd',this)"><span class="ni-n">01</span><span data-en="COMMAND CENTER" data-zh="指挥中心">COMMAND CENTER</span><span class="ni-b" id="hc">3H</span></div>
+    <div class="ni" onclick="gp('hlth',this)"><span class="ni-n">02</span><span data-en="HEALTH MONITOR" data-zh="健康监控">HEALTH MONITOR</span></div>
     <div class="nl">REPORTS</div>
-    <div class="ni" onclick="gp('wk',this)"><span class="ni-n">04</span><span data-en="WEEKLY BRIEF" data-zh="周报">WEEKLY BRIEF</span></div>
+    <div class="ni" onclick="gp('wk',this)"><span class="ni-n">03</span><span data-en="WEEKLY BRIEF" data-zh="周报">WEEKLY BRIEF</span></div>
   </nav>
   <div class="sb-ft">
-    <div class="sb-ds"><span class="sdot ok"></span><span>DefiLlama · Live</span></div>
-    <div style="font-size:7px;color:var(--tf);margin-top:2px">v4.0 · OSL Research</div>
+    <div class="sb-ds"><span class="dot g"></span><span>DefiLlama · Live</span></div>
+    <div style="font-size:7px;color:var(--tf);margin-top:2px">v5.0 · OSL Research · Mar 2026</div>
   </div>
 </div>
 
 <!-- MAIN -->
 <div id="main">
 
-<!-- ██ COMMAND CENTER PAGE ██ -->
+<!-- ══════════ COMMAND CENTER ══════════ -->
 <div class="pg active" id="page-cmd">
 
-  <!-- MODULE 1: P0 RESEARCH PROGRESS TRACKER -->
-  <div id="m1" onclick="toggleM1()">
-    <div class="m1-h">
-      <span class="m1-title" data-en="P0 RESEARCH HYPOTHESIS TRACKER" data-zh="P0 研究假设追踪">P0 RESEARCH HYPOTHESIS TRACKER</span>
-      <span style="font-size:9px;color:var(--td)" data-en="3 themes · Click to expand" data-zh="3个主题 · 点击展开">3 themes · Click to expand</span>
-      <span class="m1-toggle"></span>
+  <!-- 4 KPI Cards (from v3 — kept) -->
+  <div class="kpi-strip">
+    <div class="kpi">
+      <div class="kpi-lbl" data-en="TOTAL STABLECOIN MARKET" data-zh="稳定币总市值">TOTAL STABLECOIN MARKET</div>
+      <div class="kpi-val" id="kpi-mkt">$315.4B</div>
+      <div class="kpi-sub up" id="kpi-mkt-sub">+2.1% 7D · ATH</div>
     </div>
-    <div class="m1-items" id="m1-body">
-      <div class="m1-item">
-        <div class="m1-theme mkt" data-en="MARKET SIZE" data-zh="市场规模">MARKET SIZE</div>
-        <div class="m1-bar-wrap"><div class="m1-bar mkt" style="width:78%"></div></div>
-        <div class="m1-stats">
-          <span style="font-size:9px;color:var(--td)" data-en="6 confirming · 0 against" data-zh="6条支持 · 0条反对">6 confirming · 0 against</span>
-          <span style="font-size:9px;color:var(--tf)">Mar 23</span>
-        </div>
-        <div class="m1-verdict" style="color:var(--teal)" data-en="→ GO — TAM >$200B confirmed" data-zh="→ 进行 — TAM >$200B 已确认">→ GO — TAM >$200B confirmed</div>
+    <div class="kpi teal">
+      <div class="kpi-lbl" data-en="MARKET HEALTH" data-zh="市场健康度">MARKET HEALTH</div>
+      <div class="kpi-val" id="kpi-health" style="color:var(--teal)">94<span style="font-size:12px;color:var(--td)">/100</span></div>
+      <div class="kpi-sub" style="color:var(--teal)" id="kpi-health-sub" data-en="All pegs stable" data-zh="全部锚定稳定">All pegs stable</div>
+    </div>
+    <div class="kpi amb">
+      <div class="kpi-lbl" data-en="ACTIVE REG SIGNALS" data-zh="活跃监管信号">ACTIVE REG SIGNALS</div>
+      <div class="kpi-val" style="color:var(--amb)">5</div>
+      <div class="kpi-sub" style="color:var(--amb)" data-en="3 HIGH · 2 MED" data-zh="3高优先 · 2中优先">3 HIGH · 2 MED</div>
+    </div>
+    <div class="kpi teal">
+      <div class="kpi-lbl" data-en="USDGO OPP. INDEX" data-zh="USDGO机遇指数">USDGO OPP. INDEX</div>
+      <div class="kpi-val" style="color:var(--teal)">7.2<span style="font-size:12px;color:var(--td)">/10</span></div>
+      <div class="kpi-sub" style="color:var(--teal)" data-en="Expanding · Window open" data-zh="扩张中 · 窗口开放">Expanding · Window open</div>
+    </div>
+  </div>
+
+  <!-- P0 Research Tracker (from v4 — new) -->
+  <div id="p0track" onclick="toggleP0()">
+    <div class="p0t-head">
+      <span class="p0t-title" data-en="P0 RESEARCH HYPOTHESIS TRACKER" data-zh="P0 研究假设追踪">P0 RESEARCH HYPOTHESIS TRACKER</span>
+      <span style="font-size:8px;color:var(--td)" data-en="Market Size · Customer Pain · Competitive Gap — click to expand" data-zh="市场规模 · 客户痛点 · 竞品缺口 — 点击展开">Market Size · Customer Pain · Competitive Gap — click to expand</span>
+      <span class="p0t-toggle"></span>
+    </div>
+    <div class="p0t-body" id="p0-body">
+      <div class="p0t-col">
+        <div class="p0t-theme mkt" data-en="MARKET SIZE" data-zh="市场规模">MARKET SIZE</div>
+        <div class="p0t-bar"><div class="p0t-fill mkt" style="width:78%"></div></div>
+        <div style="font-size:8px;color:var(--td)" data-en="6 signals confirming · 0 against" data-zh="6条支持 · 0条反对">6 signals confirming · 0 against</div>
+        <div class="p0t-verdict" style="color:var(--teal)" data-en="▲ GO — TAM >$200B confirmed" data-zh="▲ 进行 — TAM >$200B 已确认">▲ GO — TAM >$200B confirmed</div>
       </div>
-      <div class="m1-item">
-        <div class="m1-theme cst" data-en="CUSTOMER PAIN" data-zh="客户痛点">CUSTOMER PAIN</div>
-        <div class="m1-bar-wrap"><div class="m1-bar cst" style="width:15%"></div></div>
-        <div class="m1-stats">
-          <span style="font-size:9px;color:var(--td)" data-en="1 signal · 0 interviews" data-zh="1条信号 · 0次访谈">1 signal · 0 interviews</span>
-          <span style="font-size:9px;color:var(--tf)">Mar 22</span>
-        </div>
-        <div class="m1-verdict" style="color:var(--tf)" data-en="░ INSUFFICIENT — need 30+ interviews" data-zh="░ 数据不足 — 需要30+次访谈">░ INSUFFICIENT — need 30+ interviews</div>
+      <div class="p0t-col">
+        <div class="p0t-theme cst" data-en="CUSTOMER PAIN" data-zh="客户痛点">CUSTOMER PAIN</div>
+        <div class="p0t-bar"><div class="p0t-fill cst" style="width:12%"></div></div>
+        <div style="font-size:8px;color:var(--td)" data-en="1 signal · 0 / 50 interviews" data-zh="1条信号 · 0 / 50次访谈">1 signal · 0 / 50 interviews</div>
+        <div class="p0t-verdict" style="color:var(--tf)" data-en="░ INSUFFICIENT — PMF interviews needed" data-zh="░ 数据不足 — 需要PMF访谈">░ INSUFFICIENT — PMF interviews needed</div>
       </div>
-      <div class="m1-item">
-        <div class="m1-theme cmp" data-en="COMPETITIVE GAP" data-zh="竞品缺口">COMPETITIVE GAP</div>
-        <div class="m1-bar-wrap"><div class="m1-bar cmp" style="width:55%"></div></div>
-        <div class="m1-stats">
-          <span style="font-size:9px;color:var(--td)" data-en="4 signals · window active" data-zh="4条信号 · 窗口活跃">4 signals · window active</span>
-          <span style="font-size:9px;color:var(--tf)">Mar 23</span>
-        </div>
-        <div class="m1-verdict" style="color:var(--amb)" data-en="⚠ WATCH — Mastercard/BVNK compresses window" data-zh="⚠ 观察 — Mastercard/BVNK 压缩窗口">⚠ WATCH — Mastercard/BVNK compresses window</div>
+      <div class="p0t-col">
+        <div class="p0t-theme cmp" data-en="COMPETITIVE GAP" data-zh="竞品缺口">COMPETITIVE GAP</div>
+        <div class="p0t-bar"><div class="p0t-fill cmp" style="width:55%"></div></div>
+        <div style="font-size:8px;color:var(--td)" data-en="4 signals · window compressing" data-zh="4条信号 · 窗口收窄">4 signals · window compressing</div>
+        <div class="p0t-verdict" style="color:var(--amb)" data-en="⚠ ACCELERATE — 6-12 mo window" data-zh="⚠ 加速 — 6-12个月窗口">⚠ ACCELERATE — 6-12 mo window</div>
       </div>
     </div>
   </div>
 
-  <!-- MODULE 2: THREE-COLUMN P0 THEMES -->
-  <div class="m2-grid">
+  <!-- Two-column: LEFT = AI Summary + P0 Cols + Signals; RIGHT = live data -->
+  <div class="two-col">
 
-    <!-- 2A: MARKET SIZE -->
-    <div class="m2-col">
-      <div class="m2-head">
-        <span class="m2-label mkt" data-en="MARKET SIZE" data-zh="市场规模">MARKET SIZE</span>
-        <span style="font-size:8px;color:var(--tf)">P0 · Theme 1</span>
+    <!-- LEFT -->
+    <div>
+      <!-- AI Executive Summary (from v3 — kept) -->
+      <div class="ai-sum">
+        <div class="ai-sum-h" data-en="◈ AI EXECUTIVE SUMMARY — MARCH 23, 2026" data-zh="◈ AI 高管摘要 — 2026年3月23日">◈ AI EXECUTIVE SUMMARY — MARCH 23, 2026</div>
+        <div class="ai-sum-p" data-en="Stablecoin total supply reached <span class='hl'>$315.4B ATH</span>. USDC maintained <span class='hl-t'>25% market share</span> vs USDT 58.4%, leaving a <span class='hl-t'>16.6% addressable base</span> for institutional alternatives like USDGO." data-zh="稳定币总供应量创历史新高 <span class='hl'>$315.4B</span>。USDC 维持 <span class='hl-t'>25%市场份额</span>，对比 USDT 58.4%，留下了 <span class='hl-t'>16.6%可寻址基础</span> 供 USDGO 等机构替代品进入。">Stablecoin total supply reached <span class="hl">$315.4B ATH</span>. USDC maintained <span class="hl-t">25% market share</span> vs USDT 58.4%, leaving a <span class="hl-t">16.6% addressable base</span> for institutional alternatives like USDGO.</div>
+        <div class="ai-sum-p"><span class="hl-t" data-en="STRATEGIC PRIORITY:" data-zh="战略优先项：">STRATEGIC PRIORITY:</span> <span data-en="US GENIUS Act breakthrough unlocks USDGO yield distribution compliance. HKMA registration window is live. Mastercard/BVNK acquisition compresses StableHub competitive window to 6-12 months — accelerate B2B pipeline." data-zh="美国 GENIUS Act 突破解锁 USDGO 收益分配合规路径。HKMA 注册窗口已开放。Mastercard/BVNK 收购将 StableHub 竞争窗口压缩至6-12个月——加速 B2B 管道。">US GENIUS Act breakthrough unlocks USDGO yield distribution compliance. HKMA registration window is live. Mastercard/BVNK acquisition compresses StableHub competitive window to 6-12 months — accelerate B2B pipeline.</span></div>
+        <div class="ai-sum-p"><span class="hl-a" data-en="P0 GAP:" data-zh="P0 缺口：">P0 GAP:</span> <span data-en="Customer Pain (Theme 2) has only 1 weak signal. Cannot confirm PMF without 30+ structured interviews. This is the research priority before any product decision." data-zh="客户痛点(主题2)仅有1条弱信号，无法在30+结构化访谈前确认PMF，这是任何产品决策前的研究优先项。">Customer Pain (Theme 2) has only 1 weak signal. Cannot confirm PMF without 30+ structured interviews. This is the research priority before any product decision.</span></div>
       </div>
-      <div class="m2-q" data-en="Is the market big enough and growing fast enough to build on?" data-zh="市场是否足够大、增速足够快？">Is the market big enough and growing fast enough to build on?</div>
-      <div class="m2-body">
-        <!-- Core numbers -->
-        <div class="kv-row"><span class="kv-k" data-en="Total Supply" data-zh="总供应量">Total Supply</span><span class="kv-v" id="sup-val">$315.4B</span></div>
-        <div class="kv-row"><span class="kv-k" data-en="7D Growth" data-zh="7天增长">7D Growth</span><span class="kv-v up" id="chg-7d">+2.1%</span></div>
-        <div class="kv-row"><span class="kv-k" data-en="USDGO Addressable" data-zh="USDGO可寻址">USDGO Addressable</span><span class="kv-v amb" id="addr">~$52B (16.6%)</span></div>
-        <!-- Share bar -->
-        <div class="share-bar">
-          <div class="share-bar-track">
-            <div class="share-seg-usdt" id="bar-usdt" style="width:58.4%"></div>
-            <div class="share-seg-usdc" id="bar-usdc" style="width:25%"></div>
-            <div class="share-seg-other" id="bar-other" style="width:16.6%"></div>
+
+      <!-- P0 Three-column (from v4 — new) -->
+      <div class="p0-cols">
+        <!-- Market Size -->
+        <div class="p0-col">
+          <div class="p0-col-h"><span class="p0-col-label mkt" data-en="MARKET SIZE" data-zh="市场规模">MARKET SIZE</span><span style="font-size:7px;color:var(--tf)">T1</span></div>
+          <div class="p0-col-body">
+            <div class="kv"><span class="kv-k" data-en="Total Supply" data-zh="总供应">Total Supply</span><span class="kv-v" id="p0-sup">$315.4B</span></div>
+            <div class="kv"><span class="kv-k" data-en="7D Growth" data-zh="7天增长">7D Growth</span><span class="kv-v up" id="p0-chg">+2.1%</span></div>
+            <div class="kv"><span class="kv-k" data-en="USDGO TAM" data-zh="USDGO TAM">USDGO TAM</span><span class="kv-v amb" id="p0-tam">~$52B</span></div>
+            <div style="margin:5px 0 2px;font-size:7px;color:var(--tf);letter-spacing:.1em">SHARE</div>
+            <div class="sbar-lbl"><span id="s-usdt">USDT 58.4%</span><span id="s-usdc">USDC 25.0%</span><span style="color:var(--teal)" id="s-oth">Other 16.6%</span></div>
+            <div class="sbar-wrap"><div class="sbar-usdt" id="b-usdt" style="width:58.4%"></div><div class="sbar-usdc" id="b-usdc" style="width:25%"></div><div class="sbar-oth" id="b-oth" style="width:16.6%"></div></div>
+            <div style="margin-top:6px;font-size:7px;color:var(--tf);letter-spacing:.1em" data-en="YIELD BENCHMARKS" data-zh="收益基准">YIELD BENCHMARKS</div>
+            <div id="tvl-p0" style="margin-top:3px;font-size:9px;color:var(--tf)">Loading...</div>
           </div>
-          <div class="share-labels">
-            <span id="usdt-lbl">USDT 58.4%</span>
-            <span id="usdc-lbl">USDC 25.0%</span>
-            <span id="other-lbl" style="color:var(--teal)">Other 16.6% ← USDGO TAM</span>
-          </div>
+          <div class="p0-col-foot go" data-en="▲ GO — TAM confirmed" data-zh="▲ 进行 — TAM已确认">▲ GO — TAM confirmed</div>
         </div>
-        <!-- TVL top 3 -->
-        <div style="font-size:8px;color:var(--tf);letter-spacing:.12em;margin:6px 0 4px" data-en="YIELD PROTOCOL BENCHMARKS" data-zh="收益协议基准">YIELD PROTOCOL BENCHMARKS</div>
-        <div id="tvl-mini"><div style="color:var(--tf);font-size:9px;padding:6px 0">Loading...</div></div>
-        <div class="sec" data-en="SOURCE: DefiLlama · Live" data-zh="来源：DefiLlama · 实时">SOURCE: DefiLlama · Live</div>
+        <!-- Customer Pain -->
+        <div class="p0-col">
+          <div class="p0-col-h"><span class="p0-col-label cst" data-en="CUSTOMER PAIN" data-zh="客户痛点">CUSTOMER PAIN</span><span style="font-size:7px;color:var(--tf)">T2</span></div>
+          <div class="p0-col-body">
+            <div style="font-size:8px;font-weight:700;letter-spacing:.12em;color:var(--td);border-bottom:1px solid var(--bd);padding-bottom:3px;margin-bottom:5px" data-en="PAYMENT COMPANIES" data-zh="支付公司">PAYMENT COMPANIES</div>
+            <div class="cst-sig">
+              <div class="cst-co">Airwallex <span style="font-size:7px;padding:1px 3px;border:1px solid var(--teal);color:var(--teal)">FUNDING</span></div>
+              <div style="font-size:8px;color:var(--td);margin-bottom:1px" data-en="$120M Series F · Mar 22" data-zh="1.2亿美元F轮 · 3月22日">$120M Series F · Mar 22</div>
+              <div class="cst-why" data-en="→ Has capital to build/buy stablecoin rails" data-zh="→ 有资金自建或收购稳定币通道">→ Has capital to build/buy stablecoin rails</div>
+            </div>
+            <div style="font-size:8px;font-weight:700;letter-spacing:.12em;color:var(--td);border-bottom:1px solid var(--bd);padding-bottom:3px;margin:5px 0 3px" data-en="OTC MERCHANTS" data-zh="OTC商家">OTC MERCHANTS</div>
+            <div class="insuf" data-en="No signals yet" data-zh="暂无信号">No signals yet</div>
+            <div style="font-size:8px;font-weight:700;letter-spacing:.12em;color:var(--td);border-bottom:1px solid var(--bd);padding-bottom:3px;margin:5px 0 3px" data-en="INST. HOLDERS" data-zh="持币机构">INST. HOLDERS</div>
+            <div class="insuf" data-en="No signals yet" data-zh="暂无信号">No signals yet</div>
+            <div class="int-bar">
+              <div class="int-h" data-en="PMF INTERVIEWS: 0 / 50" data-zh="PMF访谈：0 / 50">PMF INTERVIEWS: 0 / 50</div>
+              <div class="int-track"><div class="int-fill" style="width:0%"></div></div>
+              <div style="font-size:8px;color:var(--tf)" data-en="Need 30+ before Go/No-Go" data-zh="需要30+才能判断">Need 30+ before Go/No-Go</div>
+            </div>
+          </div>
+          <div class="p0-col-foot nd" data-en="░ INSUFFICIENT — interviews required" data-zh="░ 数据不足 — 需要访谈">░ INSUFFICIENT — interviews required</div>
+        </div>
+        <!-- Competitive Gap -->
+        <div class="p0-col">
+          <div class="p0-col-h"><span class="p0-col-label cmp" data-en="COMPETITIVE GAP" data-zh="竞品缺口">COMPETITIVE GAP</span><span style="font-size:7px;color:var(--tf)">T3</span></div>
+          <div class="p0-col-body">
+            <div style="font-size:8px;font-weight:700;letter-spacing:.12em;color:var(--td);border-bottom:1px solid var(--bd);padding-bottom:3px;margin-bottom:5px" data-en="INFRASTRUCTURE" data-zh="基础设施">INFRASTRUCTURE</div>
+            <div class="cmp-sig">
+              <div style="display:flex;align-items:center;gap:4px;margin-bottom:1px"><span class="cmp-name">BVNK→Mastercard</span><span class="thr">HIGH</span></div>
+              <div style="font-size:8px;color:var(--td);margin-bottom:2px" data-en="Acquired $1.8B · Mar 17" data-zh="18亿美元收购 · 3月17日">Acquired $1.8B · Mar 17</div>
+              <div class="cmp-gap" data-en="Gap: No multi-FX · No Asian B2B · No yield" data-zh="缺口：无多法币 · 无亚洲B2B · 无收益">Gap: No multi-FX · No Asian B2B · No yield</div>
+            </div>
+            <div class="cmp-sig">
+              <div style="display:flex;align-items:center;gap:4px;margin-bottom:1px"><span class="cmp-name">BitGo</span><span class="thr m">MED</span></div>
+              <div style="font-size:8px;color:var(--td);margin-bottom:2px" data-en="AUM +34% YoY · No yield product" data-zh="AUM同比+34% · 无收益产品">AUM +34% YoY · No yield product</div>
+              <div class="cmp-gap" data-en="Gap: No stablecoin swap · No Asian focus" data-zh="缺口：无稳定币兑换 · 无亚洲聚焦">Gap: No stablecoin swap · No Asian focus</div>
+            </div>
+            <div class="win-box">
+              <div class="win-lbl" data-en="COMPETITIVE WINDOW" data-zh="竞争窗口">COMPETITIVE WINDOW</div>
+              <div class="win-val" data-en="6–12 MONTHS" data-zh="6–12个月">6–12 MONTHS</div>
+              <div class="win-note" data-en="Before Mastercard/BVNK scales" data-zh="在Mastercard/BVNK达到规模前">Before Mastercard/BVNK scales</div>
+            </div>
+          </div>
+          <div class="p0-col-foot watch" data-en="⚠ ACCELERATE — window compressing" data-zh="⚠ 加速 — 窗口收窄">⚠ ACCELERATE — window compressing</div>
+        </div>
       </div>
-      <div class="m2-foot">
-        <div class="verdict go" id="mkt-verd">
-          <span>▲</span><span data-en="GO — TAM confirmed at $315B+ · Growth sustained" data-zh="进行 — TAM已确认$315B+ · 增长持续">GO — TAM confirmed at $315B+ · Growth sustained</span>
+
+      <!-- Actionable Intelligence (from v3 — kept + enhanced with P0 tags) -->
+      <div class="sig-head">
+        <span class="sig-title" data-en="ACTIONABLE INTELLIGENCE" data-zh="可执行情报">ACTIONABLE INTELLIGENCE</span>
+        <span style="font-size:8px;color:var(--tf);margin-left:auto" data-en="Signals tagged to P0 research themes" data-zh="信号已标注P0研究主题">Signals tagged to P0 research themes</span>
+      </div>
+      <div class="sig-grid">
+        <div class="sc H">
+          <div class="sc-top"><span class="badge H">HIGH</span><span class="tag-theme mkt" data-en="MARKET" data-zh="市场">MARKET</span><span class="tag-f">F-REG</span><span class="sc-date">Mar 20</span></div>
+          <div class="sc-title" data-en="US GENIUS Act — stablecoin yield now legally permissible" data-zh="美国 GENIUS Act — 稳定币收益现已合法">US GENIUS Act — stablecoin yield now legally permissible</div>
+          <div class="sc-why" data-en="WHY: First explicit US legal permission for yield distribution to holders." data-zh="原因：美国法律首次明确允许向持有者分配收益。">WHY: First explicit US legal permission for yield distribution to holders.</div>
+          <div class="sc-imp" data-en="IMPACT: USDGO compliance path now navigable. Timeline may compress ~6 months." data-zh="影响：USDGO 合规路径现已可行，时间线可缩短约6个月。">IMPACT: USDGO compliance path now navigable. Timeline may compress ~6 months.</div>
+          <div class="sc-hyp" data-en="↳ P0 T1: US yield-bearing stablecoin TAM — CONFIRMING" data-zh="↳ P0 T1：美国生息稳定币TAM — 确认中">↳ P0 T1: US yield-bearing stablecoin TAM — CONFIRMING</div>
+          <div class="sc-ent">US Senate · Circle · USDGO · PayPal · Tether</div>
+          <div class="sc-act" data-en="▶ Legal review of GENIUS Act within 10 business days — blocks product launch" data-zh="▶ 10个工作日内完成法律审查 — 阻塞产品发布">▶ Legal review of GENIUS Act within 10 business days — blocks product launch</div>
         </div>
+        <div class="sc H">
+          <div class="sc-top"><span class="badge H">HIGH</span><span class="tag-theme cmp" data-en="COMPETITOR" data-zh="竞品">COMPETITOR</span><span class="tag-f">F-COMP</span><span class="sc-date">Mar 17</span></div>
+          <div class="sc-title" data-en="Mastercard acquires BVNK $1.8B — TradFi enters stablecoin payment rails" data-zh="Mastercard 以18亿美元收购 BVNK — 传统金融进入稳定币支付通道">Mastercard acquires BVNK $1.8B — TradFi enters stablecoin payment rails</div>
+          <div class="sc-why" data-en="WHY: Infrastructure-level acquisition validates market. Large-scale competition now imminent." data-zh="原因：基础设施级收购验证了市场，大规模竞争即将到来。">WHY: Infrastructure-level acquisition validates market. Large-scale competition now imminent.</div>
+          <div class="sc-imp" data-en="IMPACT: StableHub competitive window 6-12 months. B2B pipeline must accelerate now." data-zh="影响：StableHub 竞争窗口6-12个月，B2B 管道必须立即加速。">IMPACT: StableHub competitive window 6-12 months. B2B pipeline must accelerate now.</div>
+          <div class="sc-hyp" data-en="↳ P0 T3: Differentiated payment infrastructure gap — CONFIRMING, WINDOW CLOSING" data-zh="↳ P0 T3：差异化支付基础设施缺口 — 确认中，窗口关闭中">↳ P0 T3: Differentiated payment infrastructure gap — CONFIRMING, WINDOW CLOSING</div>
+          <div class="sc-ent">Mastercard · BVNK · StableHub · Airwallex · PingPong · Xtransfer</div>
+          <div class="sc-act" data-en="▶ Map BVNK customer list. Initiate BD outreach this week." data-zh="▶ 梳理 BVNK 客户名单，本周启动 BD 接触。">▶ Map BVNK customer list. Initiate BD outreach this week.</div>
+        </div>
+        <div class="sc H">
+          <div class="sc-top"><span class="badge H">HIGH</span><span class="tag-theme mkt" data-en="MARKET" data-zh="市场">MARKET</span><span class="tag-f">F-REG</span><span class="sc-date">Mar 10</span></div>
+          <div class="sc-title" data-en="HKMA opens stablecoin issuer register — application window active" data-zh="金管局稳定币发行人注册开放 — 申请窗口已启动">HKMA opens stablecoin issuer register — application window active</div>
+          <div class="sc-why" data-en="WHY: First-mover HK license is a durable moat. OSL's HKMA relationship creates advantage late entrants can't replicate." data-zh="原因：先发香港牌照是持久护城河，OSL 的 HKMA 关系创造了后来者无法复制的优势。">WHY: First-mover HK license is a durable moat. OSL's HKMA relationship creates advantage late entrants can't replicate.</div>
+          <div class="sc-imp" data-en="IMPACT: Enables USDGO as fully compliant product for Asian institutional market." data-zh="影响：使 USDGO 成为亚洲机构市场的完全合规产品。">IMPACT: Enables USDGO as fully compliant product for Asian institutional market.</div>
+          <div class="sc-hyp" data-en="↳ P0 T1: HK institutional stablecoin entry point — CONFIRMING" data-zh="↳ P0 T1：香港机构稳定币入口 — 确认中">↳ P0 T1: HK institutional stablecoin entry point — CONFIRMING</div>
+          <div class="sc-ent">HKMA · OSL · USDGO · JD.com · RD Technologies</div>
+          <div class="sc-act" data-en="▶ Confirm HKMA sandbox engagement status this week. Assign owner if not started." data-zh="▶ 本周确认 HKMA 沙盒参与状态，如未启动则指定负责人。">▶ Confirm HKMA sandbox engagement status this week. Assign owner if not started.</div>
+        </div>
+        <div class="sc H">
+          <div class="sc-top"><span class="badge H">HIGH</span><span class="tag-theme cst" data-en="CUSTOMER" data-zh="客户">CUSTOMER</span><span class="tag-f">F-CUST</span><span class="sc-date">Mar 22</span></div>
+          <div class="sc-title" data-en="Airwallex $120M Series F — cross-border payment scale accelerating" data-zh="Airwallex 完成1.2亿美元F轮 — 跨境支付规模加速">Airwallex $120M Series F — cross-border payment scale accelerating</div>
+          <div class="sc-why" data-en="WHY: Airwallex is OSL's #1 B2B target. Fresh capital means they'll build or buy stablecoin rails — window to become preferred partner is now." data-zh="原因：Airwallex 是 OSL 最高优先级B2B目标，新融资意味着将自建或收购稳定币能力，成为其首选合作伙伴的窗口现在开放。">WHY: Airwallex is OSL's #1 B2B target. Fresh capital means they'll build or buy stablecoin rails — window to become preferred partner is now.</div>
+          <div class="sc-imp" data-en="IMPACT: Weak confirmation that payment companies have payable stablecoin pain — 1 data point, need 29 more." data-zh="影响：弱确认支付公司有可付费的稳定币痛点 — 1个数据点，还需要29个。">IMPACT: Weak confirmation that payment companies have payable stablecoin pain — 1 data point, need 29 more.</div>
+          <div class="sc-hyp" data-en="↳ P0 T2: Payment companies have payable pain — WEAK (1/50 interviews)" data-zh="↳ P0 T2：支付公司有可付费痛点 — 弱确认(1/50次访谈)">↳ P0 T2: Payment companies have payable pain — WEAK (1/50 interviews)</div>
+          <div class="sc-ent">Airwallex · StableHub · BizPay · PingPong · Xtransfer</div>
+          <div class="sc-act" data-en="▶ Initiate BD contact with Airwallex treasury. Frame as StableHub pilot — not a sales call." data-zh="▶ 与 Airwallex 财务团队启动 BD 接触，定位为 StableHub 试点而非销售对话。">▶ Initiate BD contact with Airwallex treasury. Frame as StableHub pilot — not a sales call.</div>
+        </div>
+      </div>
+
+      <!-- AI Copilot (from v3 — kept) -->
+      <div class="copilot">
+        <span class="c-lbl">◈ ASK</span>
+        <input class="c-inp" id="ci" placeholder="Ask about USDGO strategy, market signals, or P0 research status...">
+        <button class="c-btn" onclick="ask()">→</button>
+      </div>
+    </div><!-- /left -->
+
+    <!-- RIGHT: Live market data (from v3 — kept) -->
+    <div>
+      <div class="rpane">
+        <div class="rp-h"><span class="rp-t" data-en="MARKET SNAPSHOT" data-zh="市场快照">MARKET SNAPSHOT</span><span class="rp-m" id="mkt-upd">LIVE</span></div>
+        <div class="rp-b">
+          <table>
+            <thead><tr><th>ASSET</th><th>PRICE</th><th>DEV</th><th>MCAP</th><th></th></tr></thead>
+            <tbody id="mkt-tbody"><tr><td colspan="5" style="color:var(--tf);text-align:center;padding:12px">Loading...</td></tr></tbody>
+          </table>
+          <div class="src-note" data-en="SOURCE: DefiLlama · 60s refresh" data-zh="来源：DefiLlama · 60秒刷新">SOURCE: DefiLlama · 60s refresh</div>
+        </div>
+      </div>
+      <div class="rpane">
+        <div class="rp-h"><span class="rp-t" data-en="DEFI TVL TRACKER" data-zh="DeFi TVL追踪">DEFI TVL TRACKER</span><span class="rp-m" data-en="30D CHG" data-zh="30天变化">30D CHG</span></div>
+        <div class="rp-b">
+          <table>
+            <thead><tr><th>PROTOCOL</th><th>TVL</th><th>30D</th></tr></thead>
+            <tbody id="tvl-tbody"><tr><td colspan="3" style="color:var(--tf);text-align:center;padding:10px">Loading...</td></tr></tbody>
+          </table>
+          <div class="src-note" data-en="SOURCE: DefiLlama" data-zh="来源：DefiLlama">SOURCE: DefiLlama</div>
+        </div>
+      </div>
+    </div><!-- /right -->
+  </div><!-- /two-col -->
+</div><!-- /cmd -->
+
+<!-- ══════════ HEALTH MONITOR ══════════ -->
+<div class="pg" id="page-hlth">
+  <div id="h-banner" style="padding:7px 12px;margin-bottom:7px;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;border:1px solid var(--teal);background:rgba(0,191,153,.06);color:var(--teal)">
+    <span class="dot g blink"></span><span id="hb-txt">ALL SYSTEMS NOMINAL</span>
+    <span style="margin-left:auto;font-size:8px;color:var(--tf);font-weight:400">±0.1% = HEALTHY · 0.1–0.5% = WATCH · >0.5% = ALERT · SOURCE: DefiLlama</span>
+  </div>
+  <div class="hstat-row">
+    <div class="hstat"><div class="hstat-n hs-wh" id="ph-tot">—</div><div class="hstat-l" data-en="MONITORED" data-zh="监控中">MONITORED</div></div>
+    <div class="hstat"><div class="hstat-n hs-ok" id="ph-ok">—</div><div class="hstat-l" data-en="HEALTHY" data-zh="健康">HEALTHY</div></div>
+    <div class="hstat"><div class="hstat-n hs-w" id="ph-w">—</div><div class="hstat-l" data-en="WATCH" data-zh="观察">WATCH</div></div>
+    <div class="hstat"><div class="hstat-n hs-r" id="ph-a">—</div><div class="hstat-l" data-en="ALERT" data-zh="警报">ALERT</div></div>
+    <div class="hstat"><div class="hstat-n hs-wh">$315.4B</div><div class="hstat-l" data-en="TOTAL MCAP" data-zh="总市值">TOTAL MCAP</div></div>
+  </div>
+  <div class="rpane">
+    <div class="rp-h"><span class="rp-t" data-en="STABLECOIN PEG DEVIATION — REAL TIME" data-zh="稳定币锚定偏差 — 实时">STABLECOIN PEG DEVIATION — REAL TIME</span><span class="rp-m" id="ph-time">—</span></div>
+    <div class="rp-b">
+      <table>
+        <thead><tr><th>ASSET</th><th>PRICE</th><th>DEV%</th><th>STATUS</th><th>MCAP</th><th>SHARE</th><th>UPDATED</th></tr></thead>
+        <tbody id="ph-tbody"><tr><td colspan="7" style="color:var(--tf);text-align:center;padding:20px" data-en="Loading live data..." data-zh="加载实时数据中...">Loading live data...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ WEEKLY BRIEF ══════════ -->
+<div class="pg" id="page-wk">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+    <div style="font-size:8px;font-weight:700;letter-spacing:.18em;color:var(--td)" data-en="WEEKLY INTELLIGENCE BRIEF — W12 2026" data-zh="周情报简报 — 2026年第12周">WEEKLY INTELLIGENCE BRIEF — W12 2026</div>
+    <div style="font-size:8px;color:var(--tf)">Mar 17–23, 2026</div>
+  </div>
+  <div class="wmets">
+    <div class="wm"><div class="wm-v">+2.1%</div><div class="wm-l" data-en="SUPPLY 7D" data-zh="7天供应增长">SUPPLY 7D</div></div>
+    <div class="wm" style="border-top-color:var(--amb)"><div class="wm-v" style="color:var(--amb)">5</div><div class="wm-l" data-en="ACTION SIGNALS" data-zh="行动信号">ACTION SIGNALS</div></div>
+    <div class="wm" style="border-top-color:var(--red)"><div class="wm-v" style="color:var(--red)">3</div><div class="wm-l" data-en="HIGH PRIORITY" data-zh="高优先级">HIGH PRIORITY</div></div>
+    <div class="wm"><div class="wm-v" style="color:var(--teal)">GENIUS</div><div class="wm-l" data-en="KEY REG EVENT" data-zh="关键监管事件">KEY REG EVENT</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:60% 40%;gap:8px">
+    <div class="rpane">
+      <div class="rp-h"><span class="rp-t" data-en="PROTOCOL TVL — LIVE" data-zh="协议TVL — 实时">PROTOCOL TVL — LIVE</span><span class="rp-m" data-en="30D CHANGE" data-zh="30天变化">30D CHANGE</span></div>
+      <div class="rp-b">
+        <table>
+          <thead><tr><th>PROTOCOL</th><th>TVL</th><th>30D</th><th>CATEGORY</th><th>SIGNAL</th></tr></thead>
+          <tbody id="wk-tvl"><tr><td colspan="5" style="color:var(--tf);text-align:center;padding:14px">Loading...</td></tr></tbody>
+        </table>
       </div>
     </div>
-
-    <!-- 2B: CUSTOMER PAIN -->
-    <div class="m2-col">
-      <div class="m2-head">
-        <span class="m2-label cst" data-en="CUSTOMER PAIN" data-zh="客户痛点">CUSTOMER PAIN</span>
-        <span style="font-size:8px;color:var(--tf)">P0 · Theme 2</span>
-      </div>
-      <div class="m2-q" data-en="Are target customers signaling real, payable pain?" data-zh="目标客户是否在释放真实的、可付费的痛点信号？">Are target customers signaling real, payable pain?</div>
-      <div class="m2-body">
-        <!-- Payment companies -->
-        <div class="cst-sub"><span data-en="PAYMENT COMPANIES" data-zh="支付公司">PAYMENT COMPANIES</span><span class="tg">Xtransfer · Airwallex · PingPong</span></div>
-        <div class="cust-sig">
-          <div style="display:flex;align-items:center;gap:5px">
-            <span class="cust-co">Airwallex</span>
-            <span style="font-size:7px;padding:1px 4px;background:var(--tlg);color:var(--teal);border:1px solid var(--teal)">FUNDING</span>
-          </div>
-          <div class="cust-ev" data-en="$120M Series F closed Mar 22" data-zh="3月22日完成1.2亿美元F轮融资">$120M Series F closed Mar 22</div>
-          <div class="cust-why" data-en="→ Has capital to build or buy stablecoin rails. Window to become preferred partner before they go in-house." data-zh="→ 有资金自建或收购稳定币通道。在其自建前成为首选合作伙伴的窗口。">→ Has capital to build or buy stablecoin rails. Window to become preferred partner before they go in-house.</div>
+    <div>
+      <div class="wsecs" style="grid-template-columns:1fr">
+        <div class="ws">
+          <div class="wsh" data-en="MARKET" data-zh="市场">MARKET</div>
+          <div class="wi"><span class="badge H" style="flex-shrink:0">H</span><span class="wi-t" data-en="Supply ATH $315.4B — structural expansion" data-zh="供应量创历史新高$315.4B — 结构性扩张">Supply ATH $315.4B — structural expansion</span></div>
+          <div class="wi"><span class="badge H" style="flex-shrink:0">H</span><span class="wi-t" data-en="Sky/USDS TVL +29.1% MoM — fastest protocol" data-zh="Sky/USDS TVL 月增29.1% — 增速最快协议">Sky/USDS TVL +29.1% MoM — fastest protocol</span></div>
         </div>
-        <!-- OTC -->
-        <div class="cst-sub" style="margin-top:8px"><span data-en="OTC MERCHANTS" data-zh="OTC商家">OTC MERCHANTS</span></div>
-        <div class="insuf" data-en="No structured signals yet · Market intelligence needed" data-zh="暂无结构化信号 · 需要市场情报">No structured signals yet · Market intelligence needed</div>
-        <!-- Institutions -->
-        <div class="cst-sub" style="margin-top:4px"><span data-en="INSTITUTIONAL HOLDERS" data-zh="持币机构">INSTITUTIONAL HOLDERS</span></div>
-        <div class="insuf" data-en="No structured signals yet · PMF interviews needed" data-zh="暂无结构化信号 · 需要PMF访谈">No structured signals yet · PMF interviews needed</div>
-        <!-- Interview tracker -->
-        <div style="margin-top:8px;background:var(--p3);border:1px solid var(--bd2);padding:6px 8px">
-          <div style="font-size:8px;color:var(--tf);letter-spacing:.12em;margin-bottom:5px" data-en="PMF INTERVIEW PROGRESS" data-zh="PMF访谈进度">PMF INTERVIEW PROGRESS</div>
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
-            <div style="flex:1;height:4px;background:var(--bd)"><div style="height:4px;background:var(--teal);width:0%"></div></div>
-            <span style="font-size:9px;color:var(--tf)">0 / 50</span>
-          </div>
-          <div style="font-size:8px;color:var(--tf)" data-en="Target: 50 interviews · Currently: 0 completed" data-zh="目标：50次访谈 · 当前：0次完成">Target: 50 interviews · Currently: 0 completed</div>
+        <div class="ws" style="margin-top:6px">
+          <div class="wsh" data-en="REGULATORY" data-zh="监管">REGULATORY</div>
+          <div class="wi"><span class="badge H" style="flex-shrink:0">H</span><span class="wi-t" data-en="GENIUS Act breakthrough — yield legally OK" data-zh="GENIUS Act 突破 — 收益合法">GENIUS Act breakthrough — yield legally OK</span></div>
+          <div class="wi"><span class="badge H" style="flex-shrink:0">H</span><span class="wi-t" data-en="HKMA issuer register open" data-zh="HKMA 发行人注册开放">HKMA issuer register open</span></div>
         </div>
-        <div class="sec" data-en="SOURCE: Manual · News signals" data-zh="来源：手动录入 · 新闻信号">SOURCE: Manual · News signals</div>
-      </div>
-      <div class="m2-foot">
-        <div class="verdict nodata">
-          <span>░</span><span data-en="INSUFFICIENT DATA — PMF interviews required before Go/No-Go" data-zh="数据不足 — 需要PMF访谈才能判断">INSUFFICIENT DATA — PMF interviews required before Go/No-Go</span>
+        <div class="ws" style="margin-top:6px">
+          <div class="wsh" data-en="COMPETITOR" data-zh="竞品">COMPETITOR</div>
+          <div class="wi"><span class="badge H" style="flex-shrink:0">H</span><span class="wi-t" data-en="Mastercard/BVNK $1.8B — 6-12mo window" data-zh="Mastercard/BVNK 18亿美元 — 6-12个月窗口">Mastercard/BVNK $1.8B — 6-12mo window</span></div>
+          <div class="wi"><span class="badge M" style="flex-shrink:0">M</span><span class="wi-t" data-en="Airwallex $120M F — initiate BD now" data-zh="Airwallex 1.2亿美元F轮 — 立即启动BD">Airwallex $120M F — initiate BD now</span></div>
         </div>
-      </div>
-    </div>
-
-    <!-- 2C: COMPETITIVE GAP -->
-    <div class="m2-col">
-      <div class="m2-head">
-        <span class="m2-label cmp" data-en="COMPETITIVE GAP" data-zh="竞品缺口">COMPETITIVE GAP</span>
-        <span style="font-size:8px;color:var(--tf)">P0 · Theme 3</span>
-      </div>
-      <div class="m2-q" data-en="What are competitors doing — and what gaps remain?" data-zh="竞品在做什么，留下了哪些空白？">What are competitors doing — and what gaps remain?</div>
-      <div class="m2-body">
-        <!-- Infrastructure competitors -->
-        <div class="cst-sub"><span data-en="INFRASTRUCTURE" data-zh="基础设施">INFRASTRUCTURE</span></div>
-        <div class="comp-sig">
-          <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px">
-            <span class="comp-name">BVNK → Mastercard</span>
-            <span class="comp-threat H">HIGH THREAT</span>
-          </div>
-          <div class="comp-ev" data-en="Acquired for $1.8B (Mar 17) — stablecoin payment rails absorbed into TradFi" data-zh="以18亿美元被收购(3月17日)——稳定币支付通道被传统金融吸纳">Acquired for $1.8B (Mar 17) — stablecoin payment rails absorbed into TradFi</div>
-          <div class="comp-gap" data-en="Gap: No multi-currency settlement · No Asian market focus · No institutional yield" data-zh="缺口：无多法币结算 · 无亚洲市场聚焦 · 无机构收益">Gap: No multi-currency settlement · No Asian market focus · No institutional yield</div>
-        </div>
-        <div class="comp-sig">
-          <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px">
-            <span class="comp-name">BitGo</span>
-            <span class="comp-threat M">MED</span>
-          </div>
-          <div class="comp-ev" data-en="Q1 AUM +34% YoY — institutional custody growing" data-zh="Q1 AUM 同比+34% — 机构托管增长">Q1 AUM +34% YoY — institutional custody growing</div>
-          <div class="comp-gap" data-en="Gap: No yield product · No multi-stablecoin swap · No Asian B2B focus" data-zh="缺口：无收益产品 · 无多稳定币兑换 · 无亚洲B2B聚焦">Gap: No yield product · No multi-stablecoin swap · No Asian B2B focus</div>
-        </div>
-        <!-- Stablecoin issuers -->
-        <div class="cst-sub" style="margin-top:6px"><span data-en="STABLECOIN ISSUERS" data-zh="稳定币发行方">STABLECOIN ISSUERS</span></div>
-        <div class="comp-sig" style="border-left-color:var(--bd3)">
-          <div style="font-size:9px;color:var(--td);margin-bottom:2px">USDC / Circle — 25% share, compliance leader</div>
-          <div class="comp-gap" style="color:var(--td)" data-en="Gap: No yield distribution (pre-GENIUS) · No multi-currency" data-zh="缺口：无收益分配(GENIUS前) · 无多法币">Gap: No yield distribution (pre-GENIUS) · No multi-currency</div>
-        </div>
-        <!-- Window -->
-        <div class="comp-win">
-          <div class="comp-win-lbl" data-en="COMPETITIVE WINDOW" data-zh="竞争窗口">COMPETITIVE WINDOW</div>
-          <div class="comp-win-val" data-en="6–12 MONTHS" data-zh="6–12个月">6–12 MONTHS</div>
-          <div class="comp-win-note" data-en="Before Mastercard/BVNK reaches scale · Accelerate B2B pipeline now" data-zh="在Mastercard/BVNK达到规模前 · 立即加速B2B管道">Before Mastercard/BVNK reaches scale · Accelerate B2B pipeline now</div>
-        </div>
-        <div class="sec" data-en="SOURCE: News · Earnings · Manual" data-zh="来源：新闻 · 财报 · 手动录入">SOURCE: News · Earnings · Manual</div>
-      </div>
-      <div class="m2-foot">
-        <div class="verdict watch">
-          <span>⚠</span><span data-en="ACCELERATE — gap exists but window compressing" data-zh="加速 — 缺口存在但窗口收窄">ACCELERATE — gap exists but window compressing</span>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /m2-grid -->
-
-  <!-- MODULE 3: TODAY'S ACTION SIGNALS -->
-  <div id="m3">
-    <div class="m3-head">
-      <span class="m3-title" data-en="TODAY'S ACTION SIGNALS — CROSS-THEME" data-zh="今日行动信号 — 跨主题">TODAY'S ACTION SIGNALS — CROSS-THEME</span>
-      <span style="font-size:8px;color:var(--tf);margin-left:auto" data-en="Each signal tagged to P0 research theme" data-zh="每条信号标注P0研究主题">Each signal tagged to P0 research theme</span>
-    </div>
-    <div class="sig-grid">
-      <!-- Signal 1 -->
-      <div class="sig-card H">
-        <div class="sig-top"><span class="sbadge H">HIGH</span><span class="s-theme mkt" data-en="MARKET" data-zh="市场">MARKET</span><span class="sfactor">F-REG</span><span class="sdate">Mar 20</span></div>
-        <div class="stitle" data-en="US GENIUS Act breakthrough — stablecoin yield now legally permissible" data-zh="美国 GENIUS Act 突破 — 稳定币收益现在法律上可行">US GENIUS Act breakthrough — stablecoin yield now legally permissible</div>
-        <div class="swhy" data-en="WHY: First explicit US legal permission for yield distribution to holders. Removes #1 compliance blocker for USDGO." data-zh="原因：美国法律首次明确允许向持有者分配收益，消除 USDGO 最大合规阻碍。">WHY: First explicit US legal permission for yield distribution to holders. Removes #1 compliance blocker for USDGO.</div>
-        <div class="simp" data-en="IMPACT: USDGO yield product launch timeline may compress by ~6 months." data-zh="影响：USDGO 收益产品发布时间线可能缩短约6个月。">IMPACT: USDGO yield product launch timeline may compress by ~6 months.</div>
-        <div class="shyp" data-en="↳ P0 Theme 1 · Hypothesis: Yield-bearing stablecoin has TAM in US market — CONFIRMING" data-zh="↳ P0主题1 · 假设：生息稳定币在美国市场有TAM — 确认中">↳ P0 Theme 1 · Hypothesis: Yield-bearing stablecoin has TAM in US market — CONFIRMING</div>
-        <div class="sent" data-en="ENTITIES: US Senate · Circle · USDGO · PayPal · Tether" data-zh="相关方：美国参议院 · Circle · USDGO · PayPal · Tether">ENTITIES: US Senate · Circle · USDGO · PayPal · Tether</div>
-        <div class="sact" data-en="▶ Legal review of GENIUS Act text within 10 business days — blocking dependency for product launch" data-zh="▶ 10个工作日内完成 GENIUS Act 法律审查 — 产品发布的阻塞依赖">▶ Legal review of GENIUS Act text within 10 business days — blocking dependency for product launch</div>
-      </div>
-      <!-- Signal 2 -->
-      <div class="sig-card H">
-        <div class="sig-top"><span class="sbadge H">HIGH</span><span class="s-theme cmp" data-en="COMPETITOR" data-zh="竞品">COMPETITOR</span><span class="sfactor">F-COMP</span><span class="sdate">Mar 17</span></div>
-        <div class="stitle" data-en="Mastercard acquires BVNK for $1.8B — TradFi occupies stablecoin payment rails" data-zh="Mastercard 以18亿美元收购 BVNK — 传统金融占据稳定币支付通道">Mastercard acquires BVNK for $1.8B — TradFi occupies stablecoin payment rails</div>
-        <div class="swhy" data-en="WHY: Mastercard paying infrastructure premium confirms this market is real. Also means a dominant competitor is now entering at scale." data-zh="原因：Mastercard 以基础设施溢价支付，证实该市场是真实的。同时意味着主导竞争者正在大规模进入。">WHY: Mastercard paying infrastructure premium confirms this market is real. Also means a dominant competitor is now entering at scale.</div>
-        <div class="simp" data-en="IMPACT: StableHub has 6-12 months before Mastercard/BVNK reaches scale. B2B pipeline velocity is the only counter." data-zh="影响：StableHub 有6-12个月窗口，在 Mastercard/BVNK 达到规模前。B2B 管道速度是唯一反制。">IMPACT: StableHub has 6-12 months before Mastercard/BVNK reaches scale. B2B pipeline velocity is the only counter.</div>
-        <div class="shyp" data-en="↳ P0 Theme 3 · Hypothesis: Differentiated stablecoin payment infrastructure gap exists — PARTIALLY CONFIRMING, WINDOW CLOSING" data-zh="↳ P0主题3 · 假设：差异化稳定币支付基础设施缺口存在 — 部分确认，窗口关闭中">↳ P0 Theme 3 · Hypothesis: Differentiated stablecoin payment infrastructure gap exists — PARTIALLY CONFIRMING, WINDOW CLOSING</div>
-        <div class="sent" data-en="ENTITIES: Mastercard · BVNK · StableHub · Airwallex · PingPong · Xtransfer" data-zh="相关方：Mastercard · BVNK · StableHub · Airwallex · PingPong · Xtransfer">ENTITIES: Mastercard · BVNK · StableHub · Airwallex · PingPong · Xtransfer</div>
-        <div class="sact" data-en="▶ Identify top 10 companies currently on BVNK rails. Initiate BD outreach this week — before they become locked in." data-zh="▶ 识别当前使用 BVNK 通道的前10个公司，本周启动 BD 接触 — 在他们被锁定之前。">▶ Identify top 10 companies currently on BVNK rails. Initiate BD outreach this week — before they become locked in.</div>
-      </div>
-      <!-- Signal 3 -->
-      <div class="sig-card H">
-        <div class="sig-top"><span class="sbadge H">HIGH</span><span class="s-theme cmp" data-en="COMPETITOR" data-zh="竞品">COMPETITOR</span><span class="sfactor">F-REG</span><span class="sdate">Mar 10</span></div>
-        <div class="stitle" data-en="HKMA stablecoin issuer register open — license application window active" data-zh="金管局稳定币发行人注册开放 — 申请窗口已启动">HKMA stablecoin issuer register open — license application window active</div>
-        <div class="swhy" data-en="WHY: First-mover HK license is a durable regulatory moat. OSL's local presence and HKMA relationship create an advantage that late entrants can't replicate." data-zh="原因：先发香港牌照是持久的监管护城河。OSL 的本地存在和 HKMA 关系创造了后来者无法复制的优势。">WHY: First-mover HK license is a durable regulatory moat. OSL's local presence and HKMA relationship create an advantage that late entrants can't replicate.</div>
-        <div class="simp" data-en="IMPACT: HK license enables USDGO as a fully compliant product for the Asian institutional market." data-zh="影响：香港牌照使 USDGO 成为亚洲机构市场的完全合规产品。">IMPACT: HK license enables USDGO as a fully compliant product for the Asian institutional market.</div>
-        <div class="shyp" data-en="↳ P0 Theme 1 · Hypothesis: HK market is a viable entry point for institutional stablecoin — CONFIRMING" data-zh="↳ P0主题1 · 假设：香港市场是机构稳定币的可行入口 — 确认中">↳ P0 Theme 1 · Hypothesis: HK market is a viable entry point for institutional stablecoin — CONFIRMING</div>
-        <div class="sent" data-en="ENTITIES: HKMA · OSL · USDGO · JD.com · RD Technologies · HashKey" data-zh="相关方：HKMA · OSL · USDGO · 京东 · RD Technologies · HashKey">ENTITIES: HKMA · OSL · USDGO · JD.com · RD Technologies · HashKey</div>
-        <div class="sact" data-en="▶ Confirm this week whether OSL has initiated HKMA sandbox engagement. Assign owner if not in process." data-zh="▶ 本周确认 OSL 是否已启动 HKMA 沙盒参与，如未启动则指定负责人。">▶ Confirm this week whether OSL has initiated HKMA sandbox engagement. Assign owner if not in process.</div>
-      </div>
-      <!-- Signal 4 -->
-      <div class="sig-card H">
-        <div class="sig-top"><span class="sbadge H">HIGH</span><span class="s-theme cst" data-en="CUSTOMER" data-zh="客户">CUSTOMER</span><span class="sfactor">F-CUST</span><span class="sdate">Mar 22</span></div>
-        <div class="stitle" data-en="Airwallex closes $120M Series F — cross-border payment scale accelerating" data-zh="Airwallex 完成1.2亿美元F轮 — 跨境支付规模加速">Airwallex closes $120M Series F — cross-border payment scale accelerating</div>
-        <div class="swhy" data-en="WHY: Airwallex is OSL's highest-priority B2B target. Fresh capital means they will either build stablecoin capability in-house or acquire it. The window to become their preferred external partner is open now." data-zh="原因：Airwallex 是 OSL 最高优先级 B2B 目标。新融资意味着他们将自建或收购稳定币能力，成为其首选外部合作伙伴的窗口现在开放。">WHY: Airwallex is OSL's highest-priority B2B target. Fresh capital means they will either build stablecoin capability in-house or acquire it. The window to become their preferred external partner is open now.</div>
-        <div class="simp" data-en="IMPACT: Validates P0 hypothesis that payment companies need stablecoin rails but prefer partnership over in-house build (for now)." data-zh="影响：验证了P0假设——支付公司需要稳定币通道但（目前）更倾向合作而非自建。">IMPACT: Validates P0 hypothesis that payment companies need stablecoin rails but prefer partnership over in-house build (for now).</div>
-        <div class="shyp" data-en="↳ P0 Theme 2 · Hypothesis: Payment companies have payable stablecoin pain — WEAK CONFIRMING (1 data point)" data-zh="↳ P0主题2 · 假设：支付公司有可付费的稳定币痛点 — 弱确认(1个数据点)">↳ P0 Theme 2 · Hypothesis: Payment companies have payable stablecoin pain — WEAK CONFIRMING (1 data point)</div>
-        <div class="sent" data-en="ENTITIES: Airwallex · StableHub · BizPay · PingPong · Xtransfer" data-zh="相关方：Airwallex · StableHub · BizPay · PingPong · Xtransfer">ENTITIES: Airwallex · StableHub · BizPay · PingPong · Xtransfer</div>
-        <div class="sact" data-en="▶ Initiate direct BD contact with Airwallex treasury team. Frame as StableHub pilot — not a sales conversation." data-zh="▶ 与 Airwallex 财务团队启动直接 BD 接触，定位为 StableHub 试点而非销售对话。">▶ Initiate direct BD contact with Airwallex treasury team. Frame as StableHub pilot — not a sales conversation.</div>
       </div>
     </div>
   </div>
-
-</div><!-- /page-cmd -->
-
-<!-- PLACEHOLDER PAGES -->
-<div class="pg" id="page-sigs" style="padding:20px;color:var(--td);font-size:11px">SIGNAL FEED — Navigate here for full signal list with filtering</div>
-<div class="pg" id="page-hlth" style="padding:20px;color:var(--td);font-size:11px">PEG MONITOR — Live stablecoin deviation table</div>
-<div class="pg" id="page-wk" style="padding:20px;color:var(--td);font-size:11px">WEEKLY BRIEF — Coming soon</div>
+  <div class="recs">
+    <div class="recs-h" data-en="◈ STRATEGIC RECOMMENDATIONS — W12" data-zh="◈ 战略建议 — 第12周">◈ STRATEGIC RECOMMENDATIONS — W12</div>
+    <div class="rec" data-en="1. GENIUS Act removes USDGO's single largest compliance blocker. Legal review must complete within 10 business days — this is a blocking dependency for product launch, not a monitoring item." data-zh="1. GENIUS Act 消除了 USDGO 最大的合规阻碍。法律审查必须在10个工作日内完成——这是产品发布的阻塞依赖，不是监控项。">1. GENIUS Act removes USDGO's single largest compliance blocker. Legal review must complete within 10 business days — this is a blocking dependency for product launch, not a monitoring item.</div>
+    <div class="rec" data-en="2. Mastercard/BVNK ($1.8B) confirms: stablecoin payment infrastructure is an M&A target. OSL StableHub must demonstrate B2B traction before the next acquisition cycle. Priority is pipeline velocity, not product completeness." data-zh="2. Mastercard/BVNK(18亿美元)确认：稳定币支付基础设施是并购目标。OSL StableHub 必须在下一个并购周期前展示B2B牵引力。优先级是管道速度，而非产品完整性。">2. Mastercard/BVNK ($1.8B) confirms: stablecoin payment infrastructure is an M&A target. OSL StableHub must demonstrate B2B traction before the next acquisition cycle. Priority is pipeline velocity, not product completeness.</div>
+    <div class="rec" data-en="3. Customer Pain (P0 Theme 2) remains unvalidated. Sky/USDS TVL growth sets the benchmark for what yield products can achieve — but USDGO cannot use this as a substitute for direct PMF validation." data-zh="3. 客户痛点(P0主题2)仍未验证。Sky/USDS TVL 增长树立了收益产品的基准，但 USDGO 不能以此替代直接 PMF 验证。">3. Customer Pain (P0 Theme 2) remains unvalidated. Sky/USDS TVL growth sets the benchmark for what yield products can achieve — but USDGO cannot use this as a substitute for direct PMF validation.</div>
+  </div>
+</div>
 
 </div><!-- /main -->
 
 <script>
-// Clock
 setInterval(()=>{
-  document.getElementById('clk').textContent=new Date().toLocaleTimeString('en-GB',{timeZone:'Asia/Shanghai',hour:'2-digit',minute:'2-digit',second:'2-digit'})+' GMT+8';
+  document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-GB',{timeZone:'Asia/Shanghai',hour:'2-digit',minute:'2-digit',second:'2-digit'})+' GMT+8';
 },1000);
 
-// Nav
 function gp(n,el){
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));
   document.getElementById('page-'+n).classList.add('active');
   el.classList.add('active');
 }
-
-// M1 toggle
-function toggleM1(){
-  document.getElementById('m1').classList.toggle('open');
-}
-
-// Lang
+function toggleP0(){document.getElementById('p0track').classList.toggle('open');}
 let lang='en';
 function setLang(l){
   lang=l;
   document.getElementById('btn-en').classList.toggle('active',l==='en');
   document.getElementById('btn-zh').classList.toggle('active',l==='zh');
-  document.querySelectorAll('[data-en]').forEach(el=>{
-    const v=el.getAttribute('data-'+l);
-    if(v) el.innerHTML=v;
-  });
+  document.querySelectorAll('[data-en]').forEach(el=>{const v=el.getAttribute('data-'+l);if(v)el.innerHTML=v;});
+}
+function ask(){
+  const v=document.getElementById('ci').value.trim();
+  if(!v)return;
+  const el=document.getElementById('ci');
+  el.value='[Analyzing: '+v+']';
+  setTimeout(()=>{el.value='';},2500);
 }
 
-// Market data
-async function loadData(){
+async function loadMarket(){
   try{
     const r=await fetch('https://stablecoins.llama.fi/stablecoins?includePrices=true');
     const d=await r.json();
     const all=d.peggedAssets||[];
     const total=all.reduce((s,c)=>s+(c.circulating?.peggedUSD||0),0);
     const top=all.sort((a,b)=>(b.circulating?.peggedUSD||0)-(a.circulating?.peggedUSD||0));
-    
-    // Find USDT, USDC
-    const usdt=top.find(c=>c.symbol==='USDT');
-    const usdc=top.find(c=>c.symbol==='USDC');
-    const usdt_sh=usdt?(usdt.circulating?.peggedUSD||0)/total*100:58.4;
-    const usdc_sh=usdc?(usdc.circulating?.peggedUSD||0)/total*100:25.0;
-    const other_sh=100-usdt_sh-usdc_sh;
-    const addr=total*other_sh/100;
-    
-    // Module 0
-    document.getElementById('m0-sup').textContent='$'+(total/1e9).toFixed(1)+'B';
-    document.getElementById('addr').textContent='~$'+(addr/1e9).toFixed(0)+'B ('+other_sh.toFixed(1)+'%)';
-    document.getElementById('sup-val').textContent='$'+(total/1e9).toFixed(1)+'B';
-    
-    // Share bar
-    document.getElementById('bar-usdt').style.width=usdt_sh.toFixed(1)+'%';
-    document.getElementById('bar-usdc').style.width=usdc_sh.toFixed(1)+'%';
-    document.getElementById('bar-other').style.width=other_sh.toFixed(1)+'%';
-    document.getElementById('usdt-lbl').textContent='USDT '+usdt_sh.toFixed(1)+'%';
-    document.getElementById('usdc-lbl').textContent='USDC '+usdc_sh.toFixed(1)+'%';
-    document.getElementById('other-lbl').textContent='Other '+other_sh.toFixed(1)+'% ← USDGO TAM';
-    
-    // Health
-    let ok=0,w=0,a=0;
-    top.slice(0,10).forEach(c=>{
-      const p=c.price||1,dev=Math.abs((p-1)*100);
-      if(dev<0.1)ok++;else if(dev<0.5)w++;else a++;
+    const top10=top.slice(0,10);
+    const usdt=top.find(c=>c.symbol==='USDT'),usdc=top.find(c=>c.symbol==='USDC');
+    const usdt_s=usdt?(usdt.circulating?.peggedUSD||0)/total*100:58.4;
+    const usdc_s=usdc?(usdc.circulating?.peggedUSD||0)/total*100:25;
+    const oth_s=100-usdt_s-usdc_s;
+    const addr=total*oth_s/100;
+    const now=new Date().toLocaleTimeString('en-GB',{timeZone:'Asia/Shanghai',hour:'2-digit',minute:'2-digit'});
+    // KPI
+    document.getElementById('kpi-mkt').textContent='$'+(total/1e9).toFixed(1)+'B';
+    // P0 market
+    document.getElementById('p0-sup').textContent='$'+(total/1e9).toFixed(1)+'B';
+    document.getElementById('p0-tam').textContent='~$'+(addr/1e9).toFixed(0)+'B';
+    ['b-usdt','b-usdc','b-oth'].forEach((id,i)=>{
+      document.getElementById(id).style.width=[usdt_s,usdc_s,oth_s][i].toFixed(1)+'%';
     });
-    document.getElementById('m0-al').textContent=a+' ALERT · '+w+' WATCH';
-    if(a>0){document.getElementById('mst-txt').textContent='ALERT';document.getElementById('mst-txt').className='st-a';}
-    else if(w>0){document.getElementById('mst-txt').textContent='WATCH';document.getElementById('mst-txt').className='st-w';}
-    
-  } catch(e){}
+    document.getElementById('s-usdt').textContent='USDT '+usdt_s.toFixed(1)+'%';
+    document.getElementById('s-usdc').textContent='USDC '+usdc_s.toFixed(1)+'%';
+    document.getElementById('s-oth').textContent='Other '+oth_s.toFixed(1)+'%';
+    // Market snapshot table
+    let ok=0,w=0,a=0;
+    const mkRows=top10.map(c=>{
+      const m=c.circulating?.peggedUSD||0,p=c.price||1,dev=(p-1)*100,ad=Math.abs(dev);
+      if(ad<0.1)ok++;else if(ad<0.5)w++;else a++;
+      const cl=ad<0.1?'ok':ad<0.5?'w':'r';
+      const ds=(dev>=0?'+':'')+dev.toFixed(3)+'%';
+      const dc=ad<0.1?'up':ad<0.5?'neu dn':'dn';
+      return `<tr><td class="sym">${c.symbol}</td><td class="neu">$${p.toFixed(4)}</td><td class="${dc}">${ds}</td><td class="smcap">$${(m/1e9).toFixed(1)}B</td><td><span class="sdot-s ${cl}"></span></td></tr>`;
+    });
+    document.getElementById('mkt-tbody').innerHTML=mkRows.join('');
+    document.getElementById('mkt-upd').textContent=now;
+    // Health
+    document.getElementById('ph-tot').textContent=top10.length;
+    document.getElementById('ph-ok').textContent=ok;
+    document.getElementById('ph-w').textContent=w||'0';
+    document.getElementById('ph-a').textContent=a||'0';
+    document.getElementById('ph-time').textContent=now+' GMT+8';
+    const pRows=top10.map(c=>{
+      const m=c.circulating?.peggedUSD||0,p=c.price||1,dev=(p-1)*100,ad=Math.abs(dev);
+      const rc=ad<0.1?'hrow-ok':ad<0.5?'hrow-w':'hrow-r';
+      const ds=(dev>=0?'+':'')+dev.toFixed(3)+'%';
+      const dc=ad<0.1?'up':ad<0.5?'neu':'dn';
+      const st=ad<0.1?`<span class="sdot-s ok"></span>HEALTHY`:ad<0.5?`<span class="sdot-s w"></span>WATCH`:`<span class="sdot-s r blink"></span>ALERT`;
+      const sh=total?(m/total*100).toFixed(1)+'%':'—';
+      return `<tr class="${rc}"><td class="sym" style="padding-left:8px">${c.symbol}</td><td>$${p.toFixed(6)}</td><td class="${dc}">${ds}</td><td>${st}</td><td class="smcap">$${(m/1e9).toFixed(2)}B</td><td class="smcap">${sh}</td><td style="color:var(--tf);font-size:9px">${now}</td></tr>`;
+    });
+    document.getElementById('ph-tbody').innerHTML=pRows.join('');
+    if(a>0){
+      const b=document.getElementById('h-banner');
+      b.style.cssText='padding:7px 12px;margin-bottom:7px;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;border:1px solid var(--rb);background:rgba(204,51,51,.08);color:var(--rb)';
+      document.getElementById('hb-txt').textContent=a+' ASSET(S) IN ALERT';
+    }
+  }catch(e){}
 }
 
 async function loadTVL(){
-  const protos=[{s:'sky',n:'Sky/USDS'},{s:'ethena',n:'Ethena'},{s:'aave-v3',n:'Aave v3'}];
-  let rows='';
-  let maxT=1;
-  const results=[];
+  const protos=[{s:'aave-v3',n:'Aave v3',c:'Lending'},{s:'compound-v3',n:'Compound v3',c:'Lending'},{s:'curve-dex',n:'Curve',c:'DEX'},{s:'sky',n:'Sky/USDS',c:'Stablecoin'},{s:'ethena',n:'Ethena',c:'Yield'},{s:'pendle',n:'Pendle',c:'Yield'}];
+  const rs=[];
   for(const p of protos){
     try{
       const r=await fetch(`https://api.llama.fi/protocol/${p.s}`);
@@ -548,21 +639,36 @@ async function loadTVL(){
       const arr=d.tvl||[];
       const cur=arr[arr.length-1]?.totalLiquidityUSD||0;
       const p30=arr[arr.length-31]?.totalLiquidityUSD||cur;
-      results.push({name:p.n,tvl:cur,chg:p30?(cur-p30)/p30*100:0});
+      rs.push({...p,tvl:cur,chg:p30?(cur-p30)/p30*100:0});
     }catch{}
   }
-  if(results.length) maxT=Math.max(...results.map(r=>r.tvl));
-  rows=results.map(p=>{
+  rs.sort((a,b)=>b.tvl-a.tvl);
+  const mx=rs[0]?.tvl||1;
+  // Right panel (compact)
+  const tb=document.getElementById('tvl-tbody');
+  if(tb) tb.innerHTML=rs.map(p=>{
     const c=p.chg>0?'up':'dn';
-    const bw=Math.round(p.tvl/maxT*90);
-    return `<div class="tvl-row"><span class="tvl-name">${p.name}</span><div class="tvl-bar-w"><div class="tvl-bar-f" style="width:${bw}%"></div></div><span class="tvl-val">$${(p.tvl/1e9).toFixed(1)}B</span><span class="tvl-chg ${c}" style="margin-left:6px">${p.chg>0?'↑':'↓'}${Math.abs(p.chg).toFixed(1)}%</span></div>`;
+    const bw=Math.round(p.tvl/mx*80);
+    return `<tr><td style="font-weight:600;color:var(--wht)">${p.name}</td><td>$${(p.tvl/1e9).toFixed(1)}B<div class="tvl-bar-wrap"><div class="tvl-bar-fill" style="width:${bw}%"></div></div></td><td class="${c}">${p.chg>0?'↑':'↓'}${Math.abs(p.chg).toFixed(1)}%</td></tr>`;
   }).join('');
-  const el=document.getElementById('tvl-mini');
-  if(el&&rows) el.innerHTML=rows;
+  // P0 market col (top 3)
+  const top3=rs.slice(0,3);
+  const p0el=document.getElementById('tvl-p0');
+  if(p0el) p0el.innerHTML=top3.map(p=>{
+    const c=p.chg>0?'up':'dn';
+    return `<div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid var(--p3);font-size:9px"><span style="color:var(--wht);font-weight:600">${p.name}</span><span class="${c}">${p.chg>0?'↑':'↓'}${Math.abs(p.chg).toFixed(1)}%</span></div>`;
+  }).join('');
+  // Weekly TVL
+  const wk=document.getElementById('wk-tvl');
+  if(wk) wk.innerHTML=rs.map(p=>{
+    const c=p.chg>0?'up':'dn';
+    const sig=Math.abs(p.chg)>10?(p.chg>0?'<span style="font-size:7px;padding:1px 4px;border:1px solid var(--amb);color:var(--amb)">WATCH</span>':''):'—';
+    return `<tr><td style="font-weight:600;color:var(--wht)">${p.name}</td><td>$${(p.tvl/1e9).toFixed(2)}B</td><td class="${c}">${p.chg>0?'↑':'↓'}${Math.abs(p.chg).toFixed(1)}%</td><td style="color:var(--td)">${p.c}</td><td>${sig}</td></tr>`;
+  }).join('');
 }
 
-loadData();loadTVL();
-setInterval(loadData,60000);setInterval(loadTVL,120000);
+loadMarket();loadTVL();
+setInterval(loadMarket,60000);setInterval(loadTVL,120000);
 </script>
 </body>
 </html>
