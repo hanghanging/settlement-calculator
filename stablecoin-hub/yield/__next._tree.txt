@@ -1,2 +1,2 @@
-:HL["/_next/static/chunks/0z7pg_h_s6b86.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"yield","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"kqamO3kaOnh5QnU5SM1-3"}
+:HL["/settlement-calculator/stablecoin-hub/_next/static/chunks/0z7pg_h_s6b86.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"yield","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"uTgm8yxiH298zK3sta-a7"}
